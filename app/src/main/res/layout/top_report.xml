@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linerepoter"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/report_diagnose"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_no_radius"
+        android:gravity="center"
+        android:text="@string/report_diagnose"
+        android:textColor="#000000"
+        android:textSize="@dimen/textSize16" />
+
+    <TextView
+        android:id="@+id/report_diagnose_code"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_no_radius"
+        android:gravity="center"
+        android:text="@string/report_diagnose_recode"
+        android:textColor="#000000"
+        android:textSize="@dimen/textSize16" />
+
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="550dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_toolbar"
+            android:padding="10dp"
+            android:text="ListDialog_Title"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:gravity="center"
+
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:minHeight="100dp"
+                >
+
+                <ImageView
+                    android:id="@+id/dialog_Message_Img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/user_warning"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:id="@+id/dialog_Message_TV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#efefef"
+            >
+            <Button
+                android:id="@+id/dialog_Negative_BTN"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="@string/tip_no"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:background="@drawable/negativebutton_backgroud_style"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                android:textAllCaps="false"
+
+                />
+
+            <Button
+                android:id="@+id/dialog_Positive_BTN"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="@string/tip_yes"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/positivebutton_backgroud_style"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:textAllCaps="false"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

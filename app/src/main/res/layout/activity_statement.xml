@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.Activity.Setting.StatementActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:visibility="gone"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                >
+
+                <CheckBox
+                    android:id="@+id/confirm_CHKBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radio_read"
+                    />
+                <Button
+                    android:id="@+id/sure_BTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="@string/Sure"
+                    android:background="@drawable/bg_dialog_negative"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="15dp"
+                    android:clickable="false"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <ScrollView
+            android:layout_above="@+id/layout_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/webview"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                >
+            </WebView>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

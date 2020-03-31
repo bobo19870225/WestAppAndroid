@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/toolbar"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="25dp"
+                >
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/timeout_notActive"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    />
+
+                <EditText
+                    android:id="@+id/TimeOut_notActive_ET"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edittext"
+                    android:layout_margin="4dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:lines="1"
+                    android:inputType="number"
+                    android:maxLength="2"
+
+                    />
+                <TextView
+                    android:inputType="number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="@string/unit_Minuts"
+
+                    />
+
+                <Button
+                    android:id="@+id/TimeOut_NotActive_BTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_dialog_positive"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/btn_Modify"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="25dp"
+                >
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/timeout_Backup"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    />
+
+                <EditText
+                    android:id="@+id/TimeOut_Backup_ET"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edittext"
+                    android:layout_margin="4dp"
+                    android:inputType="number"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:lines="1"
+                    android:maxLength="2"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="@string/unit_Second"
+                    />
+
+                <Button
+                    android:id="@+id/TimeOut_Backup_BTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_dialog_positive"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/btn_Modify"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

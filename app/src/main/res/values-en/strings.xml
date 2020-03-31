@@ -1,0 +1,535 @@
+<resources>
+
+    <string name="company_phone1">0851-87100001</string>
+    <string name="company_phone2">0851-87100002</string>
+    <string name="company_phone3">0851-87100003</string>
+    <string name="company_phone4">0851-87100004</string>
+    <string name="company_phone5">0851-87100005</string>
+    <string name="company_phone6">0851-87100006</string>
+    <string name="company_email">168auto@168auto.com</string>
+
+    <!--  Common  -->
+    <string name="Sure">Sure</string>
+    <string name="Back">Back</string>
+    <string name="Help">Help</string>
+    <string name="Sava">Save</string>
+    <string name="edit">Edit</string>
+    <string name="exit">Exit</string>
+    <string name="success">Success</string>
+
+
+    <!--  SplashActivity  -->
+    <string name="Storage_Permission_Denied_Request">The whole line was rejected to allow all permissions in "App info" > "permission"!</string>
+    <string name="Storage_Permission_Denied_Exit">Permission denied, the App can not be lauched!</string>
+    <string name="version">Version:</string>
+
+
+    <!--  AppReceiver  -->
+    <string name="Network_Connected">Network connected</string>
+    <string name="Network_Disconnected">Network disconnected</string>
+
+    <!--  USBConnAdapter  -->
+    <string name="selected">Selected</string>
+
+
+
+    <!--  DiagnosisProgramAPI  -->
+    <string name="downloadFailed">Download failed</string>
+    <string name="tip_program_Running">Program is running ...</string>
+    <string name="tip_message_download">In transit, please do not disconnect...</string>
+    <string name="tip_message_FW_download">Updating VCI, do not disconnect, please.</string>
+
+    <!--  InputDialog  -->
+    <string name="tip_over_max_value">Over the max value, please input again.</string>
+
+    <!--  LowerScreen  -->
+    <string name="tip_not_selected">You have not chosen yet!</string>
+
+    <!--  PasswordDialog  -->
+    <string name="hint_input_times">Input Times</string>
+    <string name="type_Number">Number</string>
+    <string name="type_Text">Number and text</string>
+    <string name="size_not_matching">Not match the lenght</string>
+
+    <!-- ConnectStatus -->
+    <string name="tip_BT_Disconnect">Bluetooth is disconnected and not reconnected？</string>
+    <string name="interface_no_connect">no connection</string>
+    <string name="interface_connect">Connection</string>
+    <string name="interface_not_found" >Undiscovered</string>
+    <string name="interface_bt_connect">BLUETOOTH: </string>
+    <string name="interface_usb_connect">USB: </string>
+    <string name="interface_device_connect" >Equipment connected</string>
+    <string name="interface_change_STATUS">Change Status</string>
+    <string name="interface_unit_Device"> </string>
+
+    <!--  Sign  -->
+    <string name="signing">Please wait a moment while registering</string>
+    <string name="toast_Input_userName">Please enter the username</string>
+    <string name="toast_Input_realName">Please enter your name</string>
+    <string name="toast_Input_phone">Please enter the telephone number</string>
+    <string name="toast_Input_Email">Please enter your mailbox</string>
+    <string name="toast_Input_Address">Please enter address</string>
+    <string name="location">Locationing...</string>
+    <string name="locateFail">Locate failed</string>
+    <string name="user_sign">User registration information</string>
+
+    <!--  MainActivity  -->
+    <string name="main_diagnosis">Diagnosis</string>
+    <string name="main_data">Diagnosis Data</string>
+    <string name="main_upgrade">Upgrade</string>
+    <string name="main_setting">Settings</string>
+    <string name="main_login">Login</string>
+    <string name="device_bond_title">Equipment binding</string>
+    <string name="device_bond_message">The device is not bound and is now bound.</string>
+    <string name="check_device">The equipment needs to be checked regularly, please connect the network.</string>
+    <string name="check_deviceTip1">After </string>
+    <string name="check_deviceTip2"> days or </string>
+    <string name="check_deviceTip3"> times for using, It will be stop to use if not checking. So please check for network recently</string>
+
+    <string name="device_Tip_Over">设备可用次数已用完，请联系客服！</string>
+
+
+    <!-- DiagnosisFrament-->
+    <string name="diagnosis_function">Function Diagosis</string>
+    <string name="sort_pinyin">Spell sort</string>
+    <string name="sort_number">Num sort</string>
+
+    <!-- DiagnosisActivity-->
+    <string name="local_application">local application</string>
+    <string name="loadData_Tip">This device is a newly installed system, which needs to be installed in the car diagnostic program.</string>
+    <string name="afterLoad_Tip">After the download</string>
+    <string name="nowLoad_Tip">Download now</string>
+    <string name="bt_conn_tip">Bluetooth connection tips</string>
+    <string name="bt_conn_tip_message">\n1. Please check whether the bluetooth device is open.
+                                \n\n2. Please check whether the bluetooth connector is energized or in a valid distance.
+                                \n\n3. If the bluetooth device is connected to other devices, please enter other devices to disconnect the bluetooth connection.
+                                \n\n4. After the equipment is energized, please wait a moment, and then the device will automatically connect.\n</string>
+
+    <!-- UpgradeFrament-->
+    <string name="flush">Flush</string>
+    <string name="upgrade_counts">software can be upgraded</string>
+    <string name="upgrade_carname">Model name </string>
+    <string name="upgrade_presentversion">The current new version </string>
+    <string name="upgrade_version">Upgraded version</string>
+    <string name="upgrade_allselect">Check all </string>
+    <string name="upgrade_update">Go to upgrade</string>
+    <string name="upgrade_canleallselect">To cancel all </string>
+    <string name="upgrade_pull_downtoup">Loading more...</string>
+    <string name="upgrade_select">Pitched on</string>
+    <string name="delete_select">delete</string>
+    <string name="upgrade_select_num">Procedure</string>
+    <string name="tip_UnSign">You are not signed, It\'s must be signed to download a new program, sign now? </string>
+
+    <!--SettingFragment -->
+    <string name="my_jietou">My device</string>
+    <string name="my_report">My report </string>
+    <string name="my_peopleinfo">Personal information </string>
+    <string name="my_language">More Language</string>
+    <string name="setting_about">About</string>
+    <string name="setting_test">Local debugging</string>
+    <string name="set_success">Config</string>
+    <string name="inspect_upgrade">Inspect Upgrade</string>
+    <string name="new_upgrade">find new version</string>
+    <string name="setting_noSign">No sign</string>
+
+    <string name="loadingDocument">Loading, please wait a moment</string>
+    <string name="device_sail_message">After the configuration is completed, the customer test run program will no longer be downloaded. Is the device configuration completed?</string>
+    <string name="device_sail">Configuration is complete</string>
+    <string name="device_no_sail">Point to the wrong</string>
+
+
+    <!-- DataFragment-->
+    <string name="report_diagnose">Diagnostic report </string>
+    <string name="report_diagnose_recode">Historical diagnostic record</string>
+    <string name="report_num">reports</string>
+    <string name="backup_num">back up files</string>
+    <string name="report_delete">DELETE</string>
+    <string name="report_post">POST</string>
+    <string name="report_details">Report Details</string>
+    <string name="report_name_lable">Report：</string>
+    <string name="report_post_success">Post success</string>
+    <string name="report_post_Failed">Post Failed：\n</string>
+    <string name="report_posted">Posted</string>
+    <string name="unable_Delete">Can not delete. </string>
+
+
+    <string name="local_report">Report</string>
+    <string name="remote_report">Report posted</string>
+
+
+    <!--UpgradeActivity -->
+    <string name="startdownload">All Start</string>
+    <string name="stopdownload">All Stop</string>
+    <string name="unknown">unkown size</string>
+    <string name="waitdownload">waitting</string>
+    <string name="downloading">downloading</string>
+    <string name="stop">stopping</string>
+
+        <!--PortActivity -->
+    <string name="bondTarget">Target: </string>
+    <string name="user_Profile">Profile: </string>
+    <string name="user_LableName">Name: </string>
+    <string name="user_LablePhone">Phone: </string>
+    <string name="user_LableMail">Email: </string>
+    <string name="user_LableAddr">Address: </string>
+
+    <string name="device_Info">Device Info</string>
+    <string name="deviceSn">Serial number : </string>
+    <string name="deviceType">Hardware type : </string>
+    <string name="deviceVersion">Hardware version number : </string>
+    <string name="deviceSignTime">Activation time : </string>
+    <string name="deviceType_Release">Common Device</string>
+    <string name="deviceType_Debug">Debug Device</string>
+    <string name="device_RemainCount">Remain: </string>
+
+
+
+    <!-- LanguageActivity-->
+    <string name="tip_message_language_change">Switching...</string>
+
+    <!-- HelpActivity-->
+    <string name="help_problem">Common problem</string>
+    <string name="help_guide">GUIDE</string>
+    <string name="help_manual">MANUAL</string>
+    <string name="quest_document_update">Check a document upgrade, update now?</string>
+
+    <!-- StatementActivity -->
+    <string name="radio_read">Agreed</string>
+
+    <!-- AboutActivity-->
+    <string name="about_veision">Current version: </string>
+    <string name="about_disclaimer">Responsible for the declaration</string>
+
+
+    <!--  PreferenceActivity  -->
+    <string name="preferenceTitle">Preference</string>
+    <string name="timeout_notActive">Unresponde timeout: </string>
+    <string name="timeout_Backup">Backup timeout: </string>
+    <string name="btn_Modify">Modify</string>
+
+    <string name="unit_Second">Seconds</string>
+    <string name="unit_Minuts">Minuts</string>
+
+    <string name="toast_Preference_Input_none">Empty value. </string>
+    <string name="toast_Preference_Input_Large">Setting time is too long. </string>
+    <string name="toast_Preference_Input_Small">Setting time is too short. </string>
+    <string name="toast_Preference_Success">Modify success. </string>
+
+
+    <!--MyVideoView-->
+    <string name="lockscreen_transport_ffw_description">Fast forward</string>
+    <string name="lockscreen_transport_fullscreen_description">FullScreen</string>
+    <string name="lockscreen_transport_next_description">Next track</string>
+    <string name="lockscreen_transport_pause_description">Pause</string>
+    <string name="lockscreen_transport_play_description">Play</string>
+    <string name="lockscreen_transport_prev_description">Previous track</string>
+    <string name="lockscreen_transport_rew_description">Rewind</string>
+    <string name="lockscreen_transport_stop_description">Stop</string>
+
+    <!--DownloadManager-->
+    <string name="tip_downLoad_Finished">The download is complete</string>
+    <string name="tip_program">program</string>
+    <string name="tip_message_downLoad_no_replace">This program is the last version and cannot be replaced</string>
+    <string name="tip_message_downLoad_replace">Replace it with a new version？</string>
+    <string name="tip_message_wifi_no_conn">The wifi is not connected yet,Will you continue to download</string>
+    <string name="tip_message_net_no_conn">The network is not connected and cannot be downloaded</string>
+    <string name="tip_message_useCount">The number of equipment used has been used up and cannot be downloaded. Please contact the customer service to modify the usage number.</string>
+    <string name="tip_kown">Know that!</string>
+
+
+
+    <!-- tip信息-->
+    <string name="tip_title">Tip</string>
+    <string name="tip_message_exit">Sure to exit application ?</string>
+    <string name="tip_message_delete">Are you sure to delete ?</string>
+    <string name="tip_no">No</string>
+    <string name="tip_yes">Yes</string>
+    <string name="tip_message_get">Getting data...</string>
+    <string name="tip_message_bt_conn">Connecting bluetooth...</string>
+    <string name="tip_message_execute">The program is executing...</string>
+    <string name="tip_message_finish">The program has been completed and the next program is executed？</string>
+    <string name="tip_net_nonect">Please connect the network</string>
+    <string name="tip_net_monet">You are in use MONET.</string>
+
+
+    <!-- toast信息-->
+    <string name="toast_unBond">Device is not bonded</string>
+    <string name="toast_unsign">Device is not signed</string>
+    <string name="toast_InputSN">Input SN, please!</string>
+    <string name="toast_ErrorSN">Error SN Code</string>
+    <string name="toast_USB_not_connected">USB is not connected</string>
+    <string name="toast_BT_not_connected">Bluetooth is not connected</string>
+    <string name="toast_Config_Failed">Configrate failed</string>
+
+
+    <!-- UPDriver -->
+    <string name="updriver_Erasure_APP_Boot_Success">Erasure App and Boot Success!</string>
+    <string name="updriver_Erasure_Flash_Success">Erasure Flash Success!</string>
+    <string name="updriver_HexData">Hex data：</string>
+    <string name="updriver_ID_Modify_Failed">Modify ID failed</string>
+    <string name="updriver_Input_ADDCount">Input add Times</string>
+    <string name="updriver_Over_MaxValue">Set max times</string>
+    <string name="updriver_Set_MaxCount">Times over the max value</string>
+    <string name="updriver_Set_UseCount">Set user times</string>
+    <string name="updriver_Times">times!</string>
+    <string name="updriver_Times_Num">\ntimes：</string>
+    <string name="updriver_User_ADDCount_Yet">User count added</string>
+
+
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="title_Sign">Sign Up</string>
+    <string name="finish_Step">Finish</string>
+    <string name="prev_Step">Prev</string>
+    <string name="skip_Step">Skip</string>
+    <string name="next_Step">Next step</string>
+    <string name="sign_User">Sign User</string>
+    <string name="sign_Device">Sign Device</string>
+    <string name="title_Download">Download Program</string>
+    <string name="sign_Failed">Registration failed</string>
+
+
+    <string name="toast_new_ver">Checking</string>
+    <string name="toast_current_ver">The last version is now available</string>
+    <string name="tip_now_upgrade">Update now</string>
+    <string name="tip_later">later</string>
+    <string name="tip_now_sign">Register now</string>
+    <string name="tip_message_upgrade">The last version: </string>
+
+    <string name="tip_message_sign">The current version has not registered yet. Do you register now?</string>
+    <string name="toast_netconn_moreTime">Network connection timeout</string>
+    <string name="toast_inspect_netconn">Please check the Internet connection</string>
+
+    <string name="toast_service_err">Network service error</string>
+    <string name="toast_net_file_err">Network file error</string>
+
+    <string name="device_not_sign">Device is not signed,sign now?</string>
+    <string name="exit_diagnosis">Exit running diagnosis?</string>
+
+    <string name="click_down"> Click down</string>
+    <string name="click_release"> Release</string>
+
+    <string name="address_Input_Error">Input address error!</string>
+    <string name="A168_unsupport">A168-ANT UnSupport, try again,please！</string>
+    <string name="device_not_connect">Unconnected device</string>
+
+    <string name="length_unmatch">unmatch length</string>
+    <string name="large_File">The file is too large</string>
+    <string name="communite_Error">Communication error</string>
+    <string name="readData_Error">Read data error</string>
+
+    <string name="pullout_device">Please don\'t forget to retrieve the diagnostic connector from the car!</string>
+
+    <string name="upgrade_Failed">The upgrade is not successful. Is it redownloaded?</string>
+    <string name="download_Failed">Download failed</string>
+
+    <string name="tip_Open_Bluetooth">Does not open bluetooth, do you open?</string>
+
+    <!--  AboutActivity -->
+    <string name="service_Phone">Service Tel：</string>
+    <string name="complaint_Phone">Complaint Tel：</string>
+    <string name="lable_Email">Email address：</string>
+    <string name="website">Website:</string>
+    <string name="copyRight">CopyRight:</string>
+    <string name="copyRight_msg">Design by WEST. GuiZhou China</string>
+
+
+    <string name="compare_Version">Compare local versions...</string>
+    <string name="cancel">Cancel</string>
+    <string name="connect">Connect</string>
+    <string name="connected">Connected</string>
+    <string name="disconnect">Disconnected</string>
+    <string name="enter">Enter</string>
+    <string name="input_hex">Input Hex data</string>
+    <string name="start_scan">Start scan</string>
+    <string name="toast_InputSN_Code">Input Serial Number</string>
+
+
+     <string name="htmlText">
+        &#060;!DOCTYPE html&#062;
+         &#060;html&#062;
+        &#060;head&#062;
+        &#060;meta charset=\"UTF-8\"&#062;
+            &#060;style type=\"text/css\"&#062;
+            html{margin:0;padding:0;}
+            img{position: relative;
+            top: 0;bottom: 0;left: 0;right: 0;
+            margin: auto;max-width: 100%;}
+            p{text-indent:2em;text-align:left ;font-size:16px ;}
+            &#060;/style&#062;
+        &#060;/head&#062;
+        &#060;body style=\"background-color: #f8f8f8;\"&#062;
+            &#060;p &#062;
+        1.To use this product, please read the Agreement carefully. &#060;/p&#062;
+            &#060;p &#062;
+        2.To avoid a accident, please don\'t use when driving. Our company is not responsible for this. &#060;/p&#062;
+            &#060;p &#062;
+	    3.因擅自改装或者加装各种设备或者元器件而导致产品的任何直接或间接损坏，本公司均不承担任何责任。 &#060;/p&#062;
+            &#060;p &#062;
+	    4.本软件是由west公司研发。"软件"的一切著作版权等知识产权，以及与"软件"相关的所有信息内容，
+			包括但不限于：文字表述及其组合、图标、图饰、图标、色彩、界面设计、版面框架、有关数据、印刷材料、
+			或电子文档等均受著作权法和国际著作权条约以及其他知识产权法律法规的保护。 &#060;/p&#062;
+             &#060;p &#062;
+		5.用户不得对本软件产品进行反向工程、反汇编或反向编译，违者属于侵权行为，并自行承担由此产生的不利后果。 &#060;/p&#062;
+             &#060;p &#062;
+        6.使用"软件"涉及到互联网服务和移动通讯服务，可能会受到各个环节不稳定因素的影响，存在不可抗力、计算机病毒、
+			黑客攻击、系统不稳定、用户所在位置、用户关机以及其他任何网络、技术、通讯线路等原因造成的服务中断或不能满足用户要求的风险，
+			用户须明白并自行承担以上风险，用户因此不能发送或接受阅读信息，或者接受、发送信息错误，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        7.用户因第三方如电信部门的通讯线路故障、技术问题、网络、电脑故障、系统不稳定性及其他不可抗力因素而遭受到的经济损失，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        8.因技术故障等影响到服务的正常运行，本公司承诺在第一时间内与相关单位配合，及时处理修复，单用户因此遭受的经济损失，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        9.鉴于用户硬件环境的差异性和复杂性，本公司所提供的各项功能并不能保证在任何情况下都能正常执行或达到用户所期望的结果。
+            用户使用本软件所发生的一切后果，软件作者不承担任何责任。&#060;/p&#062;
+            &#060;p &#062;
+        10.不得利用"软件"发表、传送、传播、储存违反过肩法律、危害国家安全、祖国统一、社会稳定的内容、
+            也不得利用"软件"发表、传送任何不正当的、侮辱诽谤的、淫秽的、暴力的及任何违反国家法律法规政策的内容。&#060;/p&#062;
+	        &#060;p &#062;
+	     11.如果用户自行安装本软件，即表明用户信任本公司，自愿选择安装本软件，并接受本协议所有条款。&#060;/p&#062;
+
+        &#060;/body&#062;
+        &#060;/html&#062;
+    </string>
+
+
+    <!--  BondDialog /SignDialog  -->
+    <string name="bond_Step_NOTICE">1、绑定过程中需要从您的设备中读取数据，因此请您给您的设备插好电源\n\n2、在读取您设备的信息后需要到服务器中进行绑定，因此请您在有网络的环境下进行设备绑定\n</string>
+    <string name="sign_Step_NOTICE">1、激活过程中需要从您的设备中读取数据，因此请您给您的设备插好电源\n\n2、在读取您设备的信息后需要到服务器中进行激活，因此请您在有网络的环境下进行激活\n</string>
+    <string name="sign_Commit_NO">No</string>
+    <string name="sign_Commit_YES">Yes</string>
+    <string name="sign_Net_Failed">Request network failed</string>
+    <string name="sign_Read_Failed">Read device failed</string>
+    <string name="sign_Step_READ">Fetching Device</string>
+    <string name="sign_Step_SIGN">Signing</string>
+    <string name="sign_Success">Success</string>
+    <string name="sign_deviceSN">Device:</string>
+    <string name="sign_deviceSN_Ask">is your Device?</string>
+    <string name="sign_tip">For your future contact with customer service, please fill in the correct information carefully.</string>
+    <string name="sign_name">Name</string>
+    <string name="sign_phone">Phone</string>
+    <string name="sign_email">Email</string>
+
+    <string name="bond_sure"> binding</string>
+    <string name="bond_cancle"> not binding</string>
+    <string name="bond_success">Binding success</string>
+    <string name="bond_failed">Binding failure</string>
+    <string name="bond_failed_msg"> Failed to find the device model to be bound.</string>
+    <string name="bond_failed_sn">Failed to read device serial number.</string>
+    <string name="bonding_device">Binding device</string>
+    <string name="bonding_getnetdate">Failed to obtain network data.</string>
+
+    <string name="notSold">Device has not sold yet</string>
+    <string name="tryUseTip" >You have tried it</string>
+    <string name="tryUseTip2" >You have tried it</string>
+    <string name="tryUseTip_msg">Please register the equipment as soon as possible and avoid the non-use.</string>
+
+
+    <string name="regCount_1">您已经使用了</string>
+    <string name="regCount_2">次，您还有</string>
+    <string name="regCount_msg">次可以使用，请尽快联系客服后连接网络检查设备，避免设备停用。</string>
+    <string name="regCount_Over">次，已经没有可用次数，请联系客服后连接网络检查设备，恢复设备的使用。</string>
+
+    <!-- RunActivity -->
+    <string name="Run_back_Tip">The program is executing. Will it stop?</string>
+    <string name="tip_message_online">Loading...</string>
+    <string name="online_video">Video</string>
+    <string name="help_file">Help</string>
+    <string name="toast_online">Play finished</string>
+    <string name="video_err">Video cannot be played, please click retry!</string>
+    <string name="tip_blutooth_conn">Connecting bluetooth, please wait a moment...</string>
+    <string name="tip_UNReceive">Device is not responded for long time, stop running? It might result in a bad effect if stop forced</string>
+    <string name="back_cancel_Btn">No</string>
+    <string name="back_commit_Btn">Exit</string>
+    <string name="deviceDisconnected">Device is disconnected</string>
+    <string name="disconnect_Cancel">Stop Running</string>
+
+    <!-- USB Service  -->
+    <string name="usb_not_Granted">No USB authorization will be used. Do you request authorization again?</string>
+
+
+    <!--  FWUpdate  -->
+    <string name="tip_FW_downloading">Downloading firmware ...</string>
+    <string name="tip_FW_updating">Upgrading firmwar...</string>
+    <string name="update_FW_valid">Check firmware upgrade valid, do it now?</string>
+    <string name="download_FW_Faild">Download firmware failed</string>
+    <string name="update_FW_Faild">Upgrade firmware failed, downloading diagnosis program now.正在下载功能程序。</string>
+
+
+
+    <!--  诊断文件上传下载 -->
+    <string name="file_Upload">BACK UP</string>
+    <string name="file_InputName">Input file name:</string>
+    <string name="file_Fetching">Fething backup data.</string>
+    <string name="file_Result_OK">Save bacup success.</string>
+    <string name="file_Result_NotComplete">Fetching data not complete.</string>
+    <string name="file_Result_Over">Over size.</string>
+    <string name="file_Result_TimeOut">Backup timeout, continue to fetch?</string>
+
+    <string name="toast_InputFile">Input file name, please.</string>
+    <string name="toast_SelectFile">Choose backup file:</string>
+
+    <string name="file_Doanload">RESTORE</string>
+    <string name="file_Load_NONE">None backup for choosing.</string>
+    <string name="file_DOWN_ready">Ready for restore.</string>
+    <string name="file_DOWN_restore">Restoring正在还原数据</string>
+    <string name="file_DOWN_mismatch">Backup file mismatch.</string>
+    <string name="file_UPload_Time">Time: </string>
+    <string name="file_UPload_Size">Size: </string>
+
+
+    <!--  常见问题解答  -->
+    <array name="problem_Arrays">
+        <item>How to charge? </item>
+        <item>How to save electricity? </item>
+        <item>How to sign my device?  </item>
+        <item>How to upgrade my device and program? </item>
+        <item>Can use different device on one pad? </item>
+        <item>How to unbond device of pad? </item>
+        <item>Can not connect to device?</item>
+    </array>
+    <array name="problem_Solve_0">
+        <item>(1)充电时请使用随机附带的充电线和充电底座进行充电</item>
+        <item>(2)如果使用非随机附带的充电线和充电底座，造成的损坏和损失，本公司概不负责</item>
+    </array>
+    <array name="problem_Solve_1">
+        <item>(1)不使用主机时，请关闭屏幕</item>
+        <item>(2)不使用设备进行诊断时，请关闭蓝牙并且拔掉USB连接线</item>
+        <item>(3)缩短屏幕的待机时间 </item>
+        <item>(4)调节屏幕亮度为合适的亮度</item>
+        <item>(5)不使用网络时，请关闭网络连接</item>
+        <item>(6)不使用GPS定位功能时，请关闭GPS功能</item>
+    </array>
+    <array name="problem_Solve_2">
+        <item>(1)给设备接上电源</item>
+        <item>(2)打开平板的蓝牙功能，打开平板的网络连接</item>
+        <item>(3)进入“设置”，如果设备未激活，在“我的设备”后会有“未激活”的红色提示文字 </item>
+        <item>(4)点击“我的设备”，弹出询问激活的对话框，点击“确定”</item>
+        <item>(5)此时，根据相应的提示进行操作，读取设备</item>
+        <item>(6)读取设备后需要填写个人信息，为了给您更全面、便捷的服务，请务必填写正确且详细的个人信息</item>
+        <item>(7)信息填写完毕后，需要将相关信息提交到后台，此过程务必在网络环境中进行</item>
+        <item>注：激活时平板电脑只能激活与之绑定的设备。</item>
+    </array>
+    <array name="problem_Solve_3">
+        <item>(1)当设备存在更新时，在执行诊断程序前会给您相应的提示，此时请您根据提示进行更新操作即可</item>
+        <item>(2)诊断程序的升级和更新，在升级板块中进行。为了方便您能更好的进行诊断，请您定时进行诊断程序的升级。</item>
+    </array>
+    <array name="problem_Solve_4">
+        <item>(1)不可以</item>
+        <item>(2)为了防止您的设备被其他人盗用，我们提供了平板电脑和诊断设备的1对1绑定模式</item>
+        <item>(3)您的平板电脑只能使用与之绑定的设备，同时你的设备也只能在与其绑定的平板电脑上使用。 </item>
+    </array>
+    <array name="problem_Solve_5">
+        <item>(1)在平板电脑上我们不提供相关的解除与设备绑定的功能</item>
+        <item>(2)如果在特殊情况下需要解除设备与平板电脑的绑定，请您联系我们的客服人员进行相关操作</item>
+    </array>
+    <array name="problem_Solve_6">
+        <item>(1)请确认平板电脑与设备是互相绑定的设备</item>
+        <item>(2)请检查设备电源是否正常供电</item>
+        <item>(3)请检查蓝牙或USB是否被其它应用或者其它设备占用 </item>
+        <item>(4)请检查平板电脑的蓝牙功能是否打开</item>
+        <item>(5)如果是采用USB连接，请检查USB连接线是否完好，并且确认连接线连接正确</item>
+    </array>
+
+
+</resources>

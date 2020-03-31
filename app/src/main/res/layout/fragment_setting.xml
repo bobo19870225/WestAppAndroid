@@ -1,0 +1,422 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    tools:context=".UI.Fragment.setting.SettingFragment">
+
+    <include layout="@layout/maintoolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            >
+
+            <LinearLayout
+                android:id="@+id/setting_port_ll"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/backgroud_set_style"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_port" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/my_jietou"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+
+                <TextView
+                    android:id="@+id/setting_port_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="@string/setting_noSign"
+                    android:textColor="@color/red" />
+
+                <ImageView
+                    android:id="@+id/setting_port_im"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/jt" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+            <LinearLayout
+                android:id="@+id/setting_info_ll"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_person" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/my_peopleinfo"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+
+                <TextView
+                    android:id="@+id/setting_info_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="@string/setting_noSign"
+                    android:textColor="@color/red"
+                    />
+
+                <ImageView
+                    android:id="@+id/setting_info_im"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/jt" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+            <LinearLayout
+                android:id="@+id/setting_language_ll"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/backgroud_set_style"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_config_language" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/my_language"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+
+                <TextView
+                    android:id="@+id/setting_language_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
+                    android:text="@string/language_zh" />
+
+                <ImageView
+                    android:id="@+id/setting_language_imagebt"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/jt" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+            <LinearLayout
+                android:id="@+id/setting_help_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_help" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/jt"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/Help"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_about_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/setting_about"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/jt"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/setting_about"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_disclaimer_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/setting_disclaimer"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/jt"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/about_disclaimer"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_update_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_app_update" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="@string/inspect_upgrade"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+
+                <TextView
+                    android:id="@+id/setting_update_new_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_new_ver"
+                    android:gravity="center|right"
+                    android:text="@string/new_upgrade"
+                    android:textColor="#ffffff"
+                    android:visibility="gone"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/setting_update_imagebt"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/jt" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_preference_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/setting_preference"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/jt"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/preferenceTitle"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_test_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_debug" />
+                `
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/jt"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/setting_test"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+            <LinearLayout
+                android:id="@+id/setting_setSuccess_tv"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/backgroud_set_style"
+                android:visibility="visible"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:src="@mipmap/setting_setsuccess" />
+                `
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:drawableRight="@mipmap/jt"
+                    android:gravity="center|left"
+                    android:paddingRight="20dp"
+                    android:text="@string/set_success"
+                    android:textColor="@color/background_dark"
+                    android:textSize="@dimen/textSize18" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#dedede"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

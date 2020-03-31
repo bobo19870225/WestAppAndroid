@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_setting_ll"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionBarSize"
+    android:background="@color/main_toolbar">
+
+    <ImageView
+            android:id="@+id/menu_iv"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_menu_home"
+           />
+
+        <TextView
+            android:id="@+id/menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/main_data"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/textSize20" />
+    <Button
+        android:id="@+id/update_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/upgrade_update"
+        android:textSize="@dimen/textSize18"
+        android:textColor="#ffffff"
+        android:visibility="gone"
+        android:background="@drawable/otherbutton_backgroud_style"
+        android:textAllCaps="false"
+        />
+
+    <Button
+        android:id="@+id/delete_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/report_delete"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/textSize18"
+        android:visibility="gone"
+        android:background="@drawable/otherbutton_backgroud_style"
+        android:textAllCaps="false"
+        />
+
+</RelativeLayout>

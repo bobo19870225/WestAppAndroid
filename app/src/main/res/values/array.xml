@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="quickSideBarLetters">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </array>
+
+    <array name="array_hardType">
+        <item>A168-TOOL</item>
+        <item>A168-ANT</item>
+    </array>
+
+    <array name="menu_Debug">
+        <item>Function 1</item>
+        <item>Function 2</item>
+        <item>Function 3</item>
+        <item>Function 4</item>
+        <item>Function 5</item>
+        <item>Function 6</item>
+        <item>Function 7</item>
+        <item>Function 8</item>
+    </array>
+
+    <array name="bt_List">
+        <item>Feasycom</item>
+    </array>
+
+
+
+</resources>

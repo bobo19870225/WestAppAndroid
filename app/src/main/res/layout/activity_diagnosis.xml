@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.Activity.Diagnosis.DiagnosisActivity">
+
+    <include layout="@layout/toolbar">
+
+    </include>
+
+    <FrameLayout
+        android:id="@+id/diagnosis_type_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/list_Diagnosis"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/conn_text_address"
+        android:dividerHeight="1dp"
+        >
+
+    </ListView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/conn_text_address"
+        />
+</LinearLayout>

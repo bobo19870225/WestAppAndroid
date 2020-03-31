@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.Activity.APPUpdate.AppUpdateActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/app_large"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_Name"
+        android:textSize="@dimen/textSize20"
+        android:textColor="#000000"
+        />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/about_veision"
+        android:textColor="@color/background_dark"
+        android:textSize="@dimen/textSize16"
+        />
+
+    <RelativeLayout
+        android:layout_width="500dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/inspect_update"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/inspect_upgrade"
+            android:textSize="@dimen/textSize16"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:background="@drawable/positivebutton_backgroud_style"
+
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

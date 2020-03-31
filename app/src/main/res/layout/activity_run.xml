@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/toolbar" />
+
+
+    <RelativeLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="0dp">
+
+        <RelativeLayout
+            android:id="@+id/screenView_Ll"
+            android:layout_width="match_parent"
+            android:layout_height="370dp">
+
+            <com.west.develop.westapp.CustomView.ScreenView
+                android:id="@+id/screenView"
+                android:layout_width="370dp"
+                android:layout_height="370dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_AreaOthers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/keyBoardLayout"
+            android:layout_below="@+id/screenView_Ll"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.west.develop.westapp.CustomView.VideoView.MyVideoView
+                    android:id="@+id/run_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/video_back"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center"
+                    android:src="@mipmap/ic_menu_back"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/load"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/error_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/textSize18"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/help_Frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                >
+
+                <com.github.barteksc.pdfviewer.PDFView
+                    android:id="@+id/helpfile_pdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/help_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/deletehelp"
+                    android:visibility="gone"
+                    />
+            </FrameLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|bottom"
+                >
+
+                <Button
+                    android:id="@+id/onlineVideo"
+                    android:layout_width="84dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="14dp"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:text="@string/online_video"
+                    android:textSize="@dimen/textSize16"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    />
+
+                <Button
+                    android:id="@+id/helpfile"
+                    android:layout_width="84dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="14dp"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:text="@string/help_file"
+                    android:textSize="@dimen/textSize16"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/keyBoardLayout"
+            android:layout_width="500dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:paddingBottom="5dp">
+
+            <Button
+                android:id="@+id/dialog_No_BTN"
+                android:layout_width="84dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/runbutton_backgroud_style"
+                android:padding="0dp"
+                android:text="No"
+                android:textColor="@color/main_toolbar"
+                android:textSize="25sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:textAllCaps="false"
+                />
+
+
+            <Button
+                android:id="@+id/dialog_Yes_BTN"
+                android:layout_width="84dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/runbutton_backgroud_style"
+                android:padding="0dp"
+                android:text="Yes"
+                android:textColor="@color/main_toolbar"
+                android:textSize="25sp"
+                android:textAllCaps="false"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/dialog_Yes_BTN"
+                android:layout_toRightOf="@+id/dialog_No_BTN"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/dialog_Left_BTN"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/key_left"
+                    />
+
+                <ImageButton
+                    android:id="@+id/dialog_Up_BTN"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/key_up" />
+
+                <ImageButton
+                    android:id="@+id/dialog_Down_BTN"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/key_down" />
+
+                <ImageButton
+                    android:id="@+id/dialog_Right_BTN"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/runbutton_backgroud_style"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/key_right" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

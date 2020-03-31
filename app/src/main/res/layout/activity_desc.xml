@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolBar"
+        />
+
+    <RelativeLayout
+        android:id="@+id/help_RL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/commit_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/commit_TV"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="@string/Sure"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize20"
+                android:visibility="visible"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:background="@drawable/backgroud_style"
+
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/conn_text_address"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/commit_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="#dddddd"
+            >
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/help_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical"
+                    android:textSize="22sp"
+                    android:layout_margin="5dp"
+
+                    />
+            </ScrollView>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/Function_LV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/conn_text_address"
+        android:dividerHeight="1dp"
+        android:visibility="gone"
+        >
+    </ListView>
+    <View
+        android:id="@+id/listline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/conn_text_address"
+        android:visibility="gone"
+        />
+
+
+</LinearLayout>

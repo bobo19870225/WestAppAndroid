@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.Fragment.home.HomeFragment">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:background="@color/main_toolbar"
+        android:gravity="center"
+        android:text="@string/app_Name"
+        android:textColor="#ffffff"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeeeee"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/main_sliding_diagnosis_rb"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_backgroud_style"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:button="@null"
+                android:gravity="center"
+                android:src="@mipmap/main_dianogsis" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="10dp"
+                android:text="@string/main_diagnosis"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize20"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            >
+            <LinearLayout
+                android:id="@+id/main_sliding_upgrade_rb"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:background="@drawable/home_backgroud_style"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="130dp"
+                    android:src="@mipmap/main_upgrade"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_upgrade"
+                    android:textSize="@dimen/textSize20"
+                    android:textColor="#000000"
+                    android:gravity="left"
+                    android:padding="10dp"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_sliding_setting_rb"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:background="@drawable/home_backgroud_style"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="130dp"
+                    android:src="@mipmap/main_setting"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/main_setting"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/textSize20" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_sliding_comm_rb"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:background="@drawable/home_backgroud_style"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="130dp"
+                    android:src="@mipmap/main_report"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_data"
+                    android:textSize="@dimen/textSize20"
+                    android:textColor="#000000"
+                    android:gravity="left"
+                    android:padding="10dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#EEEEEE"
+        >
+        <LinearLayout
+            android:id="@+id/report_diagnose_ll"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:background="#D3D3D3"
+            >
+            <TextView
+                android:id="@+id/report_count"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_below="@+id/linerepoter"
+                android:layout_marginLeft="10dp"
+                android:gravity="center|right"
+                android:text="0"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize12"
+                />
+
+            <TextView
+                android:id="@+id/report_diagnose_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linerepoter"
+                android:paddingRight="10dp"
+                android:text="@string/backup_num"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize12"
+                android:gravity="center_vertical"
+                />
+        </LinearLayout>
+
+      <!--  <com.west.develop.westapp.CustomView.RefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </com.west.develop.westapp.CustomView.RefreshLayout>
+-->
+        <ListView
+            android:id="@+id/RemoteReport_LV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:divider="@drawable/bg_gray"
+            android:dividerHeight="1dp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

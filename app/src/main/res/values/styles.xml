@@ -1,0 +1,68 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/main_toolbar</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+<!--    <style name="CustomTabTextAppearanceStyle" parent="TextAppearance.Design.Tab">-->
+<!--        <item name="textAllCaps">false</item>-->
+<!--    </style>-->
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorWhite</item>
+    </style>
+
+    <style name="CustomCheckboxStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style</item>
+    </style>
+
+    <style name="dialogStyle" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TV_Indent">
+        <item name="android:textSize">2.25sp</item>
+        <item name="android:textColor">@color/screenBack</item>
+    </style>
+
+    <style name="TV_Common">
+        <item name="android:textSize">29.5sp</item>
+    </style>
+
+    <style name="TV_Indent_6x8">
+        <item name="android:textSize">1.2sp</item>
+        <item name="android:textColor">@color/screenBack</item>
+    </style>
+    <style name="TV_Common_6x8">
+        <item name="android:textSize">14.75sp</item>
+        <item name="android:letterSpacing">0.3</item>
+
+    </style>
+
+    <style name="TV_Indent_D">
+        <item name="android:textSize">1.9sp</item>
+    </style>
+
+    <style name="TV_Common_D">
+        <item name="android:textSize">29.5sp</item>
+    </style>
+
+    <style name="TV_Indent_6x8_D">
+        <item name="android:textSize">1.2sp</item>
+    </style>
+    <style name="TV_Common_6x8_D">
+        <item name="android:textSize">14.75sp</item>
+        <item name="android:letterSpacing">0.3</item>
+
+    </style>
+
+    <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />
+
+    <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title"/>
+
+</resources>

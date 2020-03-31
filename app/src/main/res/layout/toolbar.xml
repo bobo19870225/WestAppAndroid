@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/car_ll"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionBarSize"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="@color/main_toolbar">
+
+        <TextView
+            android:id="@+id/car_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/Back"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:drawableLeft="@mipmap/ic_back"
+            android:layout_margin="10dp"
+            android:layout_alignTop="@+id/car_title"
+            />
+
+        <TextView
+            android:id="@+id/car_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="@string/main_diagnosis"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:singleLine="true"
+            />
+
+        <CheckBox
+            android:id="@+id/title_Download_BTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="开始下载"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/otherbutton_backgroud_style"
+            android:visibility="gone"
+            android:button="@null"
+            android:padding="8dp"
+            />
+
+        <TextView
+            android:id="@+id/diagnosis_help"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="@string/Help"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:visibility="gone"
+            />
+
+        <RadioButton
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:button="@null"
+            android:text="@string/Sava"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/textSize16"
+            android:background="@null"
+            android:visibility="gone"
+            />
+
+        <RadioButton
+            android:id="@+id/editor"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="@string/edit"
+            android:button="@null"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/textSize16"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="@string/finish_Step"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            />
+
+
+</LinearLayout>

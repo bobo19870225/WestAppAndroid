@@ -1,0 +1,561 @@
+<resources>
+    <string name="apppackage" translatable="false">com.west.develop.westapp</string>
+
+    <string name="app_Name" translatable="false">168-VCT</string>
+    <string name="remote_Name" translatable="false">168-VCI</string>
+
+
+    <string name="website_msg" translatable="false">http://www.168auto.com</string>
+
+    <string name="company_phone1">0851-87100001</string>
+    <string name="company_phone2">0851-87100002</string>
+    <string name="company_phone3">0851-87100003</string>
+    <string name="company_phone4">0851-87100004</string>
+    <string name="company_phone5">0851-87100005</string>
+    <string name="company_phone6">0851-87100006</string>
+    <string name="company_email">168auto@168auto.com</string>
+
+    <string name="digits_diagnosis_password" translatable="false">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <string name="userName_Digit" translatable="false">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+    <string name="number_Digit" translatable="false">0123456789</string>
+
+    <!--  Common  -->
+    <string name="Sure">确定</string>
+    <string name="Back">返回</string>
+    <string name="Help">帮助</string>
+    <string name="Sava">保存</string>
+    <string name="edit">编辑</string>
+
+    <string name="exit">退出</string>
+    <string name="success">成功</string>
+
+    <!--  SplashActivity  -->
+    <string name="Storage_Permission_Denied_Request">权限被否决，前往“应用信息”>“权限”中允许所有权限！</string>
+    <string name="Storage_Permission_Denied_Exit">权限被否决，将退出应用!</string>
+    <string name="version">版本：</string>
+
+    <!--  AppReceiver  -->
+    <string name="Network_Connected">网络已连接</string>
+    <string name="Network_Disconnected">网络已断开</string>
+
+    <!--  USBConnAdapter  -->
+    <string name="selected">已选择</string>
+
+
+    <!--  DiagnosisProgramAPI  -->
+    <string name="downloadFailed">下载失败</string>
+    <string name="tip_program_Running">程序正在执行...</string>
+    <string name="tip_message_download">正在初始化接头，请勿断开连接...</string>
+    <string name="tip_message_FW_download">正在升级接头，请勿断开连接...</string>
+
+    <!--  InputDialog  -->
+    <string name="tip_over_max_value">设置次数超过最大值,请重新输入</string>
+
+    <!--  LowerScreen  -->
+    <string name="tip_not_selected">您尚未选择！</string>
+
+    <!--  PasswordDialog  -->
+    <string name="hint_input_times">输入次数</string>
+    <string name="type_Number">数字</string>
+    <string name="type_Text">数字字母组合</string>
+    <string name="size_not_matching">位数与要求的位数不符</string>
+
+    <!-- ConnectStatus -->
+    <string name="tip_BT_Disconnect">蓝牙已断开连接，是否重连？</string>
+    <string name="interface_no_connect">未连接</string>
+    <string name="interface_connect">已连接</string>
+    <string name="interface_not_found" >未发现设备</string>
+    <string name="interface_bt_connect">蓝牙设备: </string>
+    <string name="interface_usb_connect">USB设备: </string>
+    <string name="interface_unit_Device"> 台</string>
+    <string name="interface_device_connect" >设备已连接</string>
+    <string name="interface_change_STATUS">修改状态</string>
+
+    <!--  Sign  -->
+    <string name="sign_Success">激活成功</string>
+    <string name="signing">正在激活,请稍等</string>
+    <string name="toast_Input_userName">请输入用户名</string>
+    <string name="toast_Input_realName">请输入姓名</string>
+    <string name="toast_Input_phone">请输入电话号码</string>
+    <string name="toast_Input_Email">请输入邮箱</string>
+    <string name="toast_Input_Address">请输入地址</string>
+    <string name="location">定位中...</string>
+    <string name="locateFail">定位失败</string>
+    <string name="user_sign">用户信息注册</string>
+
+    <!--  MainActivity  -->
+    <string name="main_diagnosis">诊断</string>
+    <string name="main_data">诊断数据</string>
+    <string name="main_upgrade">升级</string>
+    <string name="main_setting">设置</string>
+    <string name="main_login">登录</string>
+    <string name="device_bond_title">设备绑定</string>
+    <string name="device_bond_message">设备没有绑定，现在进行绑定</string>
+    <string name="check_device">由于您长时间未连接网络进行检查，您的设备已经被暂停使用，请连接网络进行检查！</string>
+    <string name="check_deviceTip1">在</string>
+    <string name="check_deviceTip2">天或者继续使用</string>
+    <string name="check_deviceTip3">次后，如果设备不进行检查，将会强制暂停使用。请您近期尽快连接网络进行检查。</string>
+    <string name="device_Tip_Over">设备可用次数已用完，请联系客服！</string>
+
+
+    <!-- DiagnosisFrament-->
+    <string name="diagnosis_function">功能诊断</string>
+    <string name="sort_pinyin">拼音排序</string>
+    <string name="sort_number">序号排序</string>
+
+    <!-- DiagnosisActivity-->
+    <string name="local_application">本地程序</string>
+    <string name="loadData_Tip">本设备是新安装的系统，需要安装汽车诊断程序才能使用</string>
+    <string name="afterLoad_Tip">以后下载</string>
+    <string name="nowLoad_Tip">现在下载</string>
+    <string name="bt_conn_tip">蓝牙连接提示</string>
+    <string name="bt_conn_tip_message">\n1、请检查蓝牙设备是否打开。
+                                \n\n2、请检查蓝牙接头是否通电或者在有效距离中。
+                                \n\n3、如果蓝牙设备与其他设备正在连接，请进入其他设备将蓝牙接头断开后再连接。
+                                \n\n4、设备通电后，请稍候，检测到设备后会自动连接。\n</string>
+
+    <!-- UpgradeFrament-->
+    <string name="flush">刷新</string>
+    <string name="upgrade_counts">个软件可升级</string>
+    <string name="upgrade_carname">车型名称</string>
+    <string name="upgrade_presentversion">当前最新版本</string>
+    <string name="upgrade_version">可升级版本</string>
+    <string name="upgrade_allselect">全选</string>
+    <string name="upgrade_canleallselect">取消全选</string>
+    <string name="upgrade_update">一键升级</string>
+    <string name="upgrade_pull_downtoup">正在加载更多...</string>
+    <string name="upgrade_select">更新</string>
+    <string name="delete_select">删除</string>
+    <string name="upgrade_select_num">个</string>
+    <string name="tip_UnSign">您尚未激活，需要激活后方可下载新程序。是否现在激活？</string>
+
+    <!--SettingFragment -->
+    <string name="my_report">我的报告</string>
+    <string name="my_jietou">我的设备</string>
+    <string name="my_peopleinfo">个人信息</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_test">本地调试</string>
+    <string name="set_success">配置完成</string>
+    <string name="my_language">多语言</string>
+    <string name="inspect_upgrade">检查更新</string>
+    <string name="new_upgrade">发现新版本</string>
+    <string name="setting_noSign">未激活</string>
+
+    <string name="loadingDocument">正在加载，请稍候</string>
+    <string name="device_sail_message">配置后将不能再下载客户试运行程序，且开始计算试用次数，是否配置设备？</string>
+    <string name="device_sail">执行配置</string>
+    <string name="device_no_sail">点错了</string>
+
+
+    <!-- DataFragment-->
+    <string name="report_diagnose">诊断报告</string>
+    <string name="report_diagnose_recode">历史诊断记录</string>
+    <string name="report_num">份报告</string>
+    <string name="backup_num">份备份</string>
+    <string name="report_delete">删除</string>
+    <string name="report_post">上传</string>
+    <string name="report_details">记录详情</string>
+    <string name="report_name_lable">诊断记录：</string>
+    <string name="report_post_success">上传成功</string>
+    <string name="report_post_Failed">上传失败：\n</string>
+    <string name="report_posted">已上传</string>
+    <string name="unable_Delete">该条记录无法删除</string>
+
+
+    <!--<string name="local_report">本地记录</string>-->
+    <string name="local_report">诊断记录</string>
+    <string name="remote_report">备份数据</string>
+
+    <!--UpgradeActivity -->
+    <string name="startdownload">开始下载</string>
+    <string name="stopdownload">全部暂停</string>
+    <string name="unknown">未知大小</string>
+    <string name="waitdownload">等待下载</string>
+    <string name="downloading">正在下载</string>
+    <string name="stop">暂停下载</string>
+
+    <!--PortActivity -->
+    <string name="bondTarget">绑定终端：</string>
+    <string name="user_Profile">个人信息</string>
+    <string name="user_LableName">姓名：</string>
+    <string name="user_LablePhone">电话：</string>
+    <string name="user_LableMail">邮箱：</string>
+    <string name="user_LableAddr">地址：</string>
+
+    <string name="device_Info">设备信息</string>
+    <string name="deviceSn">序列号\u3000：</string>
+    <string name="deviceType">设备类型：</string>
+    <string name="deviceVersion">硬件版本：</string>
+    <string name="deviceSignTime">激活时间：</string>
+    <string name="device_RemainCount">剩余次数：</string>
+
+
+    <string name="deviceType_Release">用户设备</string>
+    <string name="deviceType_Debug">开发设备</string>
+
+
+    <!-- LanguageActivity-->
+    <string name="language_en" translatable="false">English</string>
+    <string name="language_zh" translatable="false">中文</string>
+    <string name="tip_message_language_change">正在切换...</string>
+
+    <!-- HelpActivity-->
+    <string name="help_problem">常见问题解答</string>
+    <string name="help_guide">快速指南</string>
+    <string name="help_manual">用户手册</string>
+    <string name="help_guide_dcm" translatable="false">快速指南</string>
+    <string name="help_manual_dcm" translatable="false">用户手册</string>
+    <string name="quest_document_update">检查到文档新版本，是否现在更新？</string>
+
+    <!-- StatementActivity -->
+    <string name="radio_read">我已阅读并同意</string>
+
+    <!-- AppUpdateActivity-->
+    <string name="about_veision">当前版本:</string>
+    <string name="about_disclaimer">免责声明</string>
+
+
+    <!--  PreferenceActivity  -->
+    <string name="preferenceTitle">偏好设置</string>
+    <string name="timeout_notActive">未响应超时：</string>
+    <string name="timeout_Backup">备份超时</string>
+    <string name="btn_Modify">修  改</string>
+    
+    <string name="unit_Second">秒</string>
+    <string name="unit_Minuts">分</string>
+
+    <string name="toast_Preference_Input_none">您输入的值为空</string>
+    <string name="toast_Preference_Input_Large">您设定的时间太长</string>
+    <string name="toast_Preference_Input_Small">您设定的时间太短</string>
+    <string name="toast_Preference_Success">修改成功</string>
+
+
+
+    <!--MyVideoView-->
+    <string name="lockscreen_transport_prev_description">上一个</string>
+    <!-- Shown on transport control of lockscreen. Pressing button goes to next track. -->
+    <string name="lockscreen_transport_next_description">下一个</string>
+    <!-- Shown on transport control of lockscreen. Pressing button pauses playback -->
+    <string name="lockscreen_transport_pause_description">暂停</string>
+    <string name="lockscreen_transport_fullscreen_description">全屏</string>
+    <!-- Shown on transport control of lockscreen. Pressing button pauses playback -->
+    <string name="lockscreen_transport_play_description">播放</string>
+    <!-- Shown on transport control of lockscreen. Pressing button pauses playback -->
+    <string name="lockscreen_transport_stop_description">停止</string>
+    <!-- Shown on transport control screens. Pressing button rewinds playback [CHAR LIMIT=NONE]-->
+    <string name="lockscreen_transport_rew_description">快退</string>
+    <!-- Shown on transport control screens. Pressing button fast forwards playback [CHAR LIMIT=NONE]-->
+    <string name="lockscreen_transport_ffw_description">快进</string>
+
+    <!--DownloadManager-->
+    <string name="tip_downLoad_Finished">升级完成</string>
+    <string name="tip_program">程序</string>
+    <string name="tip_message_downLoad_no_replace">本地程序已经是最新版本！不能替换</string>
+    <string name="tip_message_downLoad_replace">是否替换成新版本？</string>
+    <string name="tip_message_wifi_no_conn">WIFI 尚未连接,是否继续下载</string>
+    <string name="tip_message_net_no_conn">网络未连接，无法下载</string>
+    <string name="tip_message_useCount">设备可更新次数已用完，不能进行下载，请联系客服修改使用次数</string>
+    <string name="tip_kown">知道了</string>
+
+
+    <!-- tip信息-->
+    <string name="tip_title">提示</string>
+    <string name="tip_message_get">正在获取数据...</string>
+    <string name="tip_message_bt_conn">正在连接蓝牙...</string>
+    <string name="tip_message_exit">确定退出应用?</string>
+    <string name="tip_message_delete">你确定要删除?</string>
+    <string name="tip_no">取消</string>
+    <string name="tip_yes">确定</string>
+    <string name="tip_message_execute">程序正在执行...</string>
+    <string name="tip_message_finish">程序已执行完毕，是否执行下一个程序？</string>
+    <string name="tip_net_nonect">请连接网络</string>
+    <string name="tip_net_monet">您当前使用的是移动网络</string>
+
+
+    <!-- toast信息-->
+    <string name="toast_unBond">设备未绑定</string>
+    <string name="toast_unsign">设备未激活</string>
+    <string name="toast_InputSN">请输入设备序列号</string>
+    <string name="toast_InputSN_Code">请输入激活码</string>
+    <string name="toast_ErrorSN">设备SN码输入错误</string>
+    <string name="toast_USB_not_connected">USB 未连接</string>
+    <string name="toast_BT_not_connected">蓝牙 未连接</string>
+    <string name="toast_Config_Failed">配置失败</string>
+
+
+    <!-- UPDriver -->
+    <string name="updriver_HexData">Hex数据：</string>
+    <string name="updriver_Times_Num">\n次数：</string>
+    <string name="updriver_ID_Modify_Failed">ID没有正确修改</string>
+    <string name="updriver_Set_UseCount">设置用户使用次数</string>
+    <string name="updriver_Input_ADDCount">请输入需要增加的用户使用次数</string>
+    <string name="updriver_Set_MaxCount">设置次数超过最大值</string>
+    <string name="updriver_User_ADDCount_Yet">用户使用次数成功增加了</string>
+    <string name="updriver_Times">次！</string>
+    <string name="updriver_Over_MaxValue">设置次数超过最大值</string>
+    <string name="updriver_Erasure_Flash_Success">擦除Flash成功！</string>
+    <string name="updriver_Erasure_APP_Boot_Success">擦除App+Boot成功！</string>
+
+
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="title_Sign">激活</string>
+    <string name="finish_Step">完成</string>
+    <string name="prev_Step">上一步</string>
+    <string name="skip_Step">跳过</string>
+    <string name="next_Step">下一步</string>
+    <string name="sign_User">用户注册</string>
+    <string name="sign_Device">设备激活</string>
+    <string name="title_Download">程序下载</string>
+    <string name="sign_Failed">激活失败</string>
+
+    <string name="cancel">取消</string>
+
+
+    <string name="toast_new_ver">正在检测最新版本</string>
+    <string name="toast_current_ver">当前已是新版本</string>
+    <string name="tip_now_upgrade">立即更新</string>
+    <string name="tip_later">以后再说</string>
+    <string name="tip_now_sign">立即激活</string>
+    <string name="tip_message_upgrade">可更新版本：</string>
+
+    <string name="tip_message_sign">当前设备还没有进行激活，是否现在去激活？</string>
+    <string name="toast_netconn_moreTime">网络连接超时</string>
+    <string name="toast_inspect_netconn">网络请求失败</string>
+
+    <string name="start_scan">开始扫描</string>
+    <string name="input_hex">请输入HEX格式指令</string>
+    <string name="connect">连接</string>
+    <string name="connected">已连接</string>
+    <string name="disconnect">断开连接</string>
+    <string name="enter">进入操作</string>
+
+    <string name="toast_service_err">网络服务错误</string>
+    <string name="toast_net_file_err">网络文件错误</string>
+
+    
+    <string name="device_not_sign">设备未激活，是否现在激活？</string>
+    <string name="exit_diagnosis">您确定退出当前正在执行的诊断程序？</string>
+    
+    <string name="pullout_device">请别忘记从车上取回 168-VCI 接头！</string>
+
+    <string name="click_down"> 按下</string>
+    <string name="click_release"> 松开</string>
+
+    <string name="address_Input_Error">地址输入错误!</string>
+    <string name="A168_unsupport">A168-ANT不支持该类型存储器操作，请重新操作！</string>
+
+
+    <string name="device_not_connect">尚未连接设备</string>
+
+    <string name="length_unmatch">位数与要求的位数不符</string>
+
+    <string name="large_File">文件太大</string>
+
+    <string name="communite_Error">通讯错误</string>
+    <string name="readData_Error">数据读取错误</string>
+
+    <string name="upgrade_Failed">升级不成功，是否重新下载？</string>
+    <string name="download_Failed">下载失败</string>
+
+    <string name="tip_Open_Bluetooth">未打开蓝牙，是否打开？</string>
+
+    <!--  AboutActivity -->
+    <string name="service_Phone">客服电话：</string>
+    <string name="complaint_Phone">投诉电话：</string>
+    <string name="lable_Email">电子邮箱：</string>
+    <string name="website">网站：</string>
+    <string name="copyRight">版权所有：</string>
+    <string name="copyRight_msg">贵州威思特电子有限公司</string>
+
+
+    <string name="compare_Version">比较本地版本...</string>
+
+    <string name="htmlText">
+        &#060;!DOCTYPE html&#062;
+         &#060;html&#062;
+        &#060;head&#062;
+        &#060;meta charset=\"UTF-8\"&#062;
+            &#060;style type=\"text/css\"&#062;
+            html{margin:0;padding:0;}
+            img{position: relative;
+            top: 0;bottom: 0;left: 0;right: 0;
+            margin: auto;max-width: 100%;}
+            p{text-indent:2em;text-align:left ;font-size:16px ;}
+            &#060;/style&#062;
+        &#060;/head&#062;
+        &#060;body style=\"background-color: #f8f8f8;\"&#062;
+            &#060;p &#062;
+        1.使用本产品，请仔细阅读"168-PLUS用户协议"。 &#060;/p&#062;
+            &#060;p &#062;
+        2.在驾驶汽车过程中，请不要对本产品进行操作，以免因注意力分散而发生交通危险；
+        对于在使用本产品的过程中发生的交通事故或者经济损失，本公司不承担任何责任。 &#060;/p&#062;
+            &#060;p &#062;
+	    3.因擅自改装或者加装各种设备或者元器件而导致产品的任何直接或间接损坏，本公司均不承担任何责任。 &#060;/p&#062;
+            &#060;p &#062;
+	    4.本软件是由west公司研发。"软件"的一切著作版权等知识产权，以及与"软件"相关的所有信息内容，
+			包括但不限于：文字表述及其组合、图标、图饰、图标、色彩、界面设计、版面框架、有关数据、印刷材料、
+			或电子文档等均受著作权法和国际著作权条约以及其他知识产权法律法规的保护。 &#060;/p&#062;
+             &#060;p &#062;
+		5.用户不得对本软件产品进行反向工程、反汇编或反向编译，违者属于侵权行为，并自行承担由此产生的不利后果。 &#060;/p&#062;
+             &#060;p &#062;
+        6.使用"软件"涉及到互联网服务和移动通讯服务，可能会受到各个环节不稳定因素的影响，存在不可抗力、计算机病毒、
+			黑客攻击、系统不稳定、用户所在位置、用户关机以及其他任何网络、技术、通讯线路等原因造成的服务中断或不能满足用户要求的风险，
+			用户须明白并自行承担以上风险，用户因此不能发送或接受阅读信息，或者接受、发送信息错误，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        7.用户因第三方如电信部门的通讯线路故障、技术问题、网络、电脑故障、系统不稳定性及其他不可抗力因素而遭受到的经济损失，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        8.因技术故障等影响到服务的正常运行，本公司承诺在第一时间内与相关单位配合，及时处理修复，单用户因此遭受的经济损失，本公司不承担任何责任。 &#060;/p&#062;
+	        &#060;p &#062;
+        9.鉴于用户硬件环境的差异性和复杂性，本公司所提供的各项功能并不能保证在任何情况下都能正常执行或达到用户所期望的结果。
+            用户使用本软件所发生的一切后果，软件作者不承担任何责任。&#060;/p&#062;
+            &#060;p &#062;
+        10.不得利用"软件"发表、传送、传播、储存违反过肩法律、危害国家安全、祖国统一、社会稳定的内容、
+            也不得利用"软件"发表、传送任何不正当的、侮辱诽谤的、淫秽的、暴力的及任何违反国家法律法规政策的内容。&#060;/p&#062;
+	        &#060;p &#062;
+	     11.如果用户自行安装本软件，即表明用户信任本公司，自愿选择安装本软件，并接受本协议所有条款。&#060;/p&#062;
+
+        &#060;/body&#062;
+        &#060;/html&#062;
+    </string>
+
+    <!--  BondDialog /SignDialog  -->
+    <string name="bond_Step_NOTICE">1、绑定设备需要在网络环境下进行，请您先连接好网络\n\n2、绑定过程中需要从您的设备中读取数据，因此请您给设备插好电源\n</string>
+    <string name="sign_Step_NOTICE">1、激活过程中需要从您的设备中读取数据，因此请您给设备插好电源\n\n2、在读取您设备的信息后需要到服务器中进行激活，因此请您在有网络的环境下进行激活\n</string>
+    <string name="sign_Step_READ">正在获取设备信息</string>
+    <string name="sign_Step_SIGN">正在激活设备</string>
+    <string name="sign_Read_Failed">读取设备失败</string>
+    <string name="sign_Net_Failed">网络请求失败</string>
+    <string name="sign_deviceSN">设备：</string>
+    <string name="sign_deviceSN_Ask">  是您想要绑定的设备？</string>
+    <string name="sign_Commit_YES">是</string>
+    <string name="sign_Commit_NO">不是</string>
+    <string name="sign_tip">为了以后您能够跟客服相互取得联系，请认真填写正确信息</string>
+    <string name="sign_name">姓名</string>
+    <string name="sign_phone">电话</string>
+    <string name="sign_email">邮箱</string>
+
+
+    <!-- RunActivity -->
+    <string name="Run_back_Tip">当前正在进行汽车诊断，若强行终止，可能会对汽车造成不可预知的危害！</string>
+    <string name="back_cancel_Btn">不终止</string>
+    <string name="back_commit_Btn">终止</string>
+    <string name="tip_message_online">正在加载中...</string>
+    <string name="online_video">在线视频</string>
+    <string name="help_file">帮助文档</string>
+    <string name="toast_online">播放完毕</string>
+    <string name="video_err">视频不能播放，请点击重试！</string>
+    <string name="deviceDisconnected">设备已断开连接，正在尝试重新连接，请稍候！</string>
+    <string name="disconnect_Cancel">终止运行</string>
+    <string name="tip_blutooth_conn">正在连接蓝牙，请稍等...</string>
+    <string name="tip_UNReceive">设备长时间未反应，是否终止当前诊断？若强行终止，可能会对汽车造成不可预知的危害！</string>
+
+    <!-- USB Service  -->
+    <string name="usb_not_Granted">未对USB授权，将无法使用。是否再次请求授权？ </string>
+
+    <string name="bond_sure">绑定</string>
+    <string name="bond_cancle">不绑定</string>
+    <string name="bond_success">绑定成功</string>
+    <string name="bond_failed">绑定失败</string>
+    <string name="bond_failed_msg">没有找到想要绑定的设备型号</string>
+    <string name="bond_failed_sn">读取设备序列号失败。</string>
+    <string name="bonding_device">正在绑定设备</string>
+    <string name="bonding_getnetdate">获取网络数据失败</string>
+
+    <string name="notSold">设备尚未配置完成</string>
+    <string name="tryUseTip">您已经试用了</string>
+    <string name="tryUseTip2">次，您还有</string>
+    <string name="tryUseTip_msg">次可以试用，请尽快激活设备，避免不可使用。</string>
+
+    <string name="regCount_1">您已经使用了</string>
+    <string name="regCount_2">次，您还有</string>
+    <string name="regCount_msg">次可以使用，请尽快联系客服后连接网络检查设备，避免设备停用。</string>
+    <string name="regCount_Over">次，已经没有可用次数，请联系客服后连接网络检查设备，恢复设备的使用。</string>
+
+
+    <!--  FWUpdate  -->
+    <string name="tip_FW_downloading">正在从网络下载固件程序...</string>
+    <string name="tip_FW_updating">正在升级固件程序...</string>
+    <string name="update_FW_valid">检查到固件可升级，是否现在升级？</string>
+    <string name="download_FW_Faild">网络下载固件程序失败</string>
+    <string name="update_FW_Faild">升级固件程序失败,正在下载功能程序。</string>
+
+
+    <!--  诊断文件上传下载 -->
+    <string name="file_Upload">备份数据</string>
+    <string name="file_InputName">输入备份文件的文件名</string>
+    <string name="file_Fetching">正在获取备份数据</string>
+    <string name="file_Result_OK">保存备份成功</string>
+    <string name="file_Result_NotComplete">文件接收未完成</string>
+    <string name="file_Result_Over">接收到的数据超过文件大小</string>
+    <string name="file_Result_TimeOut">备份数据超时，是否继续接收？</string>
+
+    <string name="toast_InputFile">请输入文件名</string>
+    <string name="toast_SelectFile">请选择备份文件</string>
+
+    <string name="file_Doanload">下载文件</string>
+    <string name="file_Load_NONE">没有可选的备份文件</string>
+    <string name="file_DOWN_ready">准备还原备份数据</string>
+    <string name="file_DOWN_restore">正在还原数据</string>
+    <string name="file_DOWN_mismatch">备份数据不匹配</string>
+    <string name="file_UPload_Time">上传时间：</string>
+    <string name="file_UPload_Size">大小：</string>
+
+
+    <!--  常见问题解答  -->
+    <array name="problem_Arrays">
+        <item>如何充电？</item>
+        <item>如何省电？</item>
+        <item>如何激活我的设备？ </item>
+        <item>如何升级您的设备和诊断程序？</item>
+        <item>一台平板电脑是否可以使用多个设备？</item>
+        <item>如何解除平板与设备的绑定？</item>
+        <item>设备连接不上？</item>
+    </array>
+    <array name="problem_Solve_0">
+        <item>(1)充电时请使用随机附带的充电线和充电底座进行充电</item>
+        <item>(2)如果使用非随机附带的充电线和充电底座，造成的损坏和损失，本公司概不负责</item>
+    </array>
+    <array name="problem_Solve_1">
+        <item>(1)不使用主机时，请关闭屏幕</item>
+        <item>(2)不使用设备进行诊断时，请关闭蓝牙并且拔掉USB连接线</item>
+        <item>(3)缩短屏幕的待机时间 </item>
+        <item>(4)调节屏幕亮度为合适的亮度</item>
+        <item>(5)不使用网络时，请关闭网络连接</item>
+        <item>(6)不使用GPS定位功能时，请关闭GPS功能</item>
+    </array>
+    <array name="problem_Solve_2">
+        <item>(1)给设备接上电源</item>
+        <item>(2)打开平板的蓝牙功能，打开平板的网络连接</item>
+        <item>(3)进入“设置”，如果设备未激活，在“我的设备”后会有“未激活”的红色提示文字 </item>
+        <item>(4)点击“我的设备”，弹出询问激活的对话框，点击“确定”</item>
+        <item>(5)此时，根据相应的提示进行操作，读取设备</item>
+        <item>(6)读取设备后需要填写个人信息，为了给您更全面、便捷的服务，请务必填写正确且详细的个人信息</item>
+        <item>(7)信息填写完毕后，需要将相关信息提交到后台，此过程务必在网络环境中进行</item>
+        <item>注：激活时平板电脑只能激活与之绑定的设备。</item>
+    </array>
+    <array name="problem_Solve_3">
+        <item>(1)当设备存在更新时，在执行诊断程序前会给您相应的提示，此时请您根据提示进行更新操作即可</item>
+        <item>(2)诊断程序的升级和更新，在升级板块中进行。为了方便您能更好的进行诊断，请您定时进行诊断程序的升级。</item>
+    </array>
+    <array name="problem_Solve_4">
+        <item>(1)不可以</item>
+        <item>(2)为了防止您的设备被其他人盗用，我们提供了平板电脑和诊断设备的1对1绑定模式</item>
+        <item>(3)您的平板电脑只能使用与之绑定的设备，同时你的设备也只能在与其绑定的平板电脑上使用。 </item>
+    </array>
+    <array name="problem_Solve_5">
+        <item>(1)在平板电脑上我们不提供相关的解除与设备绑定的功能</item>
+        <item>(2)如果在特殊情况下需要解除设备与平板电脑的绑定，请您联系我们的客服人员进行相关操作</item>
+    </array>
+    <array name="problem_Solve_6">
+        <item>(1)请确认平板电脑与设备是互相绑定的设备</item>
+        <item>(2)请检查设备电源是否正常供电</item>
+        <item>(3)请检查蓝牙或USB是否被其它应用或者其它设备占用 </item>
+        <item>(4)请检查平板电脑的蓝牙功能是否打开</item>
+        <item>(5)如果是采用USB连接，请检查USB连接线是否完好，并且确认连接线连接正确</item>
+    </array>
+
+
+
+</resources>

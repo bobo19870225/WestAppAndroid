@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorWhite">#fcfbfb</color>
+    <color name="colorWhitec">#e9e1e1</color>
+    <color name="colorMain">#635858</color>
+    <color name="colorMainbtn">#463d3d</color>
+    <color name="tabIndicatorColor">#cc4646</color>
+    <color name="back_main_toolbar">#223131</color>
+    <color name="background_dark">#ff000000</color>
+    <color name="main_text_color">#cc0202</color>
+    <color name="conn_text_address">#969696</color>
+    <color name="conn_diagno_bg">#d9dad5</color>
+    <color name="expand_bg">#c3c3c3</color>
+    <color name="red">#cc0202</color>
+    <color name="orange">#FF8F59</color>
+
+    <color name="screenBack">#E9E1E1</color>
+    <color name="screen_Highlight_BG">#969696</color>
+    <color name="dim_foreground_dark">#bebebe</color>
+
+    <color name="main_toolbar">#9400D3</color>
+    <color name="main_toolbar3">#9A2BE2</color>
+    <color name="main_toolbar1">#7A26BD</color>
+    <color name="main_toolbar2">#7700DD</color>
+
+    <color name="status_bg">#b2a0c2</color>
+
+    <color name="grey">#BDBDBD</color>
+    <color name="green_light">#53f856</color>
+    <color name="green">#30b15f</color>
+    <color name="green_dark">#13891E</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="grey_black">#333333</color>
+    <color name="border">#e2e2e2</color>
+    <color name="page_bg">#f8f8f8</color>
+
+
+
+</resources>

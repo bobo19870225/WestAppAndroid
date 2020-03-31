@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#EEEEEE"
+        >
+        <LinearLayout
+            android:id="@+id/report_diagnose_ll"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:background="#D3D3D3"
+            >
+            <CheckBox
+                android:id="@+id/checkboxReport_bottom"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                style="@style/CustomCheckboxStyle"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginLeft="30dp"
+                />
+            <TextView
+                android:id="@+id/report_diagnose_count"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_below="@+id/linerepoter"
+                android:layout_marginLeft="10dp"
+                android:gravity="center|right"
+                android:text="0"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize12" />
+
+            <TextView
+                android:id="@+id/report_diagnose_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linerepoter"
+                android:paddingRight="10dp"
+                android:text="@string/report_num"
+                android:textColor="#000000"
+                android:textSize="@dimen/textSize12"
+                android:gravity="center_vertical"
+                />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listviewreport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
