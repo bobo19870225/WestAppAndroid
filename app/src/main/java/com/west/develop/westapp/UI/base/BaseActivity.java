@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
 
                 if (oldBottom != 0 && bottom != 0 && bottom - rect.bottom <= 0) {
-                    if(statusShow) {
+                    if (statusShow) {
                         showStatusBar();
                     }
                 } else {
@@ -70,12 +70,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
-    protected void setStatusShow(boolean show){
+    protected void setStatusShow(boolean show) {
         statusShow = show;
-        if(show){
+        if (show) {
             showStatusBar();
-        }
-        else{
+        } else {
             hideStatusBar();
         }
     }
@@ -84,14 +83,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     // 初始化UI，setContentView等
     //protected abstract void initContentView(Bundle savedInstanceState);
     protected abstract View getContentView();
+
     protected abstract void initView();
+
     protected abstract void initData();
+
     protected abstract void initListener();
 
     /**
      * 隐藏状态栏
      */
-    public void hideStatusBar(){
+    public void hideStatusBar() {
         findViewById(R.id.statusBar_Layout).setVisibility(View.GONE);
         ConnectStatus.getInstance(this).dismiss();
     }
@@ -99,14 +101,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 显示状态栏
      */
-    public void showStatusBar(){
+    public void showStatusBar() {
         findViewById(R.id.statusBar_Layout).setVisibility(View.VISIBLE);
         ConnectStatus.getInstance(this).show();
     }
 
-    public void showToast(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+    public void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+
     // 可能全屏或者没有ActionBar等
     private void setBase() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);// 例
@@ -134,6 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        hideStatusBar();
     }
 
     @Override
@@ -141,16 +145,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RequestCodeConstant.CODE_SYSTEM_ALERT_WINDOW) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
                     Toast.makeText(this, "not granted", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else{
+                } else {
                     ConnectStatus.getInstance(this).show();
                 }
-            }
-            else{
+            } else {
                 ConnectStatus.getInstance(this).show();
             }
         }
@@ -160,14 +162,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-     //   ConnectStatus.getInstance(this).show();
+        //   ConnectStatus.getInstance(this).show();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // ConnectStatus.getInstance(this).dismiss();
+        // ConnectStatus.getInstance(this).dismiss();
         //还可能发送统计数据，比如第三方的SDK 做统计需求
     }
 
@@ -185,7 +187,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public  HttpProxyCacheServer getProxy(Context context){
+    public HttpProxyCacheServer getProxy(Context context) {
         return proxy == null ? (proxy = newProxy()) : proxy;
     }
 
@@ -194,7 +196,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .fileNameGenerator(new ProxyUtil())
                 .build();
     }
-
 
 
 }

@@ -97,7 +97,11 @@ public class ConnectStatus {
             instance.mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             instance.mParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             instance.mParams.format = PixelFormat.TRANSLUCENT;
-            instance.mParams.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0+
+                instance.mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            } else {
+                instance.mParams.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
+            }
             instance.mParams.gravity = Gravity.LEFT + Gravity.BOTTOM;
             instance.mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
@@ -491,6 +495,9 @@ public class ConnectStatus {
                 }
                 WindowManager windowManager = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
                 if (windowManager != null) {
+                    if (mContentView.getParent() != null) {
+                        windowManager.removeViewImmediate(mContentView);
+                    }
                     windowManager.addView(mContentView, mParams);
                 }
 

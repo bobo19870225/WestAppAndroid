@@ -334,8 +334,8 @@ public class MainActivity extends BaseActivity {
                         @Override
                         public void onClick(Dialog dialogInterface, int index, String label) {
                             dialogInterface.dismiss();
-                            System.exit(0);
-
+//                            System.exit(0);
+                            finish();
                         }
                     })
                     .setPositiveClickListener(getResources().getString(R.string.bond_sure), new TipDialog.OnClickListener() {
@@ -347,7 +347,8 @@ public class MainActivity extends BaseActivity {
                                         @Override
                                         public void onClick(Dialog dialog) {
                                             dialog.dismiss();
-                                            System.exit(0);
+//                                            System.exit(0);
+                                            finish();
                                         }
                                     })
                                     .show();
