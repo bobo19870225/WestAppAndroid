@@ -24,9 +24,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -38,20 +38,23 @@
 
     <application
         android:name=".Application.MyApplication"
-        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_Name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <!--lin-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="4LuXjLt60avI5sOqDEm7QmSzs8MdC6iV" >
+            android:value="4LuXjLt60avI5sOqDEm7QmSzs8MdC6iV">
 
         </meta-data>
+
         <activity android:name=".UI.Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,42 +66,34 @@
             android:name=".UI.Activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".UI.Activity.Diagnosis.DiagnosisActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
         <activity
             android:name=".UI.Activity.Diagnosis.DescActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
         <activity
             android:name=".UI.Activity.Diagnosis.RunActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
 
         <activity
             android:name=".UI.Activity.Upgrade.DownloadTaskActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask" />
         <activity
             android:name=".UI.Activity.Setting.AboutActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
         <activity
             android:name=".UI.Activity.Setting.HelpActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
         <activity
             android:name=".UI.Activity.Setting.PortActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
+        <activity
+            android:name=".UI.Activity.Setting.PreferenceActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
-        <activity android:name=".UI.Activity.Setting.PreferenceActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            />
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
         <service
             android:name=".Communicate.Service.UsbService"
@@ -107,14 +102,14 @@
             android:name=".Communicate.Service.BluetoothService"
             android:enabled="true" />
 
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
+            android:process=":remote" />
 
         <activity
             android:name=".UI.Activity.Setting.StatementActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
 
         <receiver android:name=".Application.AppReceiver">
             <intent-filter>
@@ -124,17 +119,16 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".UI.Activity.Setting.LanguageActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
-        <activity android:name=".UI.Activity.DetailsReportActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            />
+        <activity
+            android:name=".UI.Activity.Setting.LanguageActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
+        <activity
+            android:name=".UI.Activity.DetailsReportActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection" />
         <activity
             android:name=".UI.Activity.APPUpdate.AppUpdateActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +24,9 @@ import com.west.develop.westapp.R;
  * Created by Develop11 on 2017/8/17.
  */
 
-public class TipDialog extends Dialog implements View.OnClickListener{
+public class TipDialog extends Dialog implements View.OnClickListener {
 
-    private Context mContext ;
+    private Context mContext;
 
 
     /**
@@ -99,7 +100,7 @@ public class TipDialog extends Dialog implements View.OnClickListener{
     private Drawable mImageDrawable;
 
 
-    private TipDialog(Context context){
+    private TipDialog(Context context) {
         super(context);
         mContext = context;
 
@@ -109,7 +110,7 @@ public class TipDialog extends Dialog implements View.OnClickListener{
 
     @Override
     public void show() {
-        if(!isShowing()){
+        if (!isShowing()) {
             super.show();
             try {
                 if (isOverlay && !isPaused) {
@@ -119,14 +120,14 @@ public class TipDialog extends Dialog implements View.OnClickListener{
                     filter.addAction(MyApplication.ACTION_APP_FOREGROUND);
                     mContext.registerReceiver(mReceiver, filter);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
     @Override
-    protected void onCreate(Bundle saveInstanceState){
+    protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //设置 Dialog 布局
@@ -140,28 +141,28 @@ public class TipDialog extends Dialog implements View.OnClickListener{
     /**
      * 初始化
      */
-    private void initView(){
-        mTitle = (TextView)findViewById(R.id.dialog_title);
-        mMessageTV = (TextView)findViewById(R.id.dialog_Message_TV);
-        mNegativeBTN = (Button)findViewById(R.id.dialog_Negative_BTN);
-        mPositiveBTN = (Button)findViewById(R.id.dialog_Positive_BTN);
+    private void initView() {
+        mTitle = (TextView) findViewById(R.id.dialog_title);
+        mMessageTV = (TextView) findViewById(R.id.dialog_Message_TV);
+        mNegativeBTN = (Button) findViewById(R.id.dialog_Negative_BTN);
+        mPositiveBTN = (Button) findViewById(R.id.dialog_Positive_BTN);
         image = (ImageView) findViewById(R.id.dialog_Message_Img);
 
         initMessage();
 
-        mTitle.setText(mTitle_Lable==null?"":mTitle_Lable);
+        mTitle.setText(mTitle_Lable == null ? "" : mTitle_Lable);
 
-        if (mImageDrawable != null){
+        if (mImageDrawable != null) {
             image.setVisibility(View.VISIBLE);
             image.setImageDrawable(mImageDrawable);
         }
 
-        if(mNegativeText != null){
+        if (mNegativeText != null) {
             mNegativeBTN.setVisibility(View.VISIBLE);
             mNegativeBTN.setText(mNegativeText);
         }
 
-        if(mPositiveText != null){
+        if (mPositiveText != null) {
             mPositiveBTN.setVisibility(View.VISIBLE);
             mPositiveBTN.setText(mPositiveText);
         }
@@ -171,18 +172,17 @@ public class TipDialog extends Dialog implements View.OnClickListener{
 
     }
 
-    public void setMessage(String message){
+    public void setMessage(String message) {
         mMessage = message;
     }
-
 
 
     /**
      * 设置 Message
      */
-    private void initMessage(){
-        if(mMessageTV == null || mMessage == null || mMessage.length() <= 0){
-            if(mMessageTV != null){
+    private void initMessage() {
+        if (mMessageTV == null || mMessage == null || mMessage.length() <= 0) {
+            if (mMessageTV != null) {
                 mMessageTV.setVisibility(View.GONE);
             }
             return;
@@ -193,6 +193,7 @@ public class TipDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 设置图片
+     *
      * @param mImageDrawable
      */
 
@@ -203,65 +204,71 @@ public class TipDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 设置标题
+     *
      * @param title
      */
-    public void setTitle(String title){
+    public void setTitle(String title) {
         mTitle_Lable = title;
     }
 
 
-
     /**
      * 设置 确定按钮 点击事件
+     *
      * @param listener
      */
-    public void setPositiveClickListener(OnClickListener listener){
+    public void setPositiveClickListener(OnClickListener listener) {
         mPositiveClickListener = listener;
     }
 
     /**
      * 设置 取消按钮 点击事件
+     *
      * @param listener
      */
-    public void setNegativeClickListener(OnClickListener listener){
+    public void setNegativeClickListener(OnClickListener listener) {
         mNegativeClickListener = listener;
     }
 
     /**
      * 设置 确定按钮 点击事件
+     *
      * @param listener
      */
-    public void setPositiveClickListener(String text, OnClickListener listener){
+    public void setPositiveClickListener(String text, OnClickListener listener) {
         mPositiveText = text;
         mPositiveClickListener = listener;
     }
 
     /**
      * 设置 取消按钮 点击事件
+     *
      * @param listener
      */
-    public void setNegativeClickListener(String text, OnClickListener listener){
+    public void setNegativeClickListener(String text, OnClickListener listener) {
         mNegativeText = text;
         mNegativeClickListener = listener;
     }
 
 
-
-
-    public void isOverDialog(boolean isOver){
-        if(isOver) {
+    public void isOverDialog(boolean isOver) {
+        if (isOver) {
             isOverlay = true;
-            getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0+
+                getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
         }
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
-        if(isOverlay && !isPaused){
+        if (isOverlay && !isPaused) {
             try {
                 mContext.unregisterReceiver(mReceiver);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -269,16 +276,15 @@ public class TipDialog extends Dialog implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             //取消按钮 点击监听
             case R.id.dialog_Negative_BTN:
-                if(mNegativeClickListener != null){
-                    if(mMessageTV.getVisibility() == View.VISIBLE){
+                if (mNegativeClickListener != null) {
+                    if (mMessageTV.getVisibility() == View.VISIBLE) {
                         mNegativeClickListener.onClick(TipDialog.this, -1, mMessage);
                     }
-                }
-                else{
+                } else {
                     //未设置 取消按钮 点击事件
                     TipDialog.this.dismiss();
                     KeyEvent.onKeyClick(KeyEvent.KEY_ESC);
@@ -286,12 +292,11 @@ public class TipDialog extends Dialog implements View.OnClickListener{
                 break;
             //确定按钮 点击监听
             case R.id.dialog_Positive_BTN:
-                if(mPositiveClickListener != null){
-                    if(mMessageTV.getVisibility() == View.VISIBLE){
+                if (mPositiveClickListener != null) {
+                    if (mMessageTV.getVisibility() == View.VISIBLE) {
                         mPositiveClickListener.onClick(TipDialog.this, -1, mMessage);
                     }
-                }
-                else{
+                } else {
                     //未设置 确定按钮 点击事件
                     TipDialog.this.dismiss();
                     KeyEvent.onKeyClick(KeyEvent.KEY_ENTER);
@@ -306,19 +311,19 @@ public class TipDialog extends Dialog implements View.OnClickListener{
     /**
      * Dialog 构建器
      */
-    public static  class Builder{
+    public static class Builder {
         private TipDialog dialog;
 
-        public Builder(Context context){
+        public Builder(Context context) {
             dialog = new TipDialog(context);
         }
 
-        public Builder setTitle(String title){
+        public Builder setTitle(String title) {
             dialog.setTitle(title);
             return this;
         }
 
-        public Builder setMessage(String message){
+        public Builder setMessage(String message) {
             dialog.setMessage(message);
             return this;
         }
@@ -333,17 +338,17 @@ public class TipDialog extends Dialog implements View.OnClickListener{
             return this;
         }*/
 
-        public Builder setPositiveClickListener(String text, OnClickListener listener){
-            dialog.setPositiveClickListener(text,listener);
+        public Builder setPositiveClickListener(String text, OnClickListener listener) {
+            dialog.setPositiveClickListener(text, listener);
             return this;
         }
 
-        public Builder setNegativeClickListener(String text, OnClickListener listener){
-            dialog.setNegativeClickListener(text,listener);
+        public Builder setNegativeClickListener(String text, OnClickListener listener) {
+            dialog.setNegativeClickListener(text, listener);
             return this;
         }
 
-        public Builder requestSystemAlert(boolean systemAlert){
+        public Builder requestSystemAlert(boolean systemAlert) {
             dialog.isOverDialog(systemAlert);
             return this;
         }
@@ -353,7 +358,7 @@ public class TipDialog extends Dialog implements View.OnClickListener{
             return this;
         }
 
-        public TipDialog build(){
+        public TipDialog build() {
             return dialog;
         }
     }
@@ -361,17 +366,17 @@ public class TipDialog extends Dialog implements View.OnClickListener{
     /**
      * 点击事件监听接口
      */
-    public interface OnClickListener{
+    public interface OnClickListener {
         public abstract void onClick(Dialog dialogInterface, int index, String label);
     }
 
 
-    class MReceiver extends BroadcastReceiver{
+    class MReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            switch (action){
+            switch (action) {
                 case MyApplication.ACTION_APP_BACKGROUND:
                     isPaused = true;
                     dismiss();
