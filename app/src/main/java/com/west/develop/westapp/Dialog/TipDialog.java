@@ -254,7 +254,7 @@ public class TipDialog extends Dialog implements View.OnClickListener {
     public void isOverDialog(boolean isOver) {
         if (isOver) {
             isOverlay = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0+
+            if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {//6.0+
                 getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
             } else {
                 getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
-    >
+    android:orientation="vertical">
 
 
     <include layout="@layout/maintoolbar" />
@@ -12,62 +12,60 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/status_bg"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <RelativeLayout
             android:id="@+id/tab_Local"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/local_report"
-                android:textColor="@color/black"
                 android:layout_centerInParent="true"
-                />
+                android:text="@string/local_report"
+                android:textColor="@color/black" />
 
             <View
                 android:id="@+id/local_Flag"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/red"
                 android:layout_alignParentBottom="true"
-                />
+                android:background="@color/red" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/tab_Remote"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/remote_report"
-                android:textColor="@color/black"
                 android:layout_centerInParent="true"
-                />
+                android:text="@string/remote_report"
+                android:textColor="@color/black" />
+
             <View
                 android:id="@+id/remote_Flag"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/red"
                 android:layout_alignParentBottom="true"
-                android:visibility="gone"
-                />
+                android:background="@color/red"
+                android:visibility="gone" />
         </RelativeLayout>
 
 
     </LinearLayout>
-    <android.support.v4.view.ViewPager
+
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/report_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 </LinearLayout>

@@ -97,7 +97,7 @@ public class ConnectStatus {
             instance.mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             instance.mParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             instance.mParams.format = PixelFormat.TRANSLUCENT;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {//6.0+
                 instance.mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
             } else {
                 instance.mParams.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
