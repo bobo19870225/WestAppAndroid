@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.west.develop.westapp.Dialog.ConnectStatus;
@@ -122,10 +123,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -141,7 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == RequestCodeConstant.CODE_SYSTEM_ALERT_WINDOW) {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
-                    Toast.makeText(this, "not granted", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "not granted", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else{

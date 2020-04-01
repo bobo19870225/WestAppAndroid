@@ -76,21 +76,22 @@ public class ConnectStatus {
     private BluetoothService mBluetoothService;
 
 
-    private ArrayList<BluetoothSerialPort>  mBTSerialPorts = new ArrayList<>();
-    private ArrayList<UsbSerialPort>        mUsbSerialPorts = new ArrayList<>();
+    private ArrayList<BluetoothSerialPort> mBTSerialPorts = new ArrayList<>();
+    private ArrayList<UsbSerialPort> mUsbSerialPorts = new ArrayList<>();
 
 
     /**
      * 获取单例
+     *
      * @param context
      * @return
      */
-    public static ConnectStatus getInstance(Context context){
-        mContext =  context;
+    public static ConnectStatus getInstance(Context context) {
+        mContext = context;
 
-        if(instance == null){
+        if (instance == null) {
             instance = new ConnectStatus();
-            instance.mContentView = LayoutInflater.from(mContext).inflate(R.layout.dialog_status,null);
+            instance.mContentView = LayoutInflater.from(mContext).inflate(R.layout.dialog_status, null);
 
             instance.mParams = new WindowManager.LayoutParams();
             instance.mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -104,16 +105,17 @@ public class ConnectStatus {
              * 启动USB服务
              */
             instance.startService(UsbService.class, instance.usbConnection, null);
-            instance.startService(BluetoothService.class,instance.bluetoothConnection,null);
+            instance.startService(BluetoothService.class, instance.bluetoothConnection, null);
 
         }
 
         return instance;
     }
 
-    public View getContentView(){
-        return  mContentView;
+    public View getContentView() {
+        return mContentView;
     }
+
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(mContext, service);
@@ -129,8 +131,7 @@ public class ConnectStatus {
         Intent bindingIntent = new Intent(mContext, service);
         try {
             mContext.getApplicationContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
 
         }
     }
@@ -168,6 +169,7 @@ public class ConnectStatus {
 
     /**
      * 获取已连接蓝牙
+     *
      * @return
      */
     public BluetoothSerialPort getBTPort() {
@@ -177,20 +179,20 @@ public class ConnectStatus {
 
     /**
      * 使能蓝牙
+     *
      * @param enable
      * @param device
      */
-    public void enableBT(boolean enable,BluetoothSerialPort device){
+    public void enableBT(boolean enable, BluetoothSerialPort device) {
         /**
          * 如果蓝牙设备未连接，设备断开连接提示音
          */
-        if(mBTPort != null && (!enable || device == null)){
+        if (mBTPort != null && (!enable || device == null)) {
             SoundUtil.deviceLostSound(mContext);
         }
-        if(enable) {
+        if (enable) {
             mBTPort = device;
-        }
-        else{
+        } else {
             mBTPort = null;
         }
 
@@ -203,14 +205,14 @@ public class ConnectStatus {
 
     /**
      * 使能USB
+     *
      * @param enable
      * @param port
      */
-    public void enableUSB(boolean enable,UsbSerialPort port){
-        if(enable){
-            mUSBPort =  port;
-        }
-        else{
+    public void enableUSB(boolean enable, UsbSerialPort port) {
+        if (enable) {
+            mUSBPort = port;
+        } else {
             mUSBPort = null;
         }
 
@@ -232,22 +234,23 @@ public class ConnectStatus {
 
     /**
      * 发现 蓝牙设备
-     *  所述设备是 检测序列号 有返回，但返回不正确的设备
+     * 所述设备是 检测序列号 有返回，但返回不正确的设备
+     *
      * @param btPort
      */
-    public void detectBT(BluetoothSerialPort btPort){
-        if(btPort == null){
+    public void detectBT(BluetoothSerialPort btPort) {
+        if (btPort == null) {
             return;
         }
         boolean contain = false;
-        for(int i = 0;i <mBTSerialPorts.size();i++){
-            if(mBTSerialPorts.get(i).getDevice().getAddress().equals(btPort.getDevice().getAddress())){
+        for (int i = 0; i < mBTSerialPorts.size(); i++) {
+            if (mBTSerialPorts.get(i).getDevice().getAddress().equals(btPort.getDevice().getAddress())) {
                 contain = true;
                 break;
             }
         }
 
-        if(!contain) {
+        if (!contain) {
             mBTSerialPorts.add(btPort);
         }
 
@@ -257,10 +260,11 @@ public class ConnectStatus {
     /**
      * 发现USB设备
      * 发现的设备 检测序列号 有返回，但不是与Android 设备绑定的设备
+     *
      * @param usbPort
      */
-    public void detectUSB(UsbSerialPort usbPort){
-        if(usbPort == null){
+    public void detectUSB(UsbSerialPort usbPort) {
+        if (usbPort == null) {
             return;
         }
         mUsbSerialPorts.add(usbPort);
@@ -270,25 +274,26 @@ public class ConnectStatus {
 
     /**
      * 检查是否设备列表中是否包含 设备
+     *
      * @param port
      * @return
      */
-    public boolean containPort(BaseSerialPort port){
-        if(port == null){
+    public boolean containPort(BaseSerialPort port) {
+        if (port == null) {
             return false;
         }
 
-        if(port instanceof BluetoothSerialPort){
-            for( int i = 0;i < mBTSerialPorts.size();i++){
-                if(mBTSerialPorts.get(i).getDevice().getAddress().equals(((BluetoothSerialPort) port).getDevice().getAddress())){
-                    return  true;
+        if (port instanceof BluetoothSerialPort) {
+            for (int i = 0; i < mBTSerialPorts.size(); i++) {
+                if (mBTSerialPorts.get(i).getDevice().getAddress().equals(((BluetoothSerialPort) port).getDevice().getAddress())) {
+                    return true;
                 }
             }
         }
 
-        if(port instanceof UsbSerialPort){
-            for(int i = 0;i < mUsbSerialPorts.size();i++){
-                if(((UsbSerialPort) port).getDriver().getDevice().getVendorId() == mUsbSerialPorts.get(i).getDriver().getDevice().getVendorId()){
+        if (port instanceof UsbSerialPort) {
+            for (int i = 0; i < mUsbSerialPorts.size(); i++) {
+                if (((UsbSerialPort) port).getDriver().getDevice().getVendorId() == mUsbSerialPorts.get(i).getDriver().getDevice().getVendorId()) {
                     return true;
                 }
             }
@@ -300,19 +305,20 @@ public class ConnectStatus {
     /**
      * 检查设备列表中已经搜索不到的设备，将其移除
      * 所述设备是 检测序列号 有返回，但返回不正确的设备
+     *
      * @param devices
      */
-    public void compareBTDevice(List<BluetoothDevice> devices){
-        for(int i = 0;i < mBTSerialPorts.size();i++){
+    public void compareBTDevice(List<BluetoothDevice> devices) {
+        for (int i = 0; i < mBTSerialPorts.size(); i++) {
             boolean contain = false;
             BluetoothDevice device = mBTSerialPorts.get(i).getDevice();
-            for(int j = 0;j < devices.size();j++){
-                if(device.getAddress().equals(devices.get(j).getAddress())){
+            for (int j = 0; j < devices.size(); j++) {
+                if (device.getAddress().equals(devices.get(j).getAddress())) {
                     contain = true;
                     break;
                 }
             }
-            if(!contain) {
+            if (!contain) {
                 mBTSerialPorts.remove(i);
                 i--;
             }
@@ -322,30 +328,30 @@ public class ConnectStatus {
         refreshState();
     }
 
-    public void removeAllTB(){
+    public void removeAllTB() {
         mBTSerialPorts.clear();
         refreshState();
     }
 
 
-
     /**
      * 移除USB设备
-     *  所述设备是 检测序列号 有返回，但返回不正确的设备
+     * 所述设备是 检测序列号 有返回，但返回不正确的设备
+     *
      * @param device
      */
-    public void removeUsb(UsbDevice device){
-        if(device == null){
+    public void removeUsb(UsbDevice device) {
+        if (device == null) {
             return;
         }
-        if(mUSBPort != null){
-            if(mUSBPort.getDriver().getDevice().getVendorId() == device.getVendorId()){
-                enableUSB(false,null);
+        if (mUSBPort != null) {
+            if (mUSBPort.getDriver().getDevice().getVendorId() == device.getVendorId()) {
+                enableUSB(false, null);
             }
         }
 
-        for(int i = 0;i < mUsbSerialPorts.size();i++){
-            if(mUsbSerialPorts.get(i).getDriver().getDevice().getVendorId() == device.getVendorId()){
+        for (int i = 0; i < mUsbSerialPorts.size(); i++) {
+            if (mUsbSerialPorts.get(i).getDriver().getDevice().getVendorId() == device.getVendorId()) {
                 mUsbSerialPorts.remove(i);
                 i--;
             }
@@ -355,119 +361,112 @@ public class ConnectStatus {
     }
 
 
-
     /**
      * 刷新状态
      */
-    public void refreshState(){
-        if(mContentView != null){
-            final TextView stateDeviceTV = (TextView)mContentView.findViewById(R.id.status_Device_TV);
-            final TextView stateUSBTV = (TextView)mContentView.findViewById(R.id.status_USB_TV);
-            final TextView stateBTTV = (TextView)mContentView.findViewById(R.id.status_BT_TV);
-            final ImageView imageDevice = (ImageView)mContentView.findViewById(R.id.state_Device_IMG);
-            final ImageView imageBT = (ImageView)mContentView.findViewById(R.id.state_BT_IMG);
-            final ImageView imageUSB = (ImageView)mContentView.findViewById(R.id.state_USB_IMG);
+    public void refreshState() {
+        if (mContentView != null) {
+            final TextView stateDeviceTV = (TextView) mContentView.findViewById(R.id.status_Device_TV);
+            final TextView stateUSBTV = (TextView) mContentView.findViewById(R.id.status_USB_TV);
+            final TextView stateBTTV = (TextView) mContentView.findViewById(R.id.status_BT_TV);
+            final ImageView imageDevice = (ImageView) mContentView.findViewById(R.id.state_Device_IMG);
+            final ImageView imageBT = (ImageView) mContentView.findViewById(R.id.state_BT_IMG);
+            final ImageView imageUSB = (ImageView) mContentView.findViewById(R.id.state_USB_IMG);
             mContentView.post(new Runnable() {
                 @Override
                 public void run() {
 
                     //未发现蓝牙设备
-                    if((mBTSerialPorts == null || mBTSerialPorts.size() <= 0) && mBTPort == null){
+                    if ((mBTSerialPorts == null || mBTSerialPorts.size() <= 0) && mBTPort == null) {
                         stateBTTV.setText(R.string.interface_not_found);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateBTTV.setTextColor(mContext.getColor(R.color.grey_black));
-                        }else {
+                        } else {
                             stateBTTV.setTextColor(mContext.getResources().getColor(R.color.grey_black));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageBT.setImageDrawable(mContext.getDrawable(R.mipmap.connect_bt_unconnected));
-                        }
-                        else{
+                        } else {
                             imageBT.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_bt_unconnected));
                         }
                     }
                     //发现蓝牙设备
-                    else{
+                    else {
                         int count = mBTSerialPorts.size();
-                        if(mBTPort != null){
+                        if (mBTPort != null) {
                             count++;
                         }
                         stateBTTV.setText(mContext.getString(R.string.interface_bt_connect) + count + mContext.getString(R.string.interface_unit_Device));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateBTTV.setTextColor(mContext.getColor(R.color.green_dark));
-                        }else {
+                        } else {
                             stateBTTV.setTextColor(mContext.getResources().getColor(R.color.green_dark));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageBT.setImageDrawable(mContext.getDrawable(R.mipmap.connect_bt_connected));
-                        }
-                        else{
+                        } else {
                             imageBT.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_bt_connected));
                         }
                     }
 
                     //未发现USB设备
-                    if((mUsbSerialPorts == null || mUsbSerialPorts.size() <= 0) && mUSBPort == null){
+                    if ((mUsbSerialPorts == null || mUsbSerialPorts.size() <= 0) && mUSBPort == null) {
                         stateUSBTV.setText(R.string.interface_not_found);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateUSBTV.setTextColor(mContext.getColor(R.color.grey_black));
-                        }else {
+                        } else {
                             stateUSBTV.setTextColor(mContext.getResources().getColor(R.color.grey_black));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageUSB.setImageDrawable(mContext.getDrawable(R.mipmap.connect_usb_unconnected));
-                        }
-                        else{
+                        } else {
                             imageUSB.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_usb_unconnected));
                         }
                     }
                     //发现USB设备
-                    else{
+                    else {
                         int count = mUsbSerialPorts.size();
-                        if(mUSBPort != null){
+                        if (mUSBPort != null) {
                             count++;
                         }
                         stateUSBTV.setText(mContext.getString(R.string.interface_usb_connect) + count + mContext.getString(R.string.interface_unit_Device));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateUSBTV.setTextColor(mContext.getColor(R.color.green_dark));
-                        }else {
+                        } else {
                             stateUSBTV.setTextColor(mContext.getResources().getColor(R.color.green_dark));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageUSB.setImageDrawable(mContext.getDrawable(R.mipmap.connect_usb_connected));
-                        }
-                        else{
+                        } else {
                             imageUSB.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_usb_connected));
                         }
                     }
 
                     //USB或蓝牙连接
-                    if(mUSBPort != null || mBTPort != null){
+                    if (mUSBPort != null || mBTPort != null) {
                         stateDeviceTV.setText(R.string.interface_device_connect);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateDeviceTV.setTextColor(mContext.getColor(R.color.green_dark));
-                        }else {
+                        } else {
                             stateDeviceTV.setTextColor(mContext.getResources().getColor(R.color.green_dark));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageDevice.setImageDrawable(mContext.getDrawable(R.mipmap.connect_device_connected));
-                        }
-                        else{
+                        } else {
                             imageDevice.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_device_connected));
                         }
                     }
                     //USB与蓝牙均未连接
-                    else{
+                    else {
                         stateDeviceTV.setText(R.string.interface_no_connect);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             stateDeviceTV.setTextColor(mContext.getColor(R.color.grey_black));
-                        }else {
+                        } else {
                             stateDeviceTV.setTextColor(mContext.getResources().getColor(R.color.grey_black));
                         }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             imageDevice.setImageDrawable(mContext.getDrawable(R.mipmap.connect_device_unconnected));
-                        }
-                        else{
+                        } else {
                             imageDevice.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.connect_device_unconnected));
                         }
                     }
@@ -481,7 +480,7 @@ public class ConnectStatus {
     /**
      * 显示
      */
-    public void show(){
+    public void show() {
         try {
             if (!isShowing) {
                 if (!isPaused) {
@@ -491,7 +490,9 @@ public class ConnectStatus {
                     mContext.getApplicationContext().registerReceiver(mReceiver, filter);
                 }
                 WindowManager windowManager = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-                windowManager.addView(mContentView, mParams);
+                if (windowManager != null) {
+                    windowManager.addView(mContentView, mParams);
+                }
 
                 isShowing = true;
             }
@@ -506,11 +507,13 @@ public class ConnectStatus {
     /**
      * 隐藏
      */
-    public void dismiss(){
+    public void dismiss() {
 
-        if(isShowing) {
+        if (isShowing) {
             WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-            windowManager.removeView(mContentView);
+            if (windowManager != null) {
+                windowManager.removeView(mContentView);
+            }
             isShowing = false;
             try {
                 if (isPaused) {
@@ -519,7 +522,7 @@ public class ConnectStatus {
                 mContext.unbindService(this.usbConnection);
                 mContext.unbindService(this.bluetoothConnection);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             isPaused = false;
@@ -531,16 +534,17 @@ public class ConnectStatus {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
-            switch (action){
-                case MyApplication.ACTION_APP_BACKGROUND:
-                    isPaused = true;
-                    dismiss();
-                    break;
-                case MyApplication.ACTION_APP_FOREGROUND:
-                    isPaused = false;
-                    show();
-                    break;
+            if (action != null) {
+                switch (action) {
+                    case MyApplication.ACTION_APP_BACKGROUND:
+                        isPaused = true;
+                        dismiss();
+                        break;
+                    case MyApplication.ACTION_APP_FOREGROUND:
+                        isPaused = false;
+                        show();
+                        break;
+                }
             }
         }
     }

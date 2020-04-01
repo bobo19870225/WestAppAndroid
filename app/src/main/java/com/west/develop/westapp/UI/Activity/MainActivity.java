@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -104,8 +105,7 @@ public class MainActivity extends BaseActivity {
             queryBTList();
             checkDeviceMode();
             ReportUntil.autoPostReport(MainActivity.this);
-        }
-        else {
+        } else {
             //如果没有网络的时候，那么就开始记录次数
             if (timeDistance <= 0 || n == -1 || checkCount >= Config.getInstance(MainActivity.this).getSetRegCount()) {
                 mDialog = new TipDialog.Builder(MainActivity.this)
@@ -165,34 +165,30 @@ public class MainActivity extends BaseActivity {
     /**
      * 查询蓝牙列表
      */
-    private void queryBTList(){
+    private void queryBTList() {
         VolleyUtil.jsonRequest(URLConstant.urlBluetoothList, this, new VolleyUtil.IVolleyCallback() {
             @Override
             public void getResponse(JSONObject jsonObject) {
                 try {
                     int code = jsonObject.getInt("code");
-
-                    if(code == 0){
+                    if (code == 0) {
                         JSONObject data = jsonObject.getJSONObject("data");
-
                         Gson gson = new Gson();
-                        ArrayList<String>  list = gson.fromJson(data.getJSONArray("list").toString(),ArrayList.class);
-
-                        if(list != null){
-                            for(int i = 0;i < list.size();i++){
-                                Config.getInstance(MainActivity.this).addBTName(list.get(i));
+                        ArrayList list = gson.fromJson(data.getJSONArray("list").toString(), ArrayList.class);
+                        if (list != null) {
+                            for (int i = 0; i < list.size(); i++) {
+                                Config.getInstance(MainActivity.this).addBTName((String) list.get(i));
                             }
                         }
                     }
-                }
-                catch (JSONException ex){
+                } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.e("Volley queryBTList", error.toString());
             }
         });
     }
@@ -210,7 +206,6 @@ public class MainActivity extends BaseActivity {
 
         }
     }
-
 
 
     VolleyUtil.IVolleyCallback callback = new VolleyUtil.IVolleyCallback() {
@@ -236,19 +231,19 @@ public class MainActivity extends BaseActivity {
 
                     Config.getInstance(MainActivity.this).setSetRegCount(setRegCount);
                     Config.getInstance(MainActivity.this).setRegCount(RegCount);
-                   // Config.RegCount = RegCount;
+                    // Config.RegCount = RegCount;
 
                     Gson gson = new Gson();
-                    DocumentVersion FWVersion = gson.fromJson(data.getJSONObject("sysVersion").toString(),DocumentVersion.class);
-                    ((MyApplication)getApplicationContext()).setNewFWVersion(FWVersion);
+                    DocumentVersion FWVersion = gson.fromJson(data.getJSONObject("sysVersion").toString(), DocumentVersion.class);
+                    ((MyApplication) getApplicationContext()).setNewFWVersion(FWVersion);
 
-                    DocumentVersion APPVersion = gson.fromJson(data.getJSONObject("appVersion").toString(),DocumentVersion.class);
-                    ((MyApplication)getApplicationContext()).setNewAPPVersion(APPVersion);
-                    if(settingFragment != null){
+                    DocumentVersion APPVersion = gson.fromJson(data.getJSONObject("appVersion").toString(), DocumentVersion.class);
+                    ((MyApplication) getApplicationContext()).setNewAPPVersion(APPVersion);
+                    if (settingFragment != null) {
                         settingFragment.refresh();
                     }
 
-                    DeviceBean deviceBean = gson.fromJson(device.toString(),DeviceBean.class);
+                    DeviceBean deviceBean = gson.fromJson(device.toString(), DeviceBean.class);
                     Config.getInstance(MainActivity.this).setBondDevice(deviceBean);
 
                     boolean configured = data.getBoolean("configured");
@@ -268,10 +263,9 @@ public class MainActivity extends BaseActivity {
                         //删除数据库
                         MDBHelper.getInstance(MainActivity.this).deleteAppDB();
                         initData();
-                    }
-                    else if(setRegCount <= RegCount){
+                    } else if (setRegCount <= RegCount) {
                         //使用次数已用完
-                        String tipStr = getResources().getString(R.string.regCount_1) + " "+ RegCount + " " +
+                        String tipStr = getResources().getString(R.string.regCount_1) + " " + RegCount + " " +
                                 getResources().getString(R.string.regCount_Over);
                         mDialog = new TipDialog.Builder(MainActivity.this)
                                 .setTitle(getResources().getString(R.string.tip_title))
@@ -285,10 +279,9 @@ public class MainActivity extends BaseActivity {
                                 .requestSystemAlert(true)
                                 .build();
                         mDialog.show();
-                    }
-                    else if(setRegCount > RegCount && (setRegCount - RegCount) <= Config.TIP_REGCOUNT){
+                    } else if (setRegCount - RegCount <= Config.TIP_REGCOUNT) {
                         //使用次数到达提示数
-                        String tipStr = getResources().getString(R.string.regCount_1) + " "+ RegCount + " " +
+                        String tipStr = getResources().getString(R.string.regCount_1) + " " + RegCount + " " +
                                 getResources().getString(R.string.regCount_2) + " " +
                                 (setRegCount - RegCount) + " " +
                                 getResources().getString(R.string.regCount_msg);
@@ -463,7 +456,7 @@ public class MainActivity extends BaseActivity {
 
 
     @Override
-    public void onAttachFragment(Fragment fragment) {
+    public void onAttachFragment(@NonNull Fragment fragment) {
         if (diagnosisFragment == null && fragment instanceof DiagnosisFragment) {
             diagnosisFragment = (DiagnosisFragment) fragment;
         }
@@ -539,14 +532,14 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         //注册广播
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_CONNECTIVITY_CHANGE);
         registerReceiver(mReceiver, filter);
     }
 
-    private void unregisterReceiver(){
+    private void unregisterReceiver() {
         unregisterReceiver(mReceiver);
     }
 
@@ -557,16 +550,16 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action) {
-                case ACTION_CONNECTIVITY_CHANGE:
+            if (action != null) {
+                if (ACTION_CONNECTIVITY_CHANGE.equals(action)) {
                     if (WifiUtil.isSupportNetwork(context)) {
                         if (!Config.checked) {
                             queryBTList();
                             checkDeviceMode();
                         }
-
                         ReportUntil.autoPostReport(MainActivity.this);
                     }
+                }
             }
         }
     };
