@@ -1,0 +1,3 @@
+key store password:HAI11801west
+key alias:west
+key password:HAI11801west

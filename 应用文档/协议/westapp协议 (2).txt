@@ -1,0 +1,359 @@
+
+
+
+
+/*********************************************
+*
+*	下载程序
+*
+*********************************************/
+C4 00 00 00 00 00 00 00 00 00 00 C4 	//Jump to Boot
+A5 50 00 BB 00 00 00 00 00 00 01 B0 
+
+01 31 50 30 30 30 30 41 36 00 01 B9 	检查SN//31 50 30 30 30 30 41 36 ：1P0000A6 //52 随机数
+F2	//~F2 - (0x52 & 0x0F)
+
+0x0D - 0x02 = 0x0B
+
+
+02 00 00 01 00 00 35 00(解密标致) FF 01 01 38 	准备写入//00 00 01 00 写入的地址(L-H)  //35：A168-TOOL	第七字节：0x00  需要解密，0x01不需要解密（本地调试程序）   //FF：每包长度 	//01：FLASH
+F2
+
+09 FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0E 94 A7 92 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF BA DF 	//09 FF: FF 256字节
+ED	~ED - (52 & 0F) = 0x12 - 0x02 = 10
+
+
+
+09 FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 0F 92 CD B7 DE B7 89 83 7B 83 6A 83 5D 83 4C 83 0F 90 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 89 83 6A 83 5C 83 4B 83 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 08 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF B9 46 
+ED
+
+09 FF 0F 93 1F 93 DF 93 CF 93 00 D0 00 D0 CD B7 DE B7 9A 83 89 83 6B 83 4C 83 80 E0 60 E0 40 E0 20 E0 00 E0 0E 94 B8 79 80 E0 0E 94 90 7A E9 81 FA 81 8B 81 6C 81 40 E0 20 E0 8F 01 0E 94 68 7B 0E 94 E0 79 81 30 E1 F7 80 E0 0E 94 90 7A 0F 90 0F 90 0F 90 0F 90 CF 91 DF 91 1F 91 0F 91 08 95 0F 93 1F 93 DF 93 CF 93 CD B7 DE B7 2B 97 0F B6 F8 94 DE BF 0F BE CD BF 9F 83 8E 83 79 87 68 87 5B 87 4A 87 19 82 1A 82 1B 82 1C 82 2E 81 3F 81 E8 85 F9 85 AA 85 BB 85 80 E0 60 E0 A9 01 9F 01 8D 01 0E 94 10 79 8D 83 89 81 9A 81 AB 81 BC 81 01 96 A1 1D B1 1D 89 83 9A 83 AB 83 BC 83 84 E6 0E 94 F0 7F 89 81 9A 81 AB 81 BC 81 81 31 27 E2 92 07 20 E0 A2 07 20 E0 B2 07 18 F4 8D 81 88 23 A9 F2 8D 81 2B 96 0F B6 F8 94 DE BF 0F BE CD BF CF 91 DF 91 1F 91 0F 91 08 95 EF 92 FF 92 0F 93 1F 93 82 D6 
+ED
+
+......
+
+09 FF 35 00 03 22 58 52 00 CE B4 D6 AA 00 20 20 20 20 20 20 B0 B4 4E 4F CD CB B3 F6 20 20 20 20 20 20 20 00 D6 F7 B6 AF D5 EF B6 CF D0 C5 CF A2 3A 00 45 43 55 C8 ED BC FE B0 E6 B1 BE BA C5 3A 00 CF B5 CD B3 B9 A9 D3 A6 C9 CC B1 EA CA B6 3A 00 C1 E3 BC FE BA C5 3A 00 56 49 4D C2 EB 3A 00 03 22 F1 95 00 03 22 F1 93 00 03 22 F1 8A 00 03 22 F1 87 00 03 22 F1 90 00 04 14 FF FF FF 00 03 22 58 55 00 03 22 F1 90 00 D5 FD D4 DA B2 D9 D7 F7 2E 2E 2E 00 CA E4 C8 EB 56 49 4E C2 EB 00 CA E4 C8 EB C3 DC C2 EB 00 D5 FD D4 DA B2 D9 D7 F7 2E 2E 2E 00 CA E4 C8 EB C3 DC C2 EB 00 20 20 20 20 20 20 B0 B4 4E 4F CD CB B3 F6 20 20 20 20 20 20 20 00 B8 FC BB BB CD EA B3 C9 2C C7 EB B9 D8 B1 D5 B5 E3 BB F0 BF AA B9 D8 31 30 C3 EB 2C D6 D8 D0 C2 C6 F4 B6 AF C6 FB B3 B5 B2 A2 C8 B7 C8 CF B7 8A 9C 
+ED
+
+09 FF C0 B5 C1 D6 B8 CA BE B5 C6 B4 A6 D3 DA B9 D8 B1 D5 D7 B4 CC AC 2E 00 03 22 58 53 00 03 22 58 55 00 03 22 F1 90 00 D5 FD D4 DA B2 D9 D7 F7 2E 2E 2E 00 CA E4 C8 EB 56 49 4E C2 EB 00 CA E4 C8 EB C3 DC C2 EB 00 B0 B4 4E 6F CD CB B3 F6 20 20 20 20 20 B0 B4 59 65 73 D1 A1 D4 F1 00 20 00 3E 00 45 4D 53 BD E2 CB F8 00 B8 FC BB BB 45 4D 53 00 42 43 4D BD E2 CB F8 00 B8 FC BB BB 42 43 4D 00 B6 C1 CA FD BE DD C1 F7 00 B6 C1 B0 E6 B1 BE D0 C5 CF A2 00 C7 E5 B3 FD B9 CA D5 CF C2 EB 00 D4 BF B3 D7 C7 E5 B3 FD 00 D4 BF B3 D7 C6 A5 C5 E4 00 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF B6 C1 
+ED
+
+0B 00 00 00 00 00 00 00 00 00 00 0B //退出Boot
+
+
+关闭电源：	0B 00 B3 00 00 00 00 00 00 00 00 BE //00 B30 -> 0xB30为检验和，正确返回57，错误返回0E
+
+
+05 00 00 00 00 00 00 00 00 00 00 05 		//读取实际的校验值(调试)
+
+
+
+
+
+
+
+
+
+
+
+
+/**********************************************
+*
+*	168-PRO升级
+*
+***********************************************/
+01 53 4E 30 30 30 30 41 31 00 01 D4 //SN0000A1
+F1 
+
+0B 00 00 00 00 00 00 00 00 00 00 0B 
+
+C2 00 00 00 00 00 00 00 00 00 00 C2 
+D2 00 11 D3 00 00 12 22 00 00 01 EA 
+
+C4 00 00 00 00 00 00 00 00 00 00 C4 //enter boot
+A5 50 00 BB 00 00 00 00 00 00 01 B0 
+
+C9 00 00 00 00 00 00 00 00 00 00 C9 //read sn
+A9 CE AF CF CF CF CF BE C9 00 06 E9 
+   31 50 30 30 30 30 41 36	    //SN 取反
+
+01 31 50 30 30 30 30 41 36 00 01 B9 //check device
+F4 
+
+C8 00 00 00 00 00 00 00 00 00 00 C8 //read ver
+A8 31 36 38 20 30 37 2E 34 30 02 60 
+
+CA 00 00 00 00 00 00 00 00 00 00 CA //read count
+A8 00 11 D3 00 00 00 00 00 00 01 8C 
+
+0B 00 00 00 00 00 00 00 00 00 00 0B 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*************************************
+*
+*	虚拟键盘描述  
+*
+**************************************/
+//Release
+30 00 00 00 00 00 00 00 00 00 00 30
+
+//Enter
+30 01 00 00 00 00 00 00 00 00 00 31
+
+//Esc
+30 03 00 00 00 00 00 00 00 00 00 33
+
+//Up
+30 02 00 00 00 00 00 00 00 00 00 32
+
+//Down
+30 05 00 00 00 00 00 00 00 00 00 35
+
+//Left
+30 04 00 00 00 00 00 00 00 00 00 34
+
+//Right
+30 06 00 00 00 00 00 00 00 00 00 36
+上位机压下时候发送Enter/Esc/Up/Down/Left/Right 对应功能键盘一次
+释放时候发送Release一次
+无返回
+
+
+
+
+
+
+
+
+
+
+
+/*********************************************
+*
+*	虚拟屏幕描述  
+*
+**********************************************/
+	Cmd	pag	col	FUN_NotDisp	StrLen	Data0	Data1	Data2	Data3	Count	CrcH	CrcL
+	Cmd	Data4	Data5	Data6	Data7	Data8	Data9	Data10	Data11	Count	CrcH	CrcL
+NotDisp高半位 	CLR_SCR:0x00; GENERAL_CN_EN_STR:0x10; SPECIFY_CN_EN_STR:0x20; 
+		ASCII_6x8:0x30;PROGRESS_BAR:0x50
+NotDisp低半位 0:正显示, 1:反显示
+Count	0-n, 0xFF为最后一包
+StrLen:	PROGRESS时候为进度百分比
+0x30
+
+
+  SendCnEnStr(0, 0, 0, 0, 0, CLR_SCR);
+  SendCnEnStr(0, 0, 0, 0, 0, FRAME);
+  SendCnEnStr(0, 0, 0, i, 0, PROGRESS);
+
+
+
+//执行函数:Clr_Scr (void)
+31 00 00 00 01 00 00 00 00 FF 01 31 //清屏幕
+
+//执行函数:DispSpecifyCnEnStr(7, 33, 0, 0, (unsigned int)SCBXJMQ);
+//实际的编码:CA D6 B3 D6 B1 E3 D0 AF BD E2 C2 EB C6 F7
+//屏幕显示:手持便携解码器
+31 07 21 20 0E CA D6 B3 D6 00 03 B0 
+31 B1 E3 D0 AF BD E2 C2 EB 01 06 91 
+31 C6 F7 D0 AF BD E2 C2 EB FF 07 B8 
+
+//执行函数:DispSpecifyCnEnStr(4,  7, 0, 0, (unsigned int)A168_TOOL);
+//实际的编码:A1 CB 20 20 20 20 31 36 38 2D 50 52 4F 20 20 20 20 A1 CB
+//屏幕显示:∷    168-PRO    ∷
+31 04 07 20 13 A1 CB 20 20 00 02 1B 
+31 20 20 31 36 38 2D 50 52 01 01 E0 
+31 4F 20 20 20 20 A1 CB 52 FF 03 BD 
+
+//执行函数:Disp6x8Ascii(12,  20, 0, 0, Url);
+//实际的编码:73 65 72 76 69 63 65 2E 31 36 38 61 75 74 6F 2E 63 6F 6D
+//屏幕显示:service.168auto.com
+31 0C 14 30 13 73 65 72 76 00 02 54 
+31 69 63 65 2E 31 36 38 61 01 02 91 
+31 75 74 6F 2E 63 6F 6D 61 FF 04 56 
+
+//执行函数:Disp6x8Ascii(14,  37, 0, 0, Ver);
+//实际的编码:56 65 72 73 69 6F 6E 3A
+//屏幕显示:Version:
+31 0C 14 30 13 73 65 72 76 00 02 54 
+31 69 63 65 2E 31 36 38 61 01 02 91 
+31 75 74 6F 2E 63 6F 6D 61 FF 04 56 
+
+//执行函数:Disp6x8Ascii(14,  85, 0, 5, (char *)&(ProductVer[4]));
+//实际的编码:30 37 2E 31 31
+//屏幕显示:07.11
+31 0E 55 30 05 30 37 2E 31 00 01 8F 
+31 31 55 30 05 30 37 2E 31 FF 02 B1 
+
+//执行函数:Clr_Scr(void)
+31 00 00 00 01 30 37 2E 31 FF 01 F7 //清屏幕
+
+//执行函数:DispSpecifyCnEnStr(4,13,0,0, (unsigned int)qzsfl);
+//实际的汉字编码:C7 EB D7 F1 CA D8 B7 A8 C2 C9 A3 AC BD F7 C9 F7 B2 D9 D7 F7 A3 A1 B2 BB B5 C3 B0 D1 B1 BE C9 E8 B1 B8 D3 C3 D3 DA B7 C7 B7 A8 C4 BF B5 C4 D3 EB B3 A1 BA CF A3 AC CE D2 C3 C7 B2 BB B6 D4 B1 BE D2 C7 C6 F7 D4 EC B3 C9 B5 C4 D6 B1 BD D3 BB F2 BC E4 BD D3 BE AD BC C3 CB F0 CA A7 B8 BA D4 F0 A3 AC BD D3 CA DC B0 B4 59 65 73 BC FC A1 A3 
+//显示的汉字:请遵守法律，谨慎操作！不得把本设备用于非法目的与场合，我们不对本仪器造成的直接或间接经济损失负责，接受按Yes键。
+31 04 0D 20 6F C7 EB D7 F1 00 04 4B 
+31 CA D8 B7 A8 C2 C9 A3 AC 01 06 0D 
+31 BD F7 C9 F7 B2 D9 D7 F7 02 07 00 
+31 A3 A1 B2 BB B5 C3 B0 D1 03 05 DE 
+31 B1 BE C9 E8 B1 B8 D3 C3 04 06 54 
+31 D3 DA B7 C7 B7 A8 C4 BF 05 06 43 
+31 B5 C4 D3 EB B3 A1 BA CF 06 06 4B 
+31 A3 AC CE D2 C3 C7 B2 BB 07 06 1E 
+31 B6 D4 B1 BE D2 C7 C6 F7 08 06 88 
+31 D4 EC B3 C9 B5 C4 D6 B1 09 06 76 
+31 BD D3 BB F2 BC E4 BD D3 0A 06 A8 
+31 BE AD BC C3 CB F0 CA A7 0B 06 52 
+31 B8 BA D4 F0 A3 AC BD D3 0C 06 52 
+31 CA DC B0 B4 59 65 73 BC 0D 05 35 
+31 FC A1 A3 B4 59 65 73 BC FF 06 11 
+
+
+//执行函数:DispGeneralCnEnStr(9, 31, 1, 0, " No SD Card!");
+//实际的汉字编码:20 4E 6F 20 53 44 20 43 61 72 64 21
+//显示的汉字:  No SD Card!
+31 09 1F 11 0C 20 4E 6F 20 00 01 73 
+31 53 44 20 43 61 72 64 21 FF 03 82 
+
+
+
+
+
+
+
+
+
+
+
+
+/*************************************
+*
+*	运行函数
+*
+*************************************/
+//运行第一个函数
+F0 01 00 00 00 00 00 00 00 00 00 F1
+
+
+//运行第二个函数
+F0 02 00 00 00 00 00 00 00 00 00 F2
+
+
+//运行第三个函数
+F0 03 00 00 00 00 00 00 00 00 00 F3
+
+
+//运行第四个函数
+F0 04 00 00 00 00 00 00 00 00 00 F4
+
+
+//运行第五个函数
+F0 05 00 00 00 00 00 00 00 00 00 F5
+
+
+//运行第六个函数
+F0 06 00 00 00 00 00 00 00 00 00 F6
+
+
+//运行第七个函数
+F0 07 00 00 00 00 00 00 00 00 00 F7
+
+
+//运行第八个函数
+F0 08 00 00 00 00 00 00 00 00 00 F8
+
+
+
+//接收到的：函数正常退出
+F1 00 00 00 00 00 00 00 00 00 00 F1
+
+
+//强制退出函数
+F2 00 00 00 00 00 00 00 00 00 00 F2
+
+
+
+
+
+
+//------------------------文件保存到上位机----------------------------------------------------------
+40 XX XX XX XX 00 00 00 00 00 XX XX   //准备上传文件到上位机
+D0     :  40 保存文件操作指令
+D1-D4  :  需要上传的文件大小 高位在前 低位在后  
+D5-D9  :  保留字节
+D10-D11:  和校验
+例如上传的文件大小为1024Byte, 则发送指令为 40 00 00 04 00 00 00 00 00 00 00 44
+
+返回   : 0B 成功
+         0C CRC错误
+         11 命令不支持 (文件大小错误)
+//--------------------------------------------------------------
+41 XX XX XX XX XX XX XX XX NN XX XX //发送数据到上位机 固定12字节
+D0     :  传送数据指令
+D1-D8  :  传送的数据
+D9     :  传送数据的编号 0-ff循环
+
+返回   : 0B 成功
+         0C CRC错误
+         11 命令不支持 (在没有发送准备上传文件指令之前发送该指令)
+         0D 超时错误 (规定时间内没有完成一个完整数据包的传送)
+//--------------------------------------------------------------
+42 00 00 00 00 00 00 00 00 00 00 42   //文件传送结束
+
+返回   : 0B 成功
+         0C CRC错误
+         0D 超时错误 (规定时间内没有完成一个完整数据包的传送)
+         0A 传输的数据量与需要保存的文件大小不一致(传输数据量小于文件大小)
+//--------------------------------------------------------------
+
+//----------------------从上位机读取文件-----------------------------------------------------------------
+43 00 00 00 00 00 00 00 00 01 00 00    //读文件准备
+D0     :  读取文件指令
+D9     :  01  自动读取最新保存的文件(不需要用户选择)
+          02  用户手动选择需要下载到下位机的文件  
+
+返回   : 43 LL LL LL LL 00 00 00 00 01 00 00 //LL LL LL LL 需要读取的文件的大小   高位在前 低位在后
+
+         0C CRC错误
+         11 命令不支持 (文件大小错误)
+
+//----------------------------------------------------------------
+44 XX XX XX XX 00 00 00 00 00 00 00 //读文件
+D0     : 读文件指令
+D1-D4  : XX XX XX XX 本包数据需要读取的首地址       高位在前 低位在后 
+D9     : 本报数据需要接收的数据长度,数据长度 = D9 + 1;
+
+成功返回   : 44 XX XX XX ... XX NN XX XX   //固定12字节 数据长度8字节
+D0         : 44 返回数据指令
+D1-D8      : 返回的数据
+
+错误返回   :
+             0C CRC错误
+             11 命令不支持(没有发送读文件准备指令之前发送本指令)
+             0A (数据包长度大于文件大小/读取文件首地址超出文件范围/首地址+数据包长度超出文件范围)
+
+//----------------------------------------------------------------
+45 00 00 00 00 00 00 00 00 00 00 45 //读文件结束,发送该指令后如果再次读文件,需要重新发送读文件准备指令
+返回   : 0B 成功
+         0C CRC错误
+
+
+
+
+
+
+
+
+
+
