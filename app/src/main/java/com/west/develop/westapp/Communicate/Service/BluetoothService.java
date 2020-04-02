@@ -494,10 +494,9 @@ public class BluetoothService extends Service {
          * 获取 SDP 协议UUID
          */
         if (uuids != null) {
-            for (int i = 0; i < uuids.length; i++) {
-                ParcelUuid uuid = uuids[i];
+            for (ParcelUuid uuid : uuids) {
                 int service = BluetoothAllUuid.getServiceFromUuid(uuid);
-               // if (service == Profile.ChatSecureService || service == Profile.ChatINSecureService) {
+                // if (service == Profile.ChatSecureService || service == Profile.ChatINSecureService) {
                 if (service == Profile.SerialPortService) {
                     isDevice = true;
                     break;
