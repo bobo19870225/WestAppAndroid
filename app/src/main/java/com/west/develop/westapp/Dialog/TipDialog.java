@@ -244,6 +244,7 @@ public class TipDialog extends Dialog implements View.OnClickListener {
      * 设置 取消按钮 点击事件
      *
      * @param listener
+     *
      */
     public void setNegativeClickListener(String text, OnClickListener listener) {
         mNegativeText = text;
