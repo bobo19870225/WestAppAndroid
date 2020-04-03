@@ -48,7 +48,6 @@ public class BluetoothSerialPort extends BaseSerialPort {
     public BluetoothSerialPort(BluetoothDevice device){
         super();
         mDevice = device;
-
     }
 
     public BluetoothDevice getDevice(){

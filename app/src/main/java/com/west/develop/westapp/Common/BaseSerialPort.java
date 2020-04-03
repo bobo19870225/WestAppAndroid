@@ -16,8 +16,8 @@ public abstract class BaseSerialPort {
     public static final int DEFAULT_READ_BUFFER_SIZE = 4 * 1024;
     public static final int DEFAULT_WRITE_BUFFER_SIZE = 4 * 1024;
 
-    protected final Object mReadBufferLock = new Object();
-    protected final Object mWriteBufferLock = new Object();
+    private final Object mReadBufferLock = new Object();
+    private final Object mWriteBufferLock = new Object();
 
     protected int mReadIndex = 0;
     protected int mReceiveIndex = 0;
@@ -31,7 +31,7 @@ public abstract class BaseSerialPort {
     /**
      * Internal read buffer.  Guarded by {@link #mReadBufferLock}.
      */
-    protected byte[] mReadBuffer;
+    private byte[] mReadBuffer;
 
     /**
      * Internal write buffer.  Guarded by {@link #mWriteBufferLock}.
@@ -39,10 +39,10 @@ public abstract class BaseSerialPort {
     protected byte[] mWriteBuffer;
 
 
-    protected boolean isBreak = false;
+    private volatile boolean isBreak = false;
 
 
-    public BaseSerialPort(){
+    public BaseSerialPort() {
         mReadBuffer = new byte[DEFAULT_READ_BUFFER_SIZE];
         mWriteBuffer = new byte[DEFAULT_WRITE_BUFFER_SIZE];
     }
@@ -50,31 +50,32 @@ public abstract class BaseSerialPort {
 
     /**
      * 接收到数据
-     * @param data
+     *
+     * @param data 数据
      */
-    public void onReceive(byte[] data){
+    public void onReceive(byte[] data) {
         mReceiveLock.lock();
         Log.e("InData", HexDump.dumpHexString(data));
         try {
-            for (int i = 0; i < data.length; i++) {
+            for (byte datum : data) {
                 if (mReceiveIndex >= mReadIndex) {
                     if (mReceiveIndex >= DEFAULT_READ_BUFFER_SIZE) {
                         mReceiveIndex = 0;
                     }
-                    mReadBuffer[mReceiveIndex] = data[i];
+                    mReadBuffer[mReceiveIndex] = datum;
                     mReceiveIndex++;
                 } else {
-                    mReadBuffer[mReceiveIndex] = data[i];
+                    mReadBuffer[mReceiveIndex] = datum;
                     mReceiveIndex++;
                     if (mReceiveIndex == mReadIndex) {
                         mReadIndex++;
-                        if(mReadIndex >= DEFAULT_READ_BUFFER_SIZE){
+                        if (mReadIndex >= DEFAULT_READ_BUFFER_SIZE) {
                             mReadIndex = 0;
                         }
                     }
                 }
 
-                if(mReceiveIndex >= DEFAULT_READ_BUFFER_SIZE){
+                if (mReceiveIndex >= DEFAULT_READ_BUFFER_SIZE) {
                     mReceiveIndex = 0;
                 }
             }
@@ -83,7 +84,7 @@ public abstract class BaseSerialPort {
                     @Override
                     public void run() {
                         //try {
-                            mReceiveListener.onReceive(getReadBufferSize());
+                        mReceiveListener.onReceive(getReadBufferSize());
                        /* } catch (IOException ex) {
                             ex.printStackTrace();
                         }*/
@@ -92,11 +93,9 @@ public abstract class BaseSerialPort {
             } else {
                 Log.e("ReceiveListener", "null");
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             mReceiveLock.unlock();
         }
     }
@@ -104,9 +103,10 @@ public abstract class BaseSerialPort {
 
     /**
      * 获取接收缓冲区 已接收大小
-     * @return
+     *
+     * @return 已接收大小
      */
-    public int getReadBufferSize(){
+    public int getReadBufferSize() {
         int size = 0;
 
         if (mReadIndex <= mReceiveIndex) {
@@ -121,9 +121,10 @@ public abstract class BaseSerialPort {
 
     /**
      * 从接收缓冲区读取一个字节
-     * @return
+     *
+     * @return 缓冲区读取一个字节
      */
-    public byte getReadByte(){
+    public byte getReadByte() {
         if (getReadBufferSize() <= 0) {
             return -1;
         }
@@ -140,8 +141,9 @@ public abstract class BaseSerialPort {
 
     /**
      * 从接收缓冲区读取 指定长度的数据
-     * @param len
-     * @return
+     *
+     * @param len 指定长度
+     * @return 数据
      */
     public byte[] getReadBytes(int len) {
         if (len < 0) {
@@ -181,13 +183,14 @@ public abstract class BaseSerialPort {
 
     /**
      * 接收监听
-     * @param listener
+     *
+     * @param listener 接收监听
      */
     public void setRevListener(ReceiveListener listener) {
-        if(mReceiveListener != listener) {
+        if (mReceiveListener != listener) {
             mReceiveListener = listener;
 
-            if(getReadBufferSize() > 0){
+            if (getReadBufferSize() > 0) {
                 mReceiveListener.onReceive(getReadBufferSize());
             }
         }
@@ -212,15 +215,12 @@ public abstract class BaseSerialPort {
     /**
      * Writes as many bytes as possible from the source buffer.
      *
-     * @param src the source byte buffer
+     * @param src           the source byte buffer
      * @param timeoutMillis the timeout for writing
      * @return the actual number of bytes written
      * @throws IOException if an error occurred during writing
      */
     public abstract int write(final byte[] src, final int timeoutMillis);
-
-
-
 
 
     /**
@@ -291,6 +291,7 @@ public abstract class BaseSerialPort {
 
     /**
      * Flush non-transmitted output data and / or non-read input data
+     *
      * @param flushRX {@code true} to flush non-transmitted output data
      * @param flushTX {@code true} to flush non-read input data
      * @return {@code true} if the operation was successful, or

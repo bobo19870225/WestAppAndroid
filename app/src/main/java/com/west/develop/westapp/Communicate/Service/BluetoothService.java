@@ -73,10 +73,10 @@ public class BluetoothService extends Service {
                 mOpenThread = null;
             }
 
-            if(BondDialog.getInstance() != null){
+            if (BondDialog.getInstance() != null) {
                 return;
             }
-            if(SignDialog.getInstance() != null){
+            if (SignDialog.getInstance() != null) {
                 return;
             }
 
@@ -398,7 +398,7 @@ public class BluetoothService extends Service {
                         String name = device.getName();
                         ArrayList<String> btList = Config.getInstance(BluetoothService.this).getBTList();
 
-                        if(btList != null && btList.contains(name)){
+                        if (btList != null && btList.contains(name)) {
                             foundNewDevice(device);
                         }
 
@@ -442,7 +442,7 @@ public class BluetoothService extends Service {
                     String name = device.getName();
                     ArrayList<String> btList = Config.getInstance(BluetoothService.this).getBTList();
 
-                    if(btList != null && btList.contains(name)){
+                    if (btList != null && btList.contains(name)) {
                         foundNewDevice(device);
                     }
                     //foundNewDevice(device);
@@ -455,7 +455,10 @@ public class BluetoothService extends Service {
                     ConnectStatus.getInstance(BluetoothService.this).compareBTDevice(mDevices);
                 }
                 isRestart = false;
-                mHandler.sendEmptyMessage(MSG_START_DISCOVERY);
+//              没有连接时重连
+                if (null != port && port.getState() != BluetoothSerialPort.STATE_CONNECTED) {
+                    mHandler.sendEmptyMessage(MSG_START_DISCOVERY);
+                }
             }
 
             /**
@@ -480,6 +483,7 @@ public class BluetoothService extends Service {
         }
     };
 
+    private BluetoothSerialPort port;
 
     /**
      * 发现新蓝牙设备
@@ -508,8 +512,7 @@ public class BluetoothService extends Service {
              */
             if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 device.createBond();
-            }
-            else if(device.getBondState() == BluetoothDevice.BOND_BONDED){
+            } else if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                 device.fetchUuidsWithSdp();
             }
         }
@@ -518,7 +521,7 @@ public class BluetoothService extends Service {
                 if (!mDevices.contains(device)) {
                     mDevices.add(device);
                 }
-                final BluetoothSerialPort port = new BluetoothSerialPort(device);
+                port = new BluetoothSerialPort(device);
 
                 if (Config.getInstance(BluetoothService.this).getBondDevice() != null) {
                     if (SignDialog.getInstance() != null) {
@@ -543,8 +546,7 @@ public class BluetoothService extends Service {
             } else if (device.getBondState() == BluetoothDevice.BOND_NONE) {
                 device.createBond();
             }
-        }
-        else{
+        } else {
             device.fetchUuidsWithSdp();
         }
     }

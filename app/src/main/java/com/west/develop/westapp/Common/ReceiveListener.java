@@ -8,5 +8,5 @@ package com.west.develop.westapp.Common;
  * notice when port receive data
  */
 public interface ReceiveListener {
-    public void onReceive(int bufferSize);
+    void onReceive(int bufferSize);
 }

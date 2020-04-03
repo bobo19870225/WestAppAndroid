@@ -23,8 +23,8 @@ public class ConnectedThread extends Thread {
 
     private BluetoothSerialPort mPort;
 
-    public ConnectedThread(BluetoothSocket socket,BluetoothSerialPort port) {
-       // Log.d(TAG, "create ConnectedThread: " + socketType);
+    public ConnectedThread(BluetoothSocket socket, BluetoothSerialPort port) {
+        // Log.d(TAG, "create ConnectedThread: " + socketType);
         mPort = port;
         mmSocket = socket;
         InputStream tmpIn = null;
@@ -51,25 +51,32 @@ public class ConnectedThread extends Thread {
         Log.i(TAG, "BEGIN mConnectedThread");
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int len;
-
         // Keep listening to the InputStream while connected
         while (mPort.getState() == BluetoothSerialPort.STATE_CONNECTED) {
-            try {
-                len = mmInStream.read(buffer);
 
-                if(len > 0) {
+            try {
+                Log.e(TAG, "read:");
+                len = mmInStream.read(buffer);
+//                int read = mmInStream.read();
+                Log.e(TAG, "len:" + len);
+                if (len > 0) {
                     byte[] readBuff = new byte[len];
-                    for(int i = 0;i < len;i++){
+                    for (int i = 0; i < len; i++) {
                         readBuff[i] = buffer[i];
                     }
                     Log.i("Bluetooth-Receive:", new String(readBuff));
-
                     mPort.onReceive(readBuff);
                 }
                 // Send the obtained bytes to the UI Activity
             } catch (IOException e) {
-                Log.e(TAG, "disconnected");
+                Log.e(TAG, "disconnected" + e.toString());
                 mPort.connectionLost();
+                try {
+                    mmInStream.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    Log.e(TAG, "mmInStream" + ex.toString());
+                }
                 // connectionLost();
                 break;
             }
@@ -87,8 +94,13 @@ public class ConnectedThread extends Thread {
             Log.e("bluetooth-Write", buffer.length + "");
             mmOutStream.write(buffer);
         } catch (IOException e) {
+            try {
+                mmOutStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             cancel();
-           // Log.e(TAG, "Exception during write", e);
+            Log.e(TAG, "Exception during write", e);
         }
     }
 

@@ -226,7 +226,7 @@ public class COMFunAPI {
 
         if (port == null || !port.isOpened()) {
             Log.e("Write", "Port Closed" + size);
-            return result;
+            return false;
         }
 
         byte[] buf = new byte[size];
