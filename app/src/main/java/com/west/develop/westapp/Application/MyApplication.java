@@ -6,17 +6,23 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
+import com.west.develop.westapp.Bean.AppBean.DocumentVersion;
 import com.west.develop.westapp.Config.Config;
 import com.west.develop.westapp.Dialog.ConnectStatus;
-import com.west.develop.westapp.Bean.AppBean.DocumentVersion;
 import com.west.develop.westapp.Tools.CrashHandler;
-import com.west.develop.westapp.Tools.Utils.LanguageUtil;
 import com.west.develop.westapp.Tools.MDBHelper;
+import com.west.develop.westapp.Tools.Utils.LanguageUtil;
 
 import java.util.Locale;
 
 /**
- * Created by Develop14 on 2017/5/27.
+ * 1.删除汽车更新数据库表
+ * 2.初始化自定义异常捕获
+ * 3.初始化语言（英文或中文）
+ * 4.监听应用运行在前台？后台
+ * 5.退出程序时关闭数据库链接
  */
 public class MyApplication extends Application {
     public static final String ACTION_APP_FOREGROUND = "com.west.develop.westapp.Action_Foreground";
@@ -26,10 +32,8 @@ public class MyApplication extends Application {
 
 
     private boolean isBackGround = false;
-
     private DocumentVersion NewFWVersion = null;
     private DocumentVersion CurrentFWVersion = null;
-
     private DocumentVersion NewAPPVersion = null;
 
     @Override
@@ -37,8 +41,7 @@ public class MyApplication extends Application {
         super.onCreate();
         MDBHelper.getInstance(this).deleteTb();
         CrashHandler.getInstance().init(this);
-
-        if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_EN){
+        if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_EN) {
             Locale.setDefault(Locale.ENGLISH);
             LanguageUtil.setAppLanguage(this, Locale.ENGLISH);
         } else if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_CH) {
@@ -48,25 +51,37 @@ public class MyApplication extends Application {
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+            public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
+            }
+
             @Override
-            public void onActivityStarted(Activity activity) {}
+            public void onActivityStarted(@NonNull Activity activity) {
+            }
+
             @Override
-            public void onActivityResumed(Activity activity) {
+            public void onActivityResumed(@NonNull Activity activity) {
                 if (isBackGround) {
                     isBackGround = false;
                     Intent intent = new Intent(ACTION_APP_FOREGROUND);
                     sendBroadcast(intent);
                 }
             }
+
             @Override
-            public void onActivityPaused(Activity activity) {}
+            public void onActivityPaused(@NonNull Activity activity) {
+            }
+
             @Override
-            public void onActivityStopped(Activity activity) {}
+            public void onActivityStopped(@NonNull Activity activity) {
+            }
+
             @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+            }
+
             @Override
-            public void onActivityDestroyed(Activity activity) {}
+            public void onActivityDestroyed(@NonNull Activity activity) {
+            }
         });
 
     }
@@ -74,7 +89,7 @@ public class MyApplication extends Application {
     @Override
     public void onTerminate() {
         MDBHelper.getInstance(this).close();
-        if (ConnectStatus.getInstance(this).getBTPort() != null){
+        if (ConnectStatus.getInstance(this).getBTPort() != null) {
             ConnectStatus.getInstance(this).getBTPort().destroy();
         }
         super.onTerminate();
@@ -92,32 +107,32 @@ public class MyApplication extends Application {
 
     // 横竖屏切换，键盘等
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_EN){
+        if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_EN) {
             newConfig.setLocale(Locale.ENGLISH);
         } else if (Config.getInstance(this).getLanguage() == Config.LANGUAGE_CH) {
             newConfig.setLocale(Locale.SIMPLIFIED_CHINESE);
         }
         this.createConfigurationContext(newConfig);
-        getResources().updateConfiguration(newConfig,getResources().getDisplayMetrics());
+        getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
 
     }
 
 
-    public void setNewFWVersion(DocumentVersion version){
+    public void setNewFWVersion(DocumentVersion version) {
         this.NewFWVersion = version;
     }
 
-    public void setCurrentFWVersion(DocumentVersion version){
+    public void setCurrentFWVersion(DocumentVersion version) {
         this.CurrentFWVersion = version;
-        if(this.CurrentFWVersion != null){
+        if (this.CurrentFWVersion != null) {
             Intent intent = new Intent(ACTION_FWVERSION_REFRESH);
             sendBroadcast(intent);
         }
     }
 
-    public DocumentVersion getCurrentFWVersion(){
+    public DocumentVersion getCurrentFWVersion() {
         return this.CurrentFWVersion;
     }
 
@@ -131,10 +146,9 @@ public class MyApplication extends Application {
 
     /**
      * 是否可以升级
-     * @return
      */
-    public boolean updateFWValid(){
-        if(CurrentFWVersion == null || NewFWVersion == null){
+    public boolean updateFWValid() {
+        if (CurrentFWVersion == null || NewFWVersion == null) {
             return false;
         }
 
@@ -146,15 +160,14 @@ public class MyApplication extends Application {
         String verNew = newMain + "." + newSlave;
         String verCurrent = currentMain + "." + currentSlave;
 
-        try{
+        try {
             double versionNew = Double.parseDouble(verNew);
             double versionCurrent = Double.parseDouble(verCurrent);
 
-            if(versionNew > versionCurrent){
+            if (versionNew > versionCurrent) {
                 return true;
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return false;
@@ -163,7 +176,7 @@ public class MyApplication extends Application {
     /**
      * 固件程序升级完成
      */
-    public void updateFWSuccess(){
+    public void updateFWSuccess() {
         CurrentFWVersion = NewFWVersion;
     }
 }

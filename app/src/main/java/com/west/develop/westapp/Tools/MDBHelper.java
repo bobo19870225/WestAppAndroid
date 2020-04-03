@@ -6,14 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.west.develop.westapp.Config.Config;
 import com.west.develop.westapp.Bean.AppBean.AuthBean;
 import com.west.develop.westapp.Bean.NCarBean;
 import com.west.develop.westapp.Bean.Upgrade.DownloadDB;
 import com.west.develop.westapp.Bean.Upgrade.UpdateDB;
+import com.west.develop.westapp.Config.Config;
 
 import java.util.ArrayList;
-
 import java.util.Locale;
 
 
@@ -56,10 +55,8 @@ public class MDBHelper extends SQLiteOpenHelper {
     private static MDBHelper instance;
 
 
-    /**
+    /**·
      * 获取单例
-     * @param context
-     * @return
      */
     public static MDBHelper getInstance(Context context){
         if(instance == null){
@@ -121,7 +118,7 @@ public class MDBHelper extends SQLiteOpenHelper {
                     ")");
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
@@ -147,9 +144,8 @@ public class MDBHelper extends SQLiteOpenHelper {
 
     /**
      * 刷新排序方式
-     * @param sortBy
      */
-    public static void  refreshSortBy(int sortBy){
+    private static void  refreshSortBy(int sortBy){
         if(sortBy == Config.SORT_BY_NUMBER){
             mSortBy = kCarNumber;
         }
@@ -168,8 +164,6 @@ public class MDBHelper extends SQLiteOpenHelper {
     }
     /**
      * 获取汽车列表
-     * @param sortBy
-     * @return
      */
     public  ArrayList<NCarBean> getCarList(int sortBy){
         ArrayList<NCarBean> list = new ArrayList<>();
@@ -201,7 +195,6 @@ public class MDBHelper extends SQLiteOpenHelper {
     /**
      * 插入汽车
      * 在添加汽车时使用
-     * @param carBean
      */
     public void insertCarBean(NCarBean carBean){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -225,13 +218,8 @@ public class MDBHelper extends SQLiteOpenHelper {
 
     public boolean existCarBean(String carId){
         SQLiteDatabase database = this.getReadableDatabase();
-
         Cursor cursor = database.rawQuery("select * from " + TB_CAR + " where " + kCarID + "=?",new String[]{carId});
-
-        if(cursor.moveToNext()){
-            return true;
-        }
-        return false;
+        return cursor.moveToNext();
     }
 
 
@@ -324,7 +312,7 @@ public class MDBHelper extends SQLiteOpenHelper {
         values.put(kUpdateName, bean.getProgramName());
         values.put(kUpdateAuth,bean.isAuthen());
         try {
-            /**
+            /*
              * 如果数据库中存在该条数据，就不插入
              */
             Cursor cursor = db.rawQuery("select * from " + TB_CAR_UPDATE + " where " + kUpdateName +" = ? " , new String[]{bean.getProgramName()});
@@ -365,7 +353,6 @@ public class MDBHelper extends SQLiteOpenHelper {
 
     /**
      * 往授权表中插入程序
-     * @param updateDB
      */
     public void insertProgramAuth(UpdateDB updateDB){
         if(!Config.getInstance(mContext).isSigned()){

@@ -31,12 +31,9 @@ public class CrashHandler  implements Thread.UncaughtExceptionHandler{
 
     /**
      * 初始化,注册Context对象,
-     *
-     * @param ctx
      */
     public void init(Context ctx) {
         mContext = ctx;
-
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
@@ -53,7 +50,7 @@ public class CrashHandler  implements Thread.UncaughtExceptionHandler{
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-
+                e.printStackTrace();
             }
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(10);
@@ -110,9 +107,8 @@ public class CrashHandler  implements Thread.UncaughtExceptionHandler{
 
     /**
      * 利用递归方法创建文件夹
-     * @param dir
      */
-    public void makeDir(File dir){
+    private void makeDir(File dir){
         if(dir.exists()){
             return;
         }
