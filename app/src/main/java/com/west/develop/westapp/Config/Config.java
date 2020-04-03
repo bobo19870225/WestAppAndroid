@@ -1,9 +1,11 @@
 package com.west.develop.westapp.Config;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.west.develop.westapp.Application.MyApplication;
@@ -20,12 +22,12 @@ import java.util.Calendar;
 public class Config {
     private static final String KEY_SHAREDP = "west_Config_SHAREDP";
     private static final String kSharedPSave = "sharedP_Config_OBJ";
+    private static final String TAG = Config.class.getSimpleName();
+    private static final int MAX_NUM = 7;
+    private static final int MIN_NUM = 3;
 
-    public static final int MAX_NUM = 7;
-    public static final int MIN_NUM = 3;
-
-    public static final float MAX_TEXTSIZE = 30;
-    public static final float MIN_TEXTSIZE = 10;
+    private static final float MAX_TEXTSIZE = 30;
+    private static final float MIN_TEXTSIZE = 10;
 
     /**
      * 主页图标 排序方式
@@ -58,7 +60,8 @@ public class Config {
     private static SharedPreferences mSharepP;
 
     private static Config instance;
-
+    //使用的是applicationContext，不会内存泄漏。
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
 
     public static boolean checked = false;
@@ -71,12 +74,12 @@ public class Config {
 
 
     private boolean isFirstRun = true;
-    private boolean toggle = false ;
+    private boolean toggle = false;
 
     //默认中文
     private int language = LANGUAGE_CH;
 
-   // private User user;
+    // private User user;
 
     private boolean isSigned = false;
 
@@ -84,7 +87,7 @@ public class Config {
 
     private boolean isConfigured = false; //标志是否配置完成
 
-    private Calendar mLastDate = null ;
+    private Calendar mLastDate = null;
 
 
     private Preference mPreference = new Preference();
@@ -96,43 +99,42 @@ public class Config {
 
     private ArrayList<String> mBTNameList = null;
 
-    public static Config getInstance(Context context){
+    public static Config getInstance(Context context) {
         mContext = context.getApplicationContext();
-        if(mSharepP == null){
-            mSharepP = mContext.getSharedPreferences(KEY_SHAREDP,Context.MODE_PRIVATE);
+        if (mSharepP == null) {
+            mSharepP = mContext.getSharedPreferences(KEY_SHAREDP, Context.MODE_PRIVATE);
         }
 
-        if(instance == null){
+        if (instance == null) {
             getInstanceFromShareP();
         }
 
         return instance;
     }
 
-    private static void getInstanceFromShareP(){
-        String configStr = mSharepP.getString(kSharedPSave,"");
+    private static void getInstanceFromShareP() {
+        String configStr = mSharepP.getString(kSharedPSave, "");
 
-        try{
+        try {
             Gson gson = new Gson();
-            instance = gson.fromJson(configStr,Config.class);
+            instance = gson.fromJson(configStr, Config.class);
+        } catch (Exception ex) {
+            Log.e(TAG, ex.toString());
         }
-        catch (Exception ex){
-
-        }
-        if(instance == null){
-            synchronized (Config.class){
+        if (instance == null) {
+            synchronized (Config.class) {
                 instance = new Config();
             }
         }
 
     }
 
-    private void save(){
+    private void save() {
         Gson gson = new Gson();
         String configStr = gson.toJson(instance);
         SharedPreferences.Editor editor = mSharepP.edit();
-        editor.putString(kSharedPSave,configStr);
-        editor.commit();
+        editor.putString(kSharedPSave, configStr);
+        editor.apply();
     }
 
     public int getIconNum() {
@@ -140,10 +142,10 @@ public class Config {
     }
 
     public void setIconNum(int iconNum) {
-        if (iconNum >= MAX_NUM){
+        if (iconNum >= MAX_NUM) {
             iconNum = MAX_NUM;
         }
-        if (iconNum <= MIN_NUM){
+        if (iconNum <= MIN_NUM) {
             iconNum = MIN_NUM;
         }
         this.iconNum = iconNum;
@@ -155,10 +157,10 @@ public class Config {
     }
 
     public void setTextSize(float textSize) {
-        if (textSize >= MAX_TEXTSIZE){
+        if (textSize >= MAX_TEXTSIZE) {
             textSize = MAX_TEXTSIZE;
         }
-        if (textSize <= MIN_TEXTSIZE){
+        if (textSize <= MIN_TEXTSIZE) {
             textSize = MIN_TEXTSIZE;
         }
         this.textSize = textSize;
@@ -170,7 +172,7 @@ public class Config {
     }
 
     public void setSortBy(int sortBy) {
-        if(sortBy != SORT_BY_ID && sortBy != SORT_BY_NUMBER && sortBy != SORT_BY_PINYIN){
+        if (sortBy != SORT_BY_ID && sortBy != SORT_BY_NUMBER && sortBy != SORT_BY_PINYIN) {
             return;
         }
         this.sortBy = sortBy;
@@ -201,15 +203,15 @@ public class Config {
     }
 
     public void setLanguage(int language) {
-        if (language == LANGUAGE_CH || language == LANGUAGE_EN){
+        if (language == LANGUAGE_CH || language == LANGUAGE_EN) {
             this.language = language;
         }
-       save();
+        save();
     }
 
 
     public boolean isSigned() {
-        if(isSigned && bondDevice == null){
+        if (isSigned && bondDevice == null) {
             setSigned(false);
         }
         return isSigned;
@@ -247,7 +249,7 @@ public class Config {
     }
 
     public void setBondDevice(DeviceBean bondDevice) {
-        if(bondDevice == null){
+        if (bondDevice == null) {
             setSigned(false);
         }
         this.bondDevice = bondDevice;
@@ -263,31 +265,31 @@ public class Config {
         save();
     }
 
-    public int getRegCount(){
+    public int getRegCount() {
         return RegCount;
     }
 
-    public void setRegCount(int count){
+    public void setRegCount(int count) {
         RegCount = count;
         save();
     }
 
-    public void addRegCount(){
+    public void addRegCount() {
         RegCount = RegCount + 1;
         save();
     }
 
-    public void setSetRegCount(int count){
+    public void setSetRegCount(int count) {
         setRegCount = count;
         save();
     }
 
-    public int getSetRegCount(){
+    public int getSetRegCount() {
         return setRegCount;
     }
 
     public Calendar getLastDate() {
-        if(mLastDate == null){
+        if (mLastDate == null) {
             mLastDate = Calendar.getInstance();
         }
         return mLastDate;
@@ -295,11 +297,12 @@ public class Config {
 
     /**
      * 设置时间为一个月之后
+     *
      * @return
      */
     public void setLastDate(Calendar mLastDate) {
         this.mLastDate = mLastDate;
-        mLastDate.add(Calendar.DAY_OF_MONTH,30);
+        mLastDate.add(Calendar.DAY_OF_MONTH, 30);
         save();
     }
 
@@ -308,34 +311,34 @@ public class Config {
         return mBTNameList;
     }
 
-    public void addBTName(String name){
-        if(mBTNameList == null){
+    public void addBTName(String name) {
+        if (mBTNameList == null) {
             mBTNameList = new ArrayList<>();
         }
-        if(name == null || name.isEmpty()){
+        if (name == null || name.isEmpty()) {
             return;
         }
 
-        if(!mBTNameList.contains(name)){
+        if (!mBTNameList.contains(name)) {
             mBTNameList.add(name);
         }
         save();
     }
 
-    public int getTimeoutActive(){
+    public int getTimeoutActive() {
         return mPreference.getTimeoutActive();
     }
 
-    public int getTimeoutBackup(){
+    public int getTimeoutBackup() {
         return mPreference.getTimeoutBackup();
     }
 
-    public void setTimeoutActive(int minuts){
+    public void setTimeoutActive(int minuts) {
         mPreference.setTimeoutActive(minuts);
         save();
     }
 
-    public void setTimeoutBackup(int seconds){
+    public void setTimeoutBackup(int seconds) {
         mPreference.setTimeoutBackup(seconds);
         save();
     }

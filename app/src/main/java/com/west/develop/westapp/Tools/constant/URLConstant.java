@@ -5,12 +5,12 @@ package com.west.develop.westapp.Tools.constant;
  */
 public class URLConstant {
 
-    public static final boolean isDebug = true;
-    //    public static final String HOST = isDebug?"http://zexuanlin.wicp.net":"";
-    //public static final String HOST = isDebug?"http://oerllin.51vip.biz":"";
-    public static final String HOST = isDebug ? " http://westapptest.vicp.io" : "";
+    private static final boolean isDebug = true;
+    //    public static final String HOST = isDebug ? "http://zexuanlin.wicp.net" : "";
+    //    public static final String HOST = isDebug?"http://oerllin.51vip.biz":"";
+    private static final String HOST = isDebug ? " http://westapptest.vicp.io" : "";
 
-    public static final String DOMAIN = HOST + "/WestProBack/";
+    private static final String DOMAIN = HOST + "/WestProBack/";
 
     //获取汽车地址
     public static String urlCarList = DOMAIN + "car/getCarList";

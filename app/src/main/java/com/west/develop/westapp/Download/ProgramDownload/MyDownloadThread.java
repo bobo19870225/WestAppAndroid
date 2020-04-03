@@ -105,7 +105,7 @@ public class MyDownloadThread extends Thread {
                                 "logoPath=" + URLEncoder.encode(url, "utf-8") + "&" +
                                 "deviceSN=" + Config.getInstance(mContext).getBondDevice().getDeviceSN());
                     }
-                    mDownLoadFile = new File(FileUtil.getProramDownloadRoot(mContext), fileName + "/" + name);
+                    mDownLoadFile = new File(FileUtil.getProgramDownloadRoot(mContext), fileName + "/" + name);
                 } else {
                     if (url.startsWith("/")) {
                         url = url.substring(1);
@@ -125,7 +125,7 @@ public class MyDownloadThread extends Thread {
                                 "&fileName=" + (URLEncoder.encode(url, "utf-8"));
                     }*/
                     downUrl = new URL(url);
-                    mDownLoadFile = new File(FileUtil.getProramDownloadRoot(mContext), name);
+                    mDownLoadFile = new File(FileUtil.getProgramDownloadRoot(mContext), name);
                 }
 
                 HttpURLConnection http = (HttpURLConnection) downUrl.openConnection();

@@ -431,7 +431,7 @@ public class DownloadManager{
              * 移动文件
              * 从下载目录移动到程序存放目录
              */
-            String downloadRoot = FileUtil.getProramDownloadRoot(mContext);
+            String downloadRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileDownloadRoot = new File(downloadRoot + LocalName);
             File fileDownloadList[] = fileDownloadRoot.listFiles();
             for (int j = 0; j < fileDownloadList.length; j++) {
@@ -526,7 +526,7 @@ public class DownloadManager{
                     String path = FileUtil.getProgramIcon(mContext) + mNCarBean.getLogoPath();
 
                     //移动图标
-                    String logoPath = FileUtil.getProramDownloadRoot(mContext) + url + "/" + mNCarBean.getLogoPath();
+                    String logoPath = FileUtil.getProgramDownloadRoot(mContext) + url + "/" + mNCarBean.getLogoPath();
                     File file = new File(logoPath);
                     if (file.exists()) {
                         File programIconFile = new File(path);
@@ -943,7 +943,7 @@ public class DownloadManager{
         int binCount = 0;
         try {
             String LocalName = fileName.substring(0, fileName.lastIndexOf("/"));
-            String downloadRoot = FileUtil.getProramDownloadRoot(mContext);
+            String downloadRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileDownloadRoot = new File(downloadRoot + LocalName);
             File fileDownloadList[] = fileDownloadRoot.listFiles();
             for (int j = 0; j < fileDownloadList.length; j++) {
@@ -968,7 +968,7 @@ public class DownloadManager{
                         File mDownLoadFileEnd = downloadfiles[i];
                         String name = mDownLoadFileEnd.getPath();
                         if (name.toLowerCase().endsWith(".bin")) {
-                            String hex = FileUtil.readBinFile(mContext, mDownLoadFileEnd);
+                            String hex = FileUtil.readBinFile(mDownLoadFileEnd);
                             String data = HexDump.toHexString(FileUtil.readHexData(mContext, name));
                             data = data.replace(" ", "");
                             binCount++;

@@ -43,68 +43,69 @@ public class FileUtil {
     public static final String AssetsDocument = "document";
     public static final String DOWNLOAD_CRC_NAME = "CheckCRC";
 
-    public static String getAppRoot(Context context){
+    public static String getAppRoot(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
 
-        return root  + packageName + "/";
+        return root + packageName + "/";
     }
 
     /**
      * 获取程序存放根路径
+     *
      * @param context
      * @return
      */
-    public static String getProgramRoot(Context context){
+    public static String getProgramRoot(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
 
-        return root  + packageName + PROGRAM_ROOT;
+        return root + packageName + PROGRAM_ROOT;
     }
 
-    public static String getProgram(Context context){
+    public static String getProgram(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
 
-        return root  + packageName + PROGRAM;
+        return root + packageName + PROGRAM;
     }
 
-    public static String getProgramIcon(Context context){
+    public static String getProgramIcon(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
 
-        return root  + packageName + PROGRAM_ICON;
+        return root + packageName + PROGRAM_ICON;
     }
 
-    public static String getProgramReport(Context context){
+    public static String getProgramReport(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
         return root + packageName + PROGRAM_REPORT;
     }
 
 
-
     /**
      * 获取调试程序 存放 根路径
+     *
      * @param context
      * @return
      */
-    public static String getDebugRoot(Context context){
+    public static String getDebugRoot(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
 
-        return root  + packageName + DEBUG_ROOT;
+        return root + packageName + DEBUG_ROOT;
     }
 
     /**
-     * 获取诊断程序下载存放 跟路径
+     * 获取诊断程序下载存放 根路径
+     *
      * @param context
      * @return
      */
-    public static String getProramDownloadRoot(Context context){
+    public static String getProgramDownloadRoot(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
         String packageName = context.getPackageName();
-
         return root + packageName + PRO_DOWNLOAD_ROOT + "/";
     }
 
@@ -113,50 +114,51 @@ public class FileUtil {
 
         String packageName = context.getPackageName();
 
-        return root  + packageName + PROGRAM_DOCUMENT;
+        return root + packageName + PROGRAM_DOCUMENT;
     }
 
-    public static String getBackUPRoot(Context context){
+    public static String getBackUPRoot(Context context) {
         String root = Environment.getExternalStorageDirectory().getPath() + "/";
 
         String packageName = context.getPackageName();
-        return root  + packageName + BACKUP_ROOT + "/";
+        return root + packageName + BACKUP_ROOT + "/";
     }
 
     /**
      * 获取文档 版本
+     *
      * @param context
      * @param docType
      * @return
      */
-    public static DocumentVersion getDocumentVersion(Context context,int docType){
+    public static DocumentVersion getDocumentVersion(Context context, int docType) {
 
         File documentRoot = new File(getProgramDocument(context));
 
         File[] fileList = documentRoot.listFiles();
 
-        if(fileList == null){
+        if (fileList == null) {
             return null;
         }
 
-        for(int i = 0;i < fileList.length;i++){
+        for (int i = 0; i < fileList.length; i++) {
             String fileName = fileList[i].getPath().substring(documentRoot.getPath().length());
 
-            if(docType == URLConstant.DOC_GUIDE){
-                if(fileName.contains(context.getString(R.string.help_guide))){
+            if (docType == URLConstant.DOC_GUIDE) {
+                if (fileName.contains(context.getString(R.string.help_guide))) {
                     DocumentVersion documentVersion = new DocumentVersion();
                     int index_v = fileName.lastIndexOf("_v");
-                    if(index_v <= 0){
+                    if (index_v <= 0) {
                         return null;
                     }
 
                     int index_Main = index_v + 2;
-                    int index_Slave = fileName.indexOf(".",index_Main) + 1;
-                    int index_Code = fileName.indexOf(".",index_Slave) + 1;
+                    int index_Slave = fileName.indexOf(".", index_Main) + 1;
+                    int index_Code = fileName.indexOf(".", index_Slave) + 1;
 
-                    String vMain = fileName.substring(index_Main,fileName.indexOf(".", index_Main));
-                    String vSlave = fileName.substring(index_Slave,fileName.indexOf(".", index_Slave));
-                    String vCode = fileName.substring(index_Code,fileName.indexOf(".", index_Code));
+                    String vMain = fileName.substring(index_Main, fileName.indexOf(".", index_Main));
+                    String vSlave = fileName.substring(index_Slave, fileName.indexOf(".", index_Slave));
+                    String vCode = fileName.substring(index_Code, fileName.indexOf(".", index_Code));
 
                     documentVersion.setMain(vMain);
                     documentVersion.setSlave(vSlave);
@@ -165,21 +167,21 @@ public class FileUtil {
                     return documentVersion;
                 }
             }
-            if(docType == URLConstant.DOC_MANUAL){
-                if(fileName.contains(context.getString(R.string.help_manual))){
+            if (docType == URLConstant.DOC_MANUAL) {
+                if (fileName.contains(context.getString(R.string.help_manual))) {
                     DocumentVersion documentVersion = new DocumentVersion();
                     int index_v = fileName.lastIndexOf("_v");
-                    if(index_v <= 0){
+                    if (index_v <= 0) {
                         return null;
                     }
 
                     int index_Main = index_v + 2;
-                    int index_Slave = fileName.indexOf(".",index_Main) + 1;
-                    int index_Code = fileName.indexOf(".",index_Slave) + 1;
+                    int index_Slave = fileName.indexOf(".", index_Main) + 1;
+                    int index_Code = fileName.indexOf(".", index_Slave) + 1;
 
-                    String vMain = fileName.substring(index_Main,fileName.indexOf(".", index_Main));
-                    String vSlave = fileName.substring(index_Slave,fileName.indexOf(".", index_Slave));
-                    String vCode = fileName.substring(index_Code,fileName.indexOf(".", index_Code));
+                    String vMain = fileName.substring(index_Main, fileName.indexOf(".", index_Main));
+                    String vSlave = fileName.substring(index_Slave, fileName.indexOf(".", index_Slave));
+                    String vCode = fileName.substring(index_Code, fileName.indexOf(".", index_Code));
                     documentVersion.setMain(vMain);
                     documentVersion.setSlave(vSlave);
                     documentVersion.setCode(vCode);
@@ -194,10 +196,10 @@ public class FileUtil {
 
     }
 
-    public static void copyDefaulDocument(Context context){
+    public static void copyDefaulDocument(Context context) {
         String AssetPath = AssetsDocument;
-        String programRoot  = getProgramDocument(context);
-        copyFiles(context,AssetPath,programRoot);
+        String programRoot = getProgramDocument(context);
+        copyFiles(context, AssetPath, programRoot);
 
     }
 
@@ -205,7 +207,7 @@ public class FileUtil {
      * @param path
      * @return
      */
-    public static  void  getPathBinVer(Map<String,UpdateDB> versions, final String path){
+    public static void getPathBinVer(Map<String, UpdateDB> versions, final String path) {
         File file = new File(path);
         if (file.exists()) {
             File[] children = file.listFiles();
@@ -225,12 +227,12 @@ public class FileUtil {
                          */
                         if (superChild.getName().toLowerCase().endsWith(".bin")) {
                             try {
-                                String url =  superChild.getParentFile().getParent() + "/" + superChild.getParentFile().getName();
+                                String url = superChild.getParentFile().getParent() + "/" + superChild.getParentFile().getName();
 
                                 /**
                                  * 获取授权码
                                  */
-                                String authCode = superChild.getName().substring(0,4);
+                                String authCode = superChild.getName().substring(0, 4);
                                 url = url.substring(url.indexOf(PROGRAM) + PROGRAM.length());
 
                                 int index_V = url.lastIndexOf("_v");
@@ -247,7 +249,7 @@ public class FileUtil {
                                 String fileName = url.substring(0, index_V);
 
                                 fileName = fileName.replace("\\", "/");
-                                if(fileName.startsWith("/")){
+                                if (fileName.startsWith("/")) {
                                     fileName = fileName.substring(1);
                                 }
                                 //版本
@@ -258,10 +260,9 @@ public class FileUtil {
 
                                 UpdateDB updateDB;
 
-                                if(versions.containsKey(fileName)){
+                                if (versions.containsKey(fileName)) {
                                     updateDB = versions.get(fileName);
-                                }
-                                else{
+                                } else {
                                     updateDB = new UpdateDB();
                                 }
 
@@ -270,7 +271,7 @@ public class FileUtil {
                                 updateDB.addUpdateVersion(versionBean);
 
                                 //将版本添加到相同的程序列表中
-                                versions.put(fileName,updateDB);
+                                versions.put(fileName, updateDB);
                             } catch (Exception e) {
                                 // TODO: handle exception
                             }
@@ -281,7 +282,7 @@ public class FileUtil {
                     /**
                      * 遍历 目录中存在的版本
                      */
-                    getPathBinVer(versions,child.getAbsolutePath());
+                    getPathBinVer(versions, child.getAbsolutePath());
                 }
 
             }
@@ -289,18 +290,17 @@ public class FileUtil {
     }
 
 
-    public static VersionBean getVersionBean(String url){
+    public static VersionBean getVersionBean(String url) {
         int index = url.indexOf(PROGRAM_ROOT);
-        if(url.indexOf(PROGRAM_ROOT) >= 0){
+        if (url.indexOf(PROGRAM_ROOT) >= 0) {
             index = index + PROGRAM_ROOT.length();
-        }
-        else{
+        } else {
             index = 0;
         }
 
         url = url.substring(index);
         VersionBean bean = null;
-        if(url.contains("_v")) {
+        if (url.contains("_v")) {
             int index_V = url.lastIndexOf("_v");
 
             int index_P_Start = index_V + "_v".length();
@@ -320,7 +320,7 @@ public class FileUtil {
             bean.setParentVersion(parentVStr);
             bean.setProgramName(fileName);
             bean.setChildVersion(childVStr);
-        }else {
+        } else {
             bean = new VersionBean();
             bean.setProgramName(url);
 
@@ -330,40 +330,40 @@ public class FileUtil {
         return bean;
     }
 
-    public static String getFileSizeStr(long size){
+    public static String getFileSizeStr(long size) {
         String sizeStr = size + "B";
 
-        if(size > 1000){
+        if (size > 1000) {
             sizeStr = getFileSizeKB(size);
 
-            if(((float)size / 1024) > 1000){
-                sizeStr = getFileSizeMB((float)size / 1024);
+            if (((float) size / 1024) > 1000) {
+                sizeStr = getFileSizeMB((float) size / 1024);
 
-                if((((float)size / 1024)/1024) > 1000){
-                    sizeStr = getFileSizeGB(((float)size / 1024)/1024) ;
+                if ((((float) size / 1024) / 1024) > 1000) {
+                    sizeStr = getFileSizeGB(((float) size / 1024) / 1024);
                 }
             }
         }
         return sizeStr;
     }
 
-    public static String getFileSizeKB(long sizeB){
+    public static String getFileSizeKB(long sizeB) {
         DecimalFormat df = new DecimalFormat("#.##");
-        String sizeKB = df.format(sizeB /1024) + "KB";
+        String sizeKB = df.format(sizeB / 1024) + "KB";
 
         return sizeKB;
     }
 
-    public static String getFileSizeMB(double sizeKB){
+    public static String getFileSizeMB(double sizeKB) {
         DecimalFormat df = new DecimalFormat("#.##");
-        String sizeMB = df.format(sizeKB /1024) + "MB";
+        String sizeMB = df.format(sizeKB / 1024) + "MB";
 
         return sizeMB;
     }
 
-    public static String getFileSizeGB(double sizeMB){
+    public static String getFileSizeGB(double sizeMB) {
         DecimalFormat df = new DecimalFormat("#.##");
-        String sizeGB = df.format(sizeMB /1024) + "GB";
+        String sizeGB = df.format(sizeMB / 1024) + "GB";
 
         return sizeGB;
     }
@@ -371,14 +371,14 @@ public class FileUtil {
     //拷贝assets文件夹到 外部存储 ProgramWest文件夹下面
     public static void copyAssetsToEnvir(Context context) {
         String AssetPath = "ProgramWest";
-        String programRoot  = getProgram(context);
-        copyFiles(context,AssetPath,programRoot);
+        String programRoot = getProgram(context);
+        copyFiles(context, AssetPath, programRoot);
     }
 
-    public static void copyAssetsBinToDebugRoot(Context context){
+    public static void copyAssetsBinToDebugRoot(Context context) {
         String AssetPath = "BIN";
-        String debugRoot  = getDebugRoot(context);
-        copyFiles(context,AssetPath,debugRoot);
+        String debugRoot = getDebugRoot(context);
+        copyFiles(context, AssetPath, debugRoot);
     }
 
     private static void copyFiles(Context context, String assetPath, String programRoot) {
@@ -391,24 +391,24 @@ public class FileUtil {
             e.printStackTrace();
             return;
         }
-        if (filenames.length > 0 ) //目录
+        if (filenames.length > 0) //目录
         {
             File file = new File(programRoot);
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.getParentFile().mkdirs();
             }
-            for (String fileName : filenames){ //递归调用复制文件
-                String inDir = assetPath ;
-                String outDir = programRoot +File.separator;
-                if (!assetPath.equals("")){ //空目录
+            for (String fileName : filenames) { //递归调用复制文件
+                String inDir = assetPath;
+                String outDir = programRoot + File.separator;
+                if (!assetPath.equals("")) { //空目录
                     inDir = inDir + File.separator;
                 }
-                copyFiles(context,inDir + fileName,outDir + fileName);
+                copyFiles(context, inDir + fileName, outDir + fileName);
             }
 
-        }else {//文件
+        } else {//文件
             File fileOut = new File(programRoot);
-            if (!fileOut.exists()){
+            if (!fileOut.exists()) {
                 fileOut.getParentFile().mkdirs();
             }
             try {
@@ -416,8 +416,8 @@ public class FileUtil {
                 fis = context.getAssets().open(assetPath);
                 byte[] buffer = new byte[1024];
                 int len = 0;
-                while ((len = fis.read(buffer)) != -1){
-                    fos.write(buffer,0,len);
+                while ((len = fis.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
                 }
                 fos.flush();
                 fis.close();
@@ -425,13 +425,13 @@ public class FileUtil {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 try {
-                if (fis != null){
-                    fis.close();
-                }
-                if (fos != null){
-                    fos.close();
-                }
-                }catch (IOException e1) {
+                    if (fis != null) {
+                        fis.close();
+                    }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             } catch (IOException e) {
@@ -446,16 +446,16 @@ public class FileUtil {
     public static String readIniData(File fileIni) {
         String lineData = "";
         InputStreamReader isr = null;
-        if (fileIni.isFile() && fileIni.exists()){
+        if (fileIni.isFile() && fileIni.exists()) {
             try {
-                if (fileIni.getPath().toLowerCase().contains(".ini")){
-                    isr = new InputStreamReader(new FileInputStream(fileIni),"GBK");
-                }else {
+                if (fileIni.getPath().toLowerCase().contains(".ini")) {
+                    isr = new InputStreamReader(new FileInputStream(fileIni), "GBK");
+                } else {
                     isr = new InputStreamReader(new FileInputStream(fileIni), "utf-8");
                 }
                 BufferedReader buffer = new BufferedReader(isr);
                 String line = null;
-                while ( (line = buffer.readLine()) != null){
+                while ((line = buffer.readLine()) != null) {
                     lineData += line + System.lineSeparator();
                 }
                 buffer.close();
@@ -475,15 +475,16 @@ public class FileUtil {
     public static String readBinFileDecsData(File fileIni) {
         String lineData = "";
         InputStreamReader isr = null;
-        if (fileIni.isFile() && fileIni.exists()){
+        if (fileIni.isFile() && fileIni.exists()) {
             try {
-                if (fileIni.getPath().toLowerCase().contains(".txt") ){
-                    isr = new InputStreamReader(new FileInputStream(fileIni),"GBK");
+                if (fileIni.getPath().toLowerCase().contains(".txt")) {
+                    isr = new InputStreamReader(new FileInputStream(fileIni), "GBK");
                 }
                 BufferedReader buffer = new BufferedReader(isr);
                 String line = null;
-                while ( (line = buffer.readLine()) != null){
-                    lineData += line + System.lineSeparator(); ;
+                while ((line = buffer.readLine()) != null) {
+                    lineData += line + System.lineSeparator();
+                    ;
                 }
                 buffer.close();
                 isr.close();
@@ -499,59 +500,72 @@ public class FileUtil {
     }
 
 
-
     /**
      * 将升级程序的bin文件的16进制和存放在一个文件中
-     * @param context
-     * @param filePath
-     * @param hex
      */
-    public static void writeHexData(Context context,String filePath,String hex){
-        String path = getProramDownloadRoot(context);
-        filePath = filePath.substring(0,filePath.lastIndexOf("/"));
-        File file = new File(path+filePath,DOWNLOAD_CRC_NAME);
-        if (!file.exists()){
-            file.getParentFile().mkdirs();
-        }else {
+    public static void writeHexData(Context context, String filePath, String hex) {
+        String path = getProgramDownloadRoot(context);
+        filePath = filePath.substring(0, filePath.lastIndexOf("/"));
+        File file = new File(path + filePath, DOWNLOAD_CRC_NAME);
+        if (!file.exists()) {
+            File parentFile = file.getParentFile();
+            if (parentFile != null) {
+                parentFile.mkdirs();
+            }
+        } else {
             file.delete();
         }
 
-        FileOutputStream fout = null;
+        FileOutputStream fOut = null;
         try {
-            fout = new FileOutputStream(file, true);
+            fOut = new FileOutputStream(file, true);
             byte[] bytes = HexDump.hexStringToByteArray(hex);
-            fout.write(bytes);
-            fout.close();
+            fOut.write(bytes);
+            fOut.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (fOut != null) {
+                    fOut.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static byte[] readHexData(Context context,String filePath){
-        String path = getProramDownloadRoot(context);
-        filePath = filePath.substring(0,filePath.lastIndexOf("/"));
-        File file ;
-        if (filePath.contains(path)){
-             file = new File(filePath,DOWNLOAD_CRC_NAME);
-        }else {
+    public static byte[] readHexData(Context context, String filePath) {
+        String path = getProgramDownloadRoot(context);
+        filePath = filePath.substring(0, filePath.lastIndexOf("/"));
+        File file;
+        if (filePath.contains(path)) {
+            file = new File(filePath, DOWNLOAD_CRC_NAME);
+        } else {
             file = new File(path + filePath, DOWNLOAD_CRC_NAME);
         }
         byte[] data = new byte[2];
-        if (file.exists()){
+        if (file.exists()) {
+            FileInputStream isr = null;
             try {
-                FileInputStream isr = new FileInputStream(file);
+                isr = new FileInputStream(file);
                 //BufferedReader buffer = new BufferedReader(isr);
-
                 isr.read(data);
-                String line = "";
+//                String line = "";
                /* while ( (line = buffer.readLine()) != null){
                     //data = line;
                 }*/
                 //buffer.close();
-                isr.close();
-
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                if (isr != null) {
+                    try {
+                        isr.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
 
         }
@@ -560,22 +574,20 @@ public class FileUtil {
 
     /**
      * 读取bin文件的数据和的十六进制
-     * @param
-     * @param mContext
-     *@param file  @return
      */
-    public static String readBinFile(Context mContext, File file){
+    public static String readBinFile(File file) {
         String hexString = "";
-        if (file.exists()){
+        if (file.exists()) {
+            FileInputStream isr = null;
             try {
-                FileInputStream isr = new FileInputStream(file);
+                isr = new FileInputStream(file);
                 byte[] buff = new byte[256];
                 int offset;
                 long sum = 0;
-                while ( (offset = isr.read(buff)) != -1){
-                    for (int i = 0; i < offset ; i++) {
+                while ((offset = isr.read(buff)) != -1) {
+                    for (int i = 0; i < offset; i++) {
                         int index = buff[i];
-                        if (index < 0){
+                        if (index < 0) {
                             index += 256;
                         }
                         sum += index;
@@ -589,53 +601,60 @@ public class FileUtil {
                 byte[] b = new byte[2];
                 byte last = (byte) sum;
                 byte first = (byte) (sum >> 8);
-                b[0] =  first;
+                b[0] = first;
                 b[1] = last;
                 hexString = HexUtil.toHexString(b);
-                hexString = hexString.replace(" ","");
-                isr.close();
-
+                hexString = hexString.replace(" ", "");
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (isr != null) {
+                        isr.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return hexString;
     }
 
     //删除app安装包
-    public static void removeAppFile(Context mContext){
-        String path = getProgramDocument(mContext) + mContext.getResources().getString(R.string.app_Name)+".apk";
+    public static void removeAppFile(Context mContext) {
+        String path = getProgramDocument(mContext) + mContext.getResources().getString(R.string.app_Name) + ".apk";
         File file = new File(path);
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }
 
     /**
      * 删除app中的部分文件
+     *
      * @param path
      */
-    public static  void deleteApp(String path,Context mContext){
+    public static void deleteApp(String path, Context mContext) {
         File fileRoot = new File(path);
-        if (fileRoot.exists()){
+        if (fileRoot.exists()) {
             File[] fileRoots = fileRoot.listFiles();
 
-            if (fileRoots.length > 0 ) {
-                for (int i = 0; i < fileRoots.length; i++) {
-                    String str = fileRoots[i].getPath();
-                    str = str.substring(str.indexOf(mContext.getPackageName())+mContext.getPackageName().length()+1);
+            if (fileRoots.length > 0) {
+                for (File root : fileRoots) {
+                    String str = root.getPath();
+                    str = str.substring(str.indexOf(mContext.getPackageName()) + mContext.getPackageName().length() + 1);
                     if (str.contains("/")) {
                         str = str.substring(0, str.indexOf("/"));
                     }
                     if (str.equals("Program") || str.equals("ProgramDownload") || str.equals("ProgramReport")) {
-                        File child = fileRoots[i];
+                        File child = root;
                         if (child.isDirectory()) {
-                            deleteApp(child.getAbsolutePath(),mContext);
+                            deleteApp(child.getAbsolutePath(), mContext);
                         }
-                        if (child.exists()){
+                        if (child.exists()) {
                             child.delete();
                             File[] parentFiles = child.getParentFile().listFiles();
-                            if (parentFiles.length == 0 ){
+                            if (parentFiles.length == 0) {
                                 child.getParentFile().delete();
                             }
                         }
@@ -647,10 +666,11 @@ public class FileUtil {
 
     /**
      * 删除程序
+     *
      * @param context
      * @param program
      */
-    public static void deleteProgram(Context context,String program){
+    public static void deleteProgram(Context context, String program) {
         String path = getProgramRoot(context) + program;
 
         File dir = new File(path);
@@ -659,15 +679,15 @@ public class FileUtil {
         File parent = dir.getParentFile();
 
         File[] fileList = parent.listFiles();
-        for(int i = 0;i < fileList.length;i++){
+        for (int i = 0; i < fileList.length; i++) {
             String name = fileList[i].getName();
             int index_V = name.toLowerCase().lastIndexOf("_v");
-            if(index_V > 0) {
+            if (index_V > 0) {
                 name = name.substring(0, index_V);
-                if(name.equals(programName)){
+                if (name.equals(programName)) {
                     File[] files = fileList[i].listFiles();
-                    if(files != null){
-                        for(int index = 0;index < files.length;index++){
+                    if (files != null) {
+                        for (int index = 0; index < files.length; index++) {
                             files[index].delete();
                         }
                     }
@@ -676,7 +696,7 @@ public class FileUtil {
             }
         }
         fileList = parent.listFiles();
-        while(fileList == null || fileList.length == 0){
+        while (fileList == null || fileList.length == 0) {
             parent = parent.getParentFile();
             parent.delete();
         }
@@ -686,6 +706,7 @@ public class FileUtil {
 
     /**
      * 删除app中的视屏
+     *
      * @param mContext
      */
     public static void deleteAppVideo(Context mContext) {

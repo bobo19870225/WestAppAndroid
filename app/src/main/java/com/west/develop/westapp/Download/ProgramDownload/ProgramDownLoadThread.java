@@ -476,7 +476,7 @@ public class ProgramDownLoadThread{
                     jsonObjectlogo.put("url",mNCarBean.getLogoPath());
                     listUrl.add(jsonObjectlogo.toString());
 
-                    File fileLogo = new File(FileUtil.getProramDownloadRoot(mContext) + mFileName);
+                    File fileLogo = new File(FileUtil.getProgramDownloadRoot(mContext) + mFileName);
                     if (fileLogo.exists() && fileLogo.isDirectory()) {
                         File files2[] = fileLogo.listFiles();
                         for (int n = 0; n < files2.length; n++) {
@@ -495,7 +495,7 @@ public class ProgramDownLoadThread{
                     long fileSize = array.getJSONObject(i).getLong("fileSize");
                     mFileSize += fileSize;
 
-                    String filePath = FileUtil.getProramDownloadRoot(mContext) + array.getJSONObject(i).getString("filePath");
+                    String filePath = FileUtil.getProgramDownloadRoot(mContext) + array.getJSONObject(i).getString("filePath");
                     File file = new File(filePath);
                     if (file.exists()) {
                         long length = file.length();
@@ -517,7 +517,7 @@ public class ProgramDownLoadThread{
             }
         }else if (arr == null){
             mDownloadSize = 0 ;
-            String programRoot = FileUtil.getProramDownloadRoot(mContext);
+            String programRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileRoot = new File(programRoot + mFileName.substring(0,mFileName.lastIndexOf("/")));
             File files[] = fileRoot.listFiles();
             if (fileRoot.exists()) {
@@ -544,7 +544,7 @@ public class ProgramDownLoadThread{
      */
     private void deleteFiles(){
         MDBHelper.getInstance(mContext).updateFileNameAndSize(mUrl,mFileName,mContentSize);
-        String programRoot = FileUtil.getProramDownloadRoot(mContext);
+        String programRoot = FileUtil.getProgramDownloadRoot(mContext);
         File fileRoot = new File(programRoot + mFileName.substring(0,mFileName.lastIndexOf("/")));
         File files[] = fileRoot.listFiles();
         if (fileRoot.exists()) {
@@ -571,7 +571,7 @@ public class ProgramDownLoadThread{
                 }
             }
         }
-        File fileLogo = new File(FileUtil.getProramDownloadRoot(mContext) + mFileName);
+        File fileLogo = new File(FileUtil.getProgramDownloadRoot(mContext) + mFileName);
         if (fileLogo.exists() && fileLogo.isDirectory()) {
             File files2[] = fileLogo.listFiles();
             for (int n = 0; n < files2.length; n++) {
