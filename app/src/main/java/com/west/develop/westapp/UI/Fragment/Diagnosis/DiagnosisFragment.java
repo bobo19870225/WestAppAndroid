@@ -1,6 +1,8 @@
 package com.west.develop.westapp.UI.Fragment.Diagnosis;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
 import com.west.develop.westapp.Bean.NCarBean;
@@ -47,13 +47,11 @@ import java.util.List;
 public class DiagnosisFragment extends BaseFragment implements FragmentBackHandler {
 
     private ImageView menuIv;
-    GridView mGridView;
-    LayoutInflater mInflater;
-    public MainDiagnosisAdapter mAdapter;
-    FragmentManager fm;
+    private GridView mGridView;
+    private MainDiagnosisAdapter mAdapter;
     private AutoCompleteTextView completeTV;
     private RadioButton searchDelete;
-    public List<NCarBean> searchData = new ArrayList<>();
+    private List<NCarBean> searchData = new ArrayList<>();
 
     private ToggleButton toggleButton;
     private ImageButton zoomAdd;
@@ -61,11 +59,10 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
     private Button addIcon;
     private static final int IMAGE_OPEN = 1;
     private TextView title;
-
+    private final Context context = getContext();
 
     public static DiagnosisFragment newInstance(String param1, String param2) {
-        DiagnosisFragment fragment = new DiagnosisFragment();
-        return fragment;
+        return new DiagnosisFragment();
     }
 
     @Override
@@ -74,82 +71,90 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnosis_main, container, false);
-        mInflater = inflater;
-        fm = getFragmentManager();
         initView(view);
         initData();
-        initLisener();
-
+        initListener();
         return view;
     }
 
     private void initView(View view) {
-        mGridView = (GridView) view.findViewById(R.id.gird_Diagnosis_Resion);
-        menuIv = (ImageView) view.findViewById(R.id.menu_iv);
-        completeTV = (AutoCompleteTextView) view.findViewById(R.id.diagnosis_search_tv);
-        searchDelete = (RadioButton) view.findViewById(R.id.diagnosis_search_delete);
-        toggleButton = (ToggleButton) view.findViewById(R.id.carsort);
-        zoomAdd = (ImageButton) view.findViewById(R.id.zoomadd);
-        zoomReduce = (ImageButton) view.findViewById(R.id.zoomreduce);
-        addIcon = (Button) view.findViewById(R.id.diagnosis_addicon);
-
-        title = (TextView) view.findViewById(R.id.menu_title);
-
+        mGridView = view.findViewById(R.id.gird_Diagnosis_Resion);
+        menuIv = view.findViewById(R.id.menu_iv);
+        completeTV = view.findViewById(R.id.diagnosis_search_tv);
+        searchDelete = view.findViewById(R.id.diagnosis_search_delete);
+        toggleButton = view.findViewById(R.id.carsort);
+        zoomAdd = view.findViewById(R.id.zoomadd);
+        zoomReduce = view.findViewById(R.id.zoomreduce);
+        addIcon = view.findViewById(R.id.diagnosis_addicon);
+        title = view.findViewById(R.id.menu_title);
     }
 
 
     private void initData() {
         title.setText(getResources().getString(R.string.diagnosis_function));
-        toggleButton.setChecked(Config.getInstance(getContext()).isToggle());
-
+        if (context != null) {
+            toggleButton.setChecked(Config.getInstance(context).isToggle());
+        }
         questCarList();
     }
 
-    public void questCarList(){
-        List<NCarBean> carListBeen = requestData();
-        if (carListBeen.size() > 0) {
-            List<String> items = new ArrayList<>();
-            for (int i = 0; i < carListBeen.size(); i++) {
-                if (Config.getInstance(getContext()).getLanguage() == Config.LANGUAGE_EN){
-                    items.add(carListBeen.get(i).getCarEnglishName());
-                }else if (Config.getInstance(getContext()).getLanguage() == Config.LANGUAGE_CH){
-                    items.add(carListBeen.get(i).getCarChineseName());
+    public void questCarList() {
+        List<NCarBean> nCarBeans = requestData();
+        if (nCarBeans != null) {
+            if (nCarBeans.size() > 0) {
+                List<String> items = new ArrayList<>();
+                for (int i = 0; i < nCarBeans.size(); i++) {
+                    if (context != null) {
+                        if (Config.getInstance(context).getLanguage() == Config.LANGUAGE_EN) {
+                            items.add(nCarBeans.get(i).getCarEnglishName());
+                        } else if (Config.getInstance(context).getLanguage() == Config.LANGUAGE_CH) {
+                            items.add(nCarBeans.get(i).getCarChineseName());
+                        }
+                    }
+
                 }
+                searchData.clear();
+                searchData.addAll(nCarBeans);
 
+                mAdapter = new MainDiagnosisAdapter(context, searchData);
+                mGridView.setAdapter(mAdapter);
+
+                int width = 0;
+                if (context != null) {
+                    width = PixelUtil.dp2px(context, 600 / Config.getInstance(context).getIconNum());
+                }
+                int fontSize = (int) (width * 0.1);
+                mGridView.setColumnWidth(width);
+                mAdapter.setTextSize(fontSize);
+
+                try {
+                    if (context != null) {
+                        completeTV.setAdapter(new ArrayAdapter<>(context, R.layout.drop_down_item, items));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                showDownloadTip();
             }
-            searchData.clear();
-            searchData.addAll(requestData());
-
-            mAdapter = new MainDiagnosisAdapter(getContext(), searchData);
-            mGridView.setAdapter(mAdapter);
-
-            int width = PixelUtil.dp2px(getContext(), 600 / Config.getInstance(getContext()).getIconNum());
-            int fontSize = (int) (width * 0.1);
-            mGridView.setColumnWidth(width);
-            mAdapter.setTextSize(fontSize);
-
-            try {
-                completeTV.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.drop_down_item, items));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }else {
-            showDownloadTip();
         }
 
     }
 
-    private void showDownloadTip(){
-        final TipDialog dialog = new TipDialog.Builder(getContext())
+    private void showDownloadTip() {
+        final TipDialog dialog = new TipDialog.Builder(context)
                 .setTitle(getString(R.string.tip_title))
                 .setMessage(getString(R.string.loadData_Tip))
                 .setPositiveClickListener(getResources().getString(R.string.nowLoad_Tip), new TipDialog.OnClickListener() {
                     @Override
                     public void onClick(Dialog dialogInterface, int index, String label) {
                         dialogInterface.dismiss();
-                        ((MainActivity) getActivity()).onFragSwitch(MainActivity.UPGRADE_ID);
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        if (mainActivity != null) {
+                            (mainActivity).onFragSwitch(MainActivity.UPGRADE_ID);
+                        }
                     }
                 })
                 .setNegativeClickListener(getString(R.string.afterLoad_Tip), new TipDialog.OnClickListener() {
@@ -162,14 +167,19 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
         dialog.show();
     }
 
-    public void upData(List<NCarBean> been) {
+    private void upData(List<NCarBean> been) {
         searchData.clear();
-        searchData.addAll(been);
-        mAdapter.notifyDataSetChanged();
+        if (null != been) {
+            searchData.addAll(been);
+        }
+        if (null != mAdapter) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
 
-    private void initLisener() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void initListener() {
         completeTV.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -188,8 +198,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
                     searchDelete.setVisibility(View.GONE);
                     List<NCarBean> carListBean = requestData();
                     upData(carListBean);
-                }
-                else{
+                } else {
                     searchDelete.setVisibility(View.VISIBLE);
                 }
             }
@@ -204,7 +213,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
         completeTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND || (event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)) {
+                if (actionId == EditorInfo.IME_ACTION_SEND || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     String s = completeTV.getText().toString();
                     setSearchData(s);
                     return true;
@@ -223,37 +232,42 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toggleButton.isChecked()){
+                if (toggleButton.isChecked()) {
                     //拼音排序
                     sort(true);
-                }else {
+                } else {
                     //序号排序
                     sort(false);
                 }
             }
         });
 
+
         zoomAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int iconNum = Config.getInstance(getContext()).getIconNum() -1;
-                Config.getInstance(getContext()).setIconNum(iconNum);
-                int width = PixelUtil.dp2px(getContext(),600 / Config.getInstance(getContext()).getIconNum());
-                int fontSize = (int)(width * 0.1);
-                mGridView.setColumnWidth(width);
-                mAdapter.setTextSize(fontSize);
+                if (context != null && null != mAdapter) {
+                    int iconNum = Config.getInstance(context).getIconNum() - 1;
+                    Config.getInstance(context).setIconNum(iconNum);
+                    int width = PixelUtil.dp2px(context, 600 / Config.getInstance(context).getIconNum());
+                    int fontSize = (int) (width * 0.1);
+                    mGridView.setColumnWidth(width);
+                    mAdapter.setTextSize(fontSize);
+                }
             }
         });
 
         zoomReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int iconNum = Config.getInstance(getContext()).getIconNum() + 1;
-                Config.getInstance(getContext()).setIconNum(iconNum);
-                int width = PixelUtil.dp2px(getContext(),600 / Config.getInstance(getContext()).getIconNum());
-                int fontSize = (int)(width * 0.1);
-                mGridView.setColumnWidth(width);
-                mAdapter.setTextSize(fontSize);
+                if (context != null && null != mAdapter) {
+                    int iconNum = Config.getInstance(context).getIconNum() + 1;
+                    Config.getInstance(context).setIconNum(iconNum);
+                    int width = PixelUtil.dp2px(context, 600 / Config.getInstance(context).getIconNum());
+                    int fontSize = (int) (width * 0.1);
+                    mGridView.setColumnWidth(width);
+                    mAdapter.setTextSize(fontSize);
+                }
             }
         });
 
@@ -261,10 +275,8 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
         menuIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getContext() instanceof MainActivity){
-                    if(getContext() instanceof MainActivity){
-                        ((MainActivity)getActivity()).onFragSwitch(MainActivity.HOME_ID);
-                    }
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).onFragSwitch(MainActivity.HOME_ID);
                 }
             }
         });
@@ -274,8 +286,8 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Gson gson = new Gson();
                 String beanJson = gson.toJson(searchData.get(position));
-                Intent intent = new Intent(getContext(), DiagnosisActivity.class);
-                intent.putExtra(DiagnosisActivity.kCarBean,beanJson);
+                Intent intent = new Intent(context, DiagnosisActivity.class);
+                intent.putExtra(DiagnosisActivity.kCarBean, beanJson);
                 startActivity(intent);
 
             }
@@ -295,6 +307,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
             float currentDistance;
             float lastDistance;
             boolean isScaled = false;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -308,15 +321,11 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
                             if (lastDistance <= 0) {
                                 lastDistance = currentDistance;
                             } else if (currentDistance - lastDistance > 60) {
-                                /**
-                                 * 放大
-                                 */
+                                // 放大
                                 zoomAdd.performClick();
                                 lastDistance = currentDistance;
                             } else if (lastDistance - currentDistance > 60) {
-                                /**
-                                 * 缩小
-                                 */
+                                //缩小
                                 zoomReduce.performClick();
                                 lastDistance = currentDistance;
                             }
@@ -325,7 +334,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
                     case MotionEvent.ACTION_UP:
                         lastDistance = 0;
                         currentDistance = 0;
-                        if(isScaled){
+                        if (isScaled) {
                             isScaled = false;
                             return true;
                         }
@@ -342,10 +351,14 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
         //等数据全部下载完了以后才显示数据
         if (isPINYIN) {
             list = MDBHelper.getInstance(getActivity()).getCarList(Config.SORT_BY_PINYIN);
-            Config.getInstance(getContext()).setToggle(true);
+            if (context != null) {
+                Config.getInstance(context).setToggle(true);
+            }
         } else {
             list = MDBHelper.getInstance(getActivity()).getCarList(Config.SORT_BY_ID);
-            Config.getInstance(getContext()).setToggle(false);
+            if (context != null) {
+                Config.getInstance(context).setToggle(false);
+            }
         }
         upData(list);
 
@@ -353,43 +366,44 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
 
     //搜素数据---更新列表
     private void setSearchData(String data) {
-            if (mAdapter == null) {
-                return;
-            }
-            if (data == null || data.equals("")) {
-                return;
-            }
+        if (mAdapter == null) {
+            return;
+        }
+        if (data == null || data.equals("")) {
+            return;
+        }
 
-            for (int i = 0; i < searchData.size(); i++) {
-                String searchName = null;
-                if (Config.getInstance(getContext()).getLanguage() == Config.LANGUAGE_EN){
+        for (int i = 0; i < searchData.size(); i++) {
+            String searchName = null;
+            if (context != null) {
+                if (Config.getInstance(context).getLanguage() == Config.LANGUAGE_EN) {
                     searchName = searchData.get(i).getCarEnglishName();
-                }else if (Config.getInstance(getContext()).getLanguage() == Config.LANGUAGE_CH){
+                } else if (Config.getInstance(context).getLanguage() == Config.LANGUAGE_CH) {
                     searchName = searchData.get(i).getCarChineseName();
                 }
-                if (!searchName.equals(data)) {
-                    searchData.remove(i);
-                    i--;
-                }
             }
+            if (searchName != null && !searchName.equals(data)) {
+                searchData.remove(i);
+                i--;
+            }
+        }
 
-            mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
     }
 
     private List<NCarBean> requestData() {
-        ArrayList<NCarBean> Nlist = MDBHelper.getInstance(getContext()).getCarList(Config.getInstance(getContext()).getSortBy());
-        return Nlist;
+        if (context != null) {
+            return MDBHelper.getInstance(context).getCarList(Config.getInstance(context).getSortBy());
+        }
+        return null;
     }
 
     @Override
     public boolean onBackPressed() {
-        if(getContext() instanceof MainActivity){
-            ((MainActivity)getActivity()).onFragSwitch(MainActivity.HOME_ID);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).onFragSwitch(MainActivity.HOME_ID);
         }
         return true;
     }
-
-
-
 }

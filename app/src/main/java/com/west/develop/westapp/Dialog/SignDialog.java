@@ -48,7 +48,7 @@ import java.util.List;
  * Created by Develop0 on 2018/1/9.
  */
 
-public class SignDialog extends Dialog implements View.OnClickListener{
+public class SignDialog extends Dialog implements View.OnClickListener {
     public static int STEP_NOTICE = 0;
     public static int STEP_READ = 1;
     public static int STEP_USER = 2;
@@ -58,21 +58,21 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     private static SignDialog instance;
 
 
-    public static SignDialog getInstance(){
+    public static SignDialog getInstance() {
         return instance;
     }
 
-    public static SignDialog newInstance(Context context){
-        if(instance == null){
+    public static SignDialog newInstance(Context context) {
+        if (instance == null) {
             instance = new SignDialog(context);
         }
         instance.setStep(STEP_NOTICE);
         return instance;
     }
 
-    public static SignDialog newInstance(Context context,int step){
-        if(instance == null){
-            instance = new SignDialog(context,step);
+    public static SignDialog newInstance(Context context, int step) {
+        if (instance == null) {
+            instance = new SignDialog(context, step);
         }
         instance.setStep(step);
 
@@ -88,10 +88,10 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
     private String mNegativeText;
 
-    EditText realName_ET;
-    EditText mobile_ET;
-    EditText email_ET;
-    EditText address_ET;
+    private EditText realName_ET;
+    private EditText mobile_ET;
+    private EditText email_ET;
+    private EditText address_ET;
 
     private String detailAddress = null; //详细地址
     private String longitudeLat = null; //经纬度地址
@@ -131,14 +131,6 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     private boolean isSigning = false;
 
 
-    OnDismissListener onDismissListener = new OnDismissListener() {
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            clear();
-        }
-    };
-
-
     /**
      * 百度地图定位
      */
@@ -147,7 +139,7 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     /**
      * 百度地图定位回调
      */
-    private BDAbstractLocationListener myListener = new BDAbstractLocationListener(){
+    private BDAbstractLocationListener myListener = new BDAbstractLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation location) {
             detailAddress = location.getAddrStr();    //获取详细地址信息
@@ -186,41 +178,47 @@ public class SignDialog extends Dialog implements View.OnClickListener{
         initView();
     }
 
-    private SignDialog(Context context){
+    private SignDialog(Context context) {
         super(context);
         mContext = context;
 
+        OnDismissListener onDismissListener = new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                clear();
+            }
+        };
         setOnDismissListener(onDismissListener);
     }
 
-    private SignDialog(Context context,int step){
+    private SignDialog(Context context, int step) {
         this(context);
 
         setStep(step);
     }
 
 
-    private void initView(){
+    private void initView() {
         mTitleTV = (TextView) findViewById(R.id.dialog_title);
         mTitleTV.setText(mContext.getResources().getString(R.string.sign_Device));
 
-        mPositiveBTN = (Button)findViewById(R.id.dialog_Positive_BTN);
-        mNegativeBTN = (Button)findViewById(R.id.dialog_Negative_BTN);
-        mMessageTV = (TextView)findViewById(R.id.dialog_Message_TV);
+        mPositiveBTN = (Button) findViewById(R.id.dialog_Positive_BTN);
+        mNegativeBTN = (Button) findViewById(R.id.dialog_Negative_BTN);
+        mMessageTV = (TextView) findViewById(R.id.dialog_Message_TV);
         mMessageTV.setVisibility(View.VISIBLE);
         mUserLine = (LinearLayout) findViewById(R.id.dialog_User);
         mUserLine.setVisibility(View.GONE);
 
-        realName_ET = (EditText)findViewById(R.id.sign_RealName_ET);
-        mobile_ET = (EditText)findViewById(R.id.sign_Mobile_ET);
-        email_ET = (EditText)findViewById(R.id.sign_Email_ET);
-        address_ET = (EditText)findViewById(R.id.sign_Add_ET);
+        realName_ET = (EditText) findViewById(R.id.sign_RealName_ET);
+        mobile_ET = (EditText) findViewById(R.id.sign_Mobile_ET);
+        email_ET = (EditText) findViewById(R.id.sign_Email_ET);
+        address_ET = (EditText) findViewById(R.id.sign_Add_ET);
 
         mPositiveBTN.setVisibility(View.VISIBLE);
 
-        if(mNegativeText != null || mNegativeClickListener != null){
+        if (mNegativeText != null || mNegativeClickListener != null) {
             mNegativeBTN.setVisibility(View.VISIBLE);
-            mNegativeBTN.setText(mNegativeText == null?mContext.getString(R.string.cancel):mNegativeText);
+            mNegativeBTN.setText(mNegativeText == null ? mContext.getString(R.string.cancel) : mNegativeText);
         }
 
         mPositiveBTN.setOnClickListener(this);
@@ -260,7 +258,7 @@ public class SignDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getString(R.string.Sure));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.VISIBLE);
                 mNegativeBTN.setText(mContext.getString(R.string.cancel));
             }
@@ -281,13 +279,13 @@ public class SignDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getString(R.string.cancel));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.GONE);
             }
 
         }
 
-        if (step == STEP_USER){
+        if (step == STEP_USER) {
             mStep_Index = STEP_USER;
             mMessageTV.setVisibility(View.GONE);
             mUserLine.setVisibility(View.VISIBLE);
@@ -298,15 +296,15 @@ public class SignDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getString(R.string.Sure));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.VISIBLE);
                 mNegativeBTN.setText(mContext.getText(R.string.cancel));
             }
 
-            if (detailAddress == null){
+            if (detailAddress == null) {
                 address_ET.setHint(mContext.getResources().getString(R.string.location));
 
-            }else {
+            } else {
                 address_ET.setText(detailAddress);
             }
 
@@ -332,29 +330,30 @@ public class SignDialog extends Dialog implements View.OnClickListener{
         return this;
     }
 
-    public void startSign(){
+    public void startSign() {
         startSign = true;
-        if(ConnectStatus.getInstance(mContext).getBTPort() != null){
+        if (ConnectStatus.getInstance(mContext).getBTPort() != null) {
             signWithPort(ConnectStatus.getInstance(mContext).getBTPort());
         }
 
-        if(ConnectStatus.getInstance(mContext).getUSBPort() != null){
+        if (ConnectStatus.getInstance(mContext).getUSBPort() != null) {
             signWithPort(ConnectStatus.getInstance(mContext).getUSBPort());
         }
     }
 
-    public boolean waitSign(){
+    public boolean waitSign() {
         return startSign;
     }
 
     /**
      * 设置 确定按钮 点击事件
+     *
      * @param listener
      */
-    public SignDialog setNegativeClickListener(String text,OnClickListener listener){
+    public SignDialog setNegativeClickListener(String text, OnClickListener listener) {
         mNegativeText = text;
-        if(mNegativeBTN != null){
-            mNegativeBTN.setText(mNegativeText== null?mContext.getString(R.string.cancel):mNegativeText);
+        if (mNegativeBTN != null) {
+            mNegativeBTN.setText(mNegativeText == null ? mContext.getString(R.string.cancel) : mNegativeText);
         }
         setNegativeClickListener(listener);
         return this;
@@ -362,23 +361,24 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 设置 取消按钮 点击事件
+     *
      * @param listener
      */
-    public SignDialog setNegativeClickListener(OnClickListener listener){
+    public SignDialog setNegativeClickListener(OnClickListener listener) {
         mNegativeClickListener = listener;
-        if(mNegativeBTN != null){
+        if (mNegativeBTN != null) {
             mNegativeBTN.setVisibility(View.VISIBLE);
         }
         return this;
     }
 
-    public SignDialog setSignCallback(SignCallback callback){
+    public SignDialog setSignCallback(SignCallback callback) {
         mSignCallback = callback;
         return this;
     }
 
 
-    public BaseSerialPort getReadPort(){
+    public BaseSerialPort getReadPort() {
         return mReadPort;
     }
 
@@ -394,8 +394,8 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
                 break;
             case R.id.dialog_Positive_BTN:
-                if (mStep_Index == STEP_USER){
-                    if (!signUser()){
+                if (mStep_Index == STEP_USER) {
+                    if (!signUser()) {
                         break;
                     }
                 }
@@ -406,7 +406,7 @@ public class SignDialog extends Dialog implements View.OnClickListener{
                 /*if (mReadPort instanceof BluetoothSerialPort) {
                     ((BluetoothSerialPort) mReadPort).destroy();
                 }*/
-                if (mStep_Index == STEP_READ){
+                if (mStep_Index == STEP_READ) {
                     dismiss();
                     break;
                 }
@@ -431,19 +431,19 @@ public class SignDialog extends Dialog implements View.OnClickListener{
         String email = email_ET.getText().toString();
         String address = address_ET.getText().toString();
 
-        if(realName == null || realName.length() <= 0){
-            Toast.makeText(getContext(),mContext.getResources().getString(R.string.toast_Input_realName),Toast.LENGTH_SHORT).show();
+        if (realName == null || realName.length() <= 0) {
+            Toast.makeText(getContext(), mContext.getResources().getString(R.string.toast_Input_realName), Toast.LENGTH_SHORT).show();
             return result;
         }
 
-        if(mobile == null || mobile.length() <= 0){
-            Toast.makeText(getContext(),mContext.getResources().getString(R.string.toast_Input_phone),Toast.LENGTH_SHORT).show();
+        if (mobile == null || mobile.length() <= 0) {
+            Toast.makeText(getContext(), mContext.getResources().getString(R.string.toast_Input_phone), Toast.LENGTH_SHORT).show();
             return result;
         }
 
 
-        if(address == null || address.length() <= 0){
-            Toast.makeText(getContext(),mContext.getResources().getString(R.string.toast_Input_Address),Toast.LENGTH_SHORT).show();
+        if (address == null || address.length() <= 0) {
+            Toast.makeText(getContext(), mContext.getResources().getString(R.string.toast_Input_Address), Toast.LENGTH_SHORT).show();
             return result;
         }
 
@@ -459,49 +459,49 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 启动激活
+     *
      * @param port
      */
-    public void signWithPort(BaseSerialPort port){
+    public void signWithPort(BaseSerialPort port) {
 
-        if(port instanceof BluetoothSerialPort){
+        if (port instanceof BluetoothSerialPort) {
             boolean contain = false;
-            for(int i= 0;i < mPorts.size();i++){
-                if(mPorts.get(i)instanceof BluetoothSerialPort){
-                    BluetoothSerialPort bluetoothPort = (BluetoothSerialPort)port;
-                    BluetoothSerialPort bluetoothSerialPort = (BluetoothSerialPort)mPorts.get(i);
-                    if(bluetoothPort.getDevice().equals(bluetoothSerialPort.getDevice())){
+            for (int i = 0; i < mPorts.size(); i++) {
+                if (mPorts.get(i) instanceof BluetoothSerialPort) {
+                    BluetoothSerialPort bluetoothPort = (BluetoothSerialPort) port;
+                    BluetoothSerialPort bluetoothSerialPort = (BluetoothSerialPort) mPorts.get(i);
+                    if (bluetoothPort.getDevice().equals(bluetoothSerialPort.getDevice())) {
                         contain = true;
                     }
                 }
             }
-            if(!contain){
+            if (!contain) {
                 mPorts.add(port);
             }
-        }
-        else if(!mPorts.contains(port)){
+        } else if (!mPorts.contains(port)) {
             mPorts.add(port);
         }
 
-        if(mPorts.size() > 0 && !isSigning){
+        if (mPorts.size() > 0 && !isSigning) {
             signIndex(mSignIndex);
         }
-        if(port instanceof UsbSerialPort) {
+        if (port instanceof UsbSerialPort) {
             Log.e("sign", "port-USB");
-        }
-        else{
+        } else {
             Log.e("sign", "port-Bluetooth");
         }
     }
 
     /**
      * 激活第 {@index} 个串口
+     *
      * @param index
      */
-    public void signIndex(int index){
+    public void signIndex(int index) {
         isSigning = true;
         setStep(STEP_READ);
-        if(index >= mPorts.size()){
-            signFinish(false,mContext.getString(R.string.sign_Failed));
+        if (index >= mPorts.size()) {
+            signFinish(false, mContext.getString(R.string.sign_Failed));
             return;
         }
         stopRead();
@@ -513,17 +513,17 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 读取设备SN
-     *          {@deviceInfos[0]}   DeviceSN
-     *          {@deviceInfos[1]}   COMCHK
+     * {@deviceInfos[0]}   DeviceSN
+     * {@deviceInfos[1]}   COMCHK
      */
-    public void onDeviceRead(BaseSerialPort readPort){
+    public void onDeviceRead(BaseSerialPort readPort) {
         stopRead();
-        if(deviceInfos == null || !deviceInfos[0].equals(Config.getInstance(mContext).getBondDevice().getDeviceSN())){
-            if(mReadPort instanceof UsbSerialPort){
+        if (deviceInfos == null || !deviceInfos[0].equals(Config.getInstance(mContext).getBondDevice().getDeviceSN())) {
+            if (mReadPort instanceof UsbSerialPort) {
                 mReadPort.close();
             }
-            if(mReadPort instanceof BluetoothSerialPort){
-                ((BluetoothSerialPort)mReadPort).destroy();
+            if (mReadPort instanceof BluetoothSerialPort) {
+                ((BluetoothSerialPort) mReadPort).destroy();
             }
             mSignIndex++;
             signIndex(mSignIndex);
@@ -531,12 +531,12 @@ public class SignDialog extends Dialog implements View.OnClickListener{
         }
         mReadPort = readPort;
 
-        if(mReadPort != null){
-            if(mReadPort instanceof UsbSerialPort){
-                ConnectStatus.getInstance(mContext).enableUSB(true,(UsbSerialPort)mReadPort);
+        if (mReadPort != null) {
+            if (mReadPort instanceof UsbSerialPort) {
+                ConnectStatus.getInstance(mContext).enableUSB(true, (UsbSerialPort) mReadPort);
             }
-            if(getReadPort() instanceof  BluetoothSerialPort){
-                ConnectStatus.getInstance(mContext).enableBT(true,(BluetoothSerialPort) mReadPort);
+            if (getReadPort() instanceof BluetoothSerialPort) {
+                ConnectStatus.getInstance(mContext).enableBT(true, (BluetoothSerialPort) mReadPort);
             }
         }
 
@@ -545,10 +545,10 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
     /**
      * 确认设备SN 后在服务器激活
-     *          {@deviceInfos[0]}   DeviceSN
-     *          {@deviceInfos[1]}   COMCHK
+     * {@deviceInfos[0]}   DeviceSN
+     * {@deviceInfos[1]}   COMCHK
      */
-    private void signDevice(){
+    private void signDevice() {
         String url = null;
         try {
             detailAddress = address_ET.getText().toString();
@@ -557,55 +557,52 @@ public class SignDialog extends Dialog implements View.OnClickListener{
                     "id1=" + deviceInfos[1] + "&" +
                     "id2=" + deviceInfos[2] + "&" +
                     "targetID=" + Config.getAndroidID(getContext()) + "&" +
-                    "userName=" + URLEncoder.encode(user.getRealName(), "utf-8")  + "&" +
-                    "userTel=" + URLEncoder.encode(user.getMobile(),"utf-8")  + "&" +
-                    "userAddr=" + URLEncoder.encode((longitudeLat==null?"":longitudeLat) + detailAddress, "utf-8") + "&" +
-                    "userEmail=" + URLEncoder.encode(user.getEMail(),"utf-8");
+                    "userName=" + URLEncoder.encode(user.getRealName(), "utf-8") + "&" +
+                    "userTel=" + URLEncoder.encode(user.getMobile(), "utf-8") + "&" +
+                    "userAddr=" + URLEncoder.encode((longitudeLat == null ? "" : longitudeLat) + detailAddress, "utf-8") + "&" +
+                    "userEmail=" + URLEncoder.encode(user.getEMail(), "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
-        url = url.replaceAll(" ","");
+        url = url.replaceAll(" ", "");
         VolleyUtil.jsonPostRequest(url, getContext(), new VolleyUtil.IVolleyCallback() {
             @Override
             public void getResponse(JSONObject jsonObject) {
-                try{
+                try {
                     // mDialog.dismiss();
                     int code = jsonObject.getInt("code");
                     JSONObject data = jsonObject.getJSONObject("data");
                     //Success
-                    if(code == 0){
+                    if (code == 0) {
 
                         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-                        DeviceBean device = gson.fromJson(data.getJSONObject("Device").toString(),DeviceBean.class);
+                        DeviceBean device = gson.fromJson(data.getJSONObject("Device").toString(), DeviceBean.class);
 
                         if (device.getDeviceSN().equals(Config.getInstance(mContext).getBondDevice().getDeviceSN())) {
                             Config.getInstance(getContext()).setBondDevice(device);
                             Config.getInstance(getContext()).setSigned(true);
-                            signFinish(true,"");
-                        }else {
-                            signFinish(false,mContext.getResources().getString(R.string.sign_Failed));
+                            signFinish(true, "");
+                        } else {
+                            signFinish(false, mContext.getResources().getString(R.string.sign_Failed));
                         }
-                    }
-                    else{
+                    } else {
                         String message = data.getString("error");
-                        signFinish(false,message);
+                        signFinish(false, message);
                     }
-                }
-                catch (JSONException ex){
-                    signFinish(false,mContext.getString(R.string.sign_Failed));
+                } catch (JSONException ex) {
+                    signFinish(false, mContext.getString(R.string.sign_Failed));
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                if(error instanceof TimeoutError){
-                    Toast.makeText(mContext,mContext.getString(R.string.toast_netconn_moreTime),Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(mContext,mContext.getString(R.string.toast_inspect_netconn),Toast.LENGTH_SHORT).show();
+                if (error instanceof TimeoutError) {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_netconn_moreTime), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_inspect_netconn), Toast.LENGTH_SHORT).show();
                 }
                 setStep(STEP_USER);
             }
@@ -613,7 +610,7 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     }
 
 
-    private void signFinish(boolean success, String message){
+    private void signFinish(boolean success, String message) {
         if (success) {
             /**
              * 激活成功
@@ -637,8 +634,8 @@ public class SignDialog extends Dialog implements View.OnClickListener{
 
                     //如果存在 USB 设备连接，尝试检查设备序列号
                     List<UsbSerialPort> mUsbPorts = UsbService.getInstance().getSerialPorts();
-                    if(mUsbPorts != null && mUsbPorts.size() > 0){
-                        for(int i = 0;i < mUsbPorts.size();i++){
+                    if (mUsbPorts != null && mUsbPorts.size() > 0) {
+                        for (int i = 0; i < mUsbPorts.size(); i++) {
                             UsbService.getInstance().connectSerialPort(mUsbPorts.get(i));
                         }
                     }
@@ -651,31 +648,32 @@ public class SignDialog extends Dialog implements View.OnClickListener{
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
 
             BaseSerialPort readPort = getReadPort();
-            if(readPort instanceof UsbSerialPort){
+            if (readPort instanceof UsbSerialPort) {
                 readPort.close();
             }
-            if(readPort instanceof BluetoothSerialPort){
-                ((BluetoothSerialPort)readPort).destroy();
+            if (readPort instanceof BluetoothSerialPort) {
+                ((BluetoothSerialPort) readPort).destroy();
             }
         }
 
-        if(mSignCallback != null){
-            mSignCallback.onFinish(success,this,message);
+        if (mSignCallback != null) {
+            mSignCallback.onFinish(success, this, message);
         }
     }
 
     /**
      * 从设备读取信息的线程
      */
-    private class ReadThread extends Thread{
+    private class ReadThread extends Thread {
         BaseSerialPort mPort;
-        public ReadThread(BaseSerialPort port){
+
+        public ReadThread(BaseSerialPort port) {
             mPort = port;
         }
 
         @Override
         public void run() {
-            Log.e("read",mPort.toString());
+            Log.e("read", mPort.toString());
             deviceInfos = DeviceDriver.getInstance(mContext).ReadDevice(mPort);
 
             final BaseSerialPort port = mPort;
@@ -688,8 +686,8 @@ public class SignDialog extends Dialog implements View.OnClickListener{
         }
     }
 
-    public void stopRead(){
-        if(mReadThread != null){
+    public void stopRead() {
+        if (mReadThread != null) {
             mReadThread.interrupt();
             mReadThread = null;
         }
@@ -698,8 +696,8 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     /**
      * 销毁
      */
-    public static void clear(){
-        if(instance != null){
+    public static void clear() {
+        if (instance != null) {
             instance.stopRead();
         }
         instance = null;
@@ -709,11 +707,11 @@ public class SignDialog extends Dialog implements View.OnClickListener{
     /**
      * 点击事件监听接口
      */
-    public interface OnClickListener{
+    public interface OnClickListener {
         public abstract void onClick(Dialog dialog);
     }
 
-    public interface SignCallback{
+    public interface SignCallback {
         void onFinish(boolean success, SignDialog dialog, String message);
     }
 }
