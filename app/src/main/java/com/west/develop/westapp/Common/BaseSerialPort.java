@@ -13,8 +13,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public abstract class BaseSerialPort {
-    public static final int DEFAULT_READ_BUFFER_SIZE = 4 * 1024;
-    public static final int DEFAULT_WRITE_BUFFER_SIZE = 4 * 1024;
+    private static final int DEFAULT_READ_BUFFER_SIZE = 4 * 1024;
+    private static final int DEFAULT_WRITE_BUFFER_SIZE = 4 * 1024;
 
     private final Object mReadBufferLock = new Object();
     private final Object mWriteBufferLock = new Object();
@@ -107,7 +107,7 @@ public abstract class BaseSerialPort {
      * @return 已接收大小
      */
     public int getReadBufferSize() {
-        int size = 0;
+        int size;
 
         if (mReadIndex <= mReceiveIndex) {
             size = mReceiveIndex - mReadIndex;
@@ -306,7 +306,6 @@ public abstract class BaseSerialPort {
      */
     public void setCommBreak() {
         isBreak = true;
-
         new Thread(new Runnable() {
             @Override
             public void run() {

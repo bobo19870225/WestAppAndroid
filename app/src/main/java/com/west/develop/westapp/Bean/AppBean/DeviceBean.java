@@ -28,7 +28,7 @@ public class DeviceBean {
 
 
     @Expose
-    @SerializedName("uMail")
+    @SerializedName("uEmail")
     String userMail;
 
 

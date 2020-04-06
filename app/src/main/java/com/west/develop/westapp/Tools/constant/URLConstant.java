@@ -27,10 +27,6 @@ public class URLConstant {
 
     /**
      * 下载
-     *
-     * @params
-     * @deviceSN
-     * @fileName
      */
     public static final String urlProgramDownload = DOMAIN + "version/download";
 
@@ -56,28 +52,18 @@ public class URLConstant {
 
     /**
      * 设备激活:
-     *
-     * @Method:POST Params:    deviceSN
-     * id1    主ID
-     * id2    从ID
-     * targetID(Android deviceID)
      */
     public static final String urlDeviceSign = DOMAIN + "device/signDevice";
 
     /**
      * 设备绑定
-     *
-     * @Method:POST Params:    deviceSN
-     * id1    主ID
-     * id2    从ID
-     * targetID(Android deviceID)
      */
     public static final String urlDeviceBond = DOMAIN + "device/bondDevice";
 
     /**
      * 下载汽车图标
      *
-     * @Method: GET
+     * Method: GET
      * params:
      * logoPath(例：audi.png);
      * deviceSN

@@ -40,11 +40,9 @@ import java.util.Set;
 
 public class BluetoothService extends Service {
     private static final int MSG_START_DISCOVERY = 1;
-
     public static final String ACTION_BLUETOOTH_CHECK_SUCCESS = "com.west.develop.westapp.ACTION_BLUETOOTH_CHECK_SUCCESS";
     public static final String ACTION_BLUETOOTH_DISCONNECTED = "com.west.develop.westapp.ACTION_BLUETOOTH_DISCONNECTED";
-
-    private static final String mPared_PIN = "0000";
+//    private static final String mPared_PIN = "0000";
 
     IBinder mBinder = new BluetoothBinder();
 
@@ -80,7 +78,7 @@ public class BluetoothService extends Service {
                 return;
             }
 
-            /**
+            /*
              * 连接成功
              */
             if (Config.getInstance(BluetoothService.this).getBondDevice() != null) {
@@ -92,7 +90,7 @@ public class BluetoothService extends Service {
                         DeviceDriver.getInstance(BluetoothService.this).CheckDevice(port, new DeviceDriver.CheckCallback() {
                             @Override
                             public void callback(Byte resultByte, final String version) {
-                                /**
+                                /*
                                  * 检查设备序列号正确
                                  */
                                 if (resultByte != null && resultByte == BaseCMD.CHK_BACK_CMD_SUCCESS) {
@@ -101,7 +99,7 @@ public class BluetoothService extends Service {
                                         public void run() {
                                             ConnectStatus.getInstance(BluetoothService.this).enableBT(true, port);
 
-                                            /**
+                                            /*
                                              * 设置固件当前版本
                                              */
                                             String verMain = version.substring(0, version.indexOf("."));
@@ -406,7 +404,7 @@ public class BluetoothService extends Service {
                 }
             }
 
-            /**
+            /*
              * 蓝牙状态改变
              */
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {

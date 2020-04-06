@@ -4,16 +4,16 @@ package com.west.develop.westapp.Bean.Upgrade;
  * Created by Develop12 on 2017/9/12.
  */
 public class VersionBean {
-    String programName;
-    String parentVersion;
-    String childVersion;
-    String url;
+    private String programName;
+    private String parentVersion;
+    private String childVersion;
+    private String url;
 
     public String getProgramName() {
         try {
             this.programName = this.programName.replace("\\", "/");
             this.programName = this.programName.replace("//", "/");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return programName;
@@ -22,10 +22,9 @@ public class VersionBean {
     public void setProgramName(String programName) {
         try {
             this.programName = programName;
-            this.programName = this.programName.replace("\\","/");
-            this.programName = this.programName.replace("//","/");
-        }
-        catch (Exception ex){
+            this.programName = this.programName.replace("\\", "/");
+            this.programName = this.programName.replace("//", "/");
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -47,14 +46,14 @@ public class VersionBean {
     }
 
     public String getUrl() {
-        url.replace("\\","/");
-        url.replace("//","/");
+        url = url.replace("\\", "/");
+        url = url.replace("//", "/");
         return url;
     }
 
     public void setUrl(String url) {
-        url.replace("\\","/");
-        url.replace("//","/");
+        url = url.replace("\\", "/");
+        url = url.replace("//", "/");
         this.url = url;
     }
 }

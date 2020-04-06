@@ -33,7 +33,6 @@ public class PortActivity extends BaseActivity {
     private TextView portFWVer_TV;
     private TextView portSignDate_TV;
     private TextView portRemainCount_TV;
-    private LinearLayout port_info;
 
     @Override
     protected View getContentView() {
@@ -42,23 +41,23 @@ public class PortActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        back_tv = (TextView) findViewById(R.id.car_back);
-        title = (TextView) findViewById(R.id.car_title);
+        back_tv = findViewById(R.id.car_back);
+        title =  findViewById(R.id.car_title);
 
-        androidID_TV = (TextView)findViewById(R.id.port_AndroidID);
+        androidID_TV = findViewById(R.id.port_AndroidID);
 
-        userName_TV = (TextView)findViewById(R.id.value_UserName);
-        userPhone_TV = (TextView)findViewById(R.id.value_UserPhone);
-        userMail_TV = (TextView)findViewById(R.id.value_UserMail);
-        userAddr_TV = (TextView)findViewById(R.id.value_UserAddr);
+        userName_TV = findViewById(R.id.value_UserName);
+        userPhone_TV = findViewById(R.id.value_UserPhone);
+        userMail_TV = findViewById(R.id.value_UserMail);
+        userAddr_TV = findViewById(R.id.value_UserAddr);
 
-        portSN_TV = (TextView) findViewById(R.id.port_sn);
-        portMode_TV = (TextView) findViewById(R.id.port_hardType);
-        portFWVer_TV = (TextView) findViewById(R.id.port_hardType_ver);
-        portSignDate_TV = (TextView) findViewById(R.id.port_sign_date);
-        portRemainCount_TV = (TextView)findViewById(R.id.port_RemainCount);
+        portSN_TV =  findViewById(R.id.port_sn);
+        portMode_TV =  findViewById(R.id.port_hardType);
+        portFWVer_TV =  findViewById(R.id.port_hardType_ver);
+        portSignDate_TV =  findViewById(R.id.port_sign_date);
+        portRemainCount_TV = findViewById(R.id.port_RemainCount);
 
-        port_info = (LinearLayout) findViewById(R.id.port_info);
+//        LinearLayout port_info = (LinearLayout) findViewById(R.id.port_info);
 
     }
 

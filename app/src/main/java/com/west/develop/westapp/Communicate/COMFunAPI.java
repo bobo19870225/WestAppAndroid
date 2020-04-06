@@ -146,7 +146,7 @@ public class COMFunAPI {
 
     /**
      * 延时
-     * @param T
+     * @param T 时间
      */
     public void Delayms(int T){
         SystemClock.sleep(T);

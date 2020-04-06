@@ -10,10 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.west.develop.westapp.Config.Config;
-import com.west.develop.westapp.Dialog.ConnectStatus;
 import com.west.develop.westapp.R;
 import com.west.develop.westapp.UI.Activity.MainActivity;
-import com.west.develop.westapp.UI.Activity.SplashActivity;
 import com.west.develop.westapp.UI.base.BaseActivity;
 
 public class StatementActivity extends BaseActivity implements  View.OnClickListener{
@@ -21,7 +19,6 @@ public class StatementActivity extends BaseActivity implements  View.OnClickList
 
     boolean isAgreed = false;
 
-    private WebView webView;
     private TextView back;
     private TextView title;
 
@@ -39,12 +36,12 @@ public class StatementActivity extends BaseActivity implements  View.OnClickList
         isAgreed = getIntent().getBooleanExtra(kAgreed,true);
         setStatusShow(isAgreed);
 
-        back = (TextView) findViewById(R.id.car_back);
-        title = (TextView) findViewById(R.id.car_title);
-        webView = (WebView) findViewById(R.id.webview);
-        mConfirmLayout = (LinearLayout)findViewById(R.id.layout_confirm);
-        readCheck = (CheckBox)findViewById(R.id.confirm_CHKBox);
-        sureBTN = (Button)findViewById(R.id.sure_BTN);
+        back = findViewById(R.id.car_back);
+        title = findViewById(R.id.car_title);
+        WebView webView = findViewById(R.id.webview);
+        mConfirmLayout = findViewById(R.id.layout_confirm);
+        readCheck = findViewById(R.id.confirm_CHKBox);
+        sureBTN = findViewById(R.id.sure_BTN);
 
         String html = getString(R.string.htmlText);
         webView.loadData(html,"text/html; charset=UTF-8", "utf-8");
@@ -88,17 +85,13 @@ public class StatementActivity extends BaseActivity implements  View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.sure_BTN:
-                if(readCheck.isChecked()){
-                    Config.getInstance(StatementActivity.this).setAgreed(true);
-                    Intent intent = new Intent(StatementActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.sure_BTN) {
+            if (readCheck.isChecked()) {
+                Config.getInstance(StatementActivity.this).setAgreed(true);
+                Intent intent = new Intent(StatementActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         }
     }
 

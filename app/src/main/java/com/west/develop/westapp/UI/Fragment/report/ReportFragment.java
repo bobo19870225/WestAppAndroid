@@ -26,7 +26,6 @@ import com.west.develop.westapp.UI.base.BaseFragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +48,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     private static final int MSG_REPORT_REFRESH = 0;
 
     private static ReportFragment instance;
+
     public static ReportFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -57,7 +57,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         return fragment;
     }
 
-    public static ReportFragment getInstance(){
+    public static ReportFragment getInstance() {
         return instance;
     }
 
@@ -65,16 +65,17 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    Handler handle = new Handler(){
+
+    Handler handle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_REPORT_REFRESH:
-                    count.setText(listReport.size() +" ");
+                    count.setText(listReport.size() + " ");
 
                     mTitle = getResources().getString(R.string.local_report);
-                    if (selectcount > 0){
-                        mTitle = getResources().getString(R.string.upgrade_select)+" "+selectcount+" "+getResources().getString(R.string.report_num);
+                    if (selectcount > 0) {
+                        mTitle = getResources().getString(R.string.upgrade_select) + " " + selectcount + " " + getResources().getString(R.string.report_num);
                     }
 
                     refreshTitle();
@@ -93,31 +94,31 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         @Override
         public void select(boolean b) {
             mTitle = getResources().getString(R.string.local_report);
-            if (!b && !checkBox.isChecked()){
+            if (!b && !checkBox.isChecked()) {
                 int count = 0;
-                for (int j = 0; j < listReport.size() ; j++) {
-                    if (listReport.get(j).isChecked()){
+                for (int j = 0; j < listReport.size(); j++) {
+                    if (listReport.get(j).isChecked()) {
                         count++;
-                        mTitle = getResources().getString(R.string.upgrade_select)+" "+count+" "+getResources().getString(R.string.report_num);
+                        mTitle = getResources().getString(R.string.upgrade_select) + " " + count + " " + getResources().getString(R.string.report_num);
                     }
                 }
                 refreshTitle();
                 return;
-            }else if (!b && checkBox.isChecked()){
+            } else if (!b) {
                 allItemflag = true;
                 checkBox.setChecked(false);
                 int count = 0;
-                for (int j = 0; j < listReport.size() ; j++) {
-                    if (listReport.get(j).isChecked()){
+                for (int j = 0; j < listReport.size(); j++) {
+                    if (listReport.get(j).isChecked()) {
                         count++;
-                        mTitle = getResources().getString(R.string.upgrade_select)+" "+count+" "+getResources().getString(R.string.report_num);
+                        mTitle = getResources().getString(R.string.upgrade_select) + " " + count + " " + getResources().getString(R.string.report_num);
                     }
 
                 }
-            }else if (b){
+            } else {
                 allItemflag = true;
                 checkBox.setChecked(true);
-                mTitle = getResources().getString(R.string.upgrade_select)+" "+listReport.size()+" "+getResources().getString(R.string.report_num);
+                mTitle = getResources().getString(R.string.upgrade_select) + " " + listReport.size() + " " + getResources().getString(R.string.report_num);
             }
             refreshTitle();
         }
@@ -126,20 +127,20 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     private LReportAdapter.ItemLongClickListener mItemLongClickListner = new LReportAdapter.ItemLongClickListener() {
         @Override
         public void onClick(final Report report) {
-            if(report.isPost()){
-                Toast.makeText(getContext(),getString(R.string.unable_Delete),Toast.LENGTH_SHORT).show();
+            if (report.isPost()) {
+                Toast.makeText(getContext(), getString(R.string.unable_Delete), Toast.LENGTH_SHORT).show();
                 return;
             }
             final MenuDialog dialog = new MenuDialog.Builder(getContext())
                     .addButton(getString(R.string.report_delete), new MenuDialog.OnClickListener() {
                         @Override
                         public void onClick(MenuDialog dialogInterface) {
-                            ReportUntil.deleteReport(getContext(),report.getFile());
+                            ReportUntil.deleteReport(getContext(), report.getFile());
                             refresh();
                             dialogInterface.hide();
                         }
                     }).build();
-            dialog.show(listView,(int)getResources().getDimension(R.dimen.statusBarSize));
+            dialog.show(listView, (int) getResources().getDimension(R.dimen.statusBarSize));
         }
     };
 
@@ -155,11 +156,10 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View inflate) {
-        count = (TextView) inflate.findViewById(R.id.report_diagnose_count);
-        listView = (ListView) inflate.findViewById(R.id.listviewreport);
-        checkBox = (CheckBox) inflate.findViewById(R.id.checkboxReport_bottom);
+        count = inflate.findViewById(R.id.report_diagnose_count);
+        listView = inflate.findViewById(R.id.listviewreport);
+        checkBox = inflate.findViewById(R.id.checkboxReport_bottom);
     }
-
 
 
     /**
@@ -170,13 +170,13 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         mTitle = getResources().getString(R.string.local_report);
         refreshTitle();
 
-        /**
+        /*
          * 获取本地记录
          */
         File[] files = ReportUntil.getReports(getContext());
-        if(files != null) {
-            for (int i = 0; i < files.length; i++) {
-                String str = files[i].getName();
+        if (files != null) {
+            for (File file : files) {
+                String str = file.getName();
                 Report report = new Report();
                 if (str.indexOf(".txt") > 0) {
                     report.setFile(str.substring(0, str.lastIndexOf(".txt")));
@@ -186,7 +186,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
             Collections.reverse(listReport);
             handle.sendEmptyMessage(MSG_REPORT_REFRESH);
         }
-        adapter = new LReportAdapter(listReport,getActivity());
+        adapter = new LReportAdapter(listReport, getActivity());
         adapter.setSelectItemListener(mSelectItemListener);
         adapter.setItemLongClickListener(mItemLongClickListner);
 
@@ -200,7 +200,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (allItemflag){
+                if (allItemflag) {
                     allItemflag = false;
                     return;
                 }
@@ -212,10 +212,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
                     selectcount = 0;
                     Set<String> set = adapter.getmSet();
                     if (set != null) {
-                        Iterator it = set.iterator();
-                        while (it.hasNext()) {
-                            String name = (String) it.next();
-
+                        for (String name : set) {
                             for (int i = 0; i < listReport.size(); i++) {
                                 if (listReport.get(i).getFile().equals(name)) {
                                     listReport.get(i).setChecked(true);
@@ -240,19 +237,18 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     }
 
 
-
     /**
      * 更新数据
      */
-    public void refresh(){
-        if (listReport == null){
+    public void refresh() {
+        if (listReport == null) {
             listReport = new ArrayList<>();
         }
         listReport.clear();
         File[] files = ReportUntil.getReports(getContext());
         if (files != null && files.length > 0) {
-            for (int i = 0; i < files.length; i++) {
-                String str = files[i].getName();
+            for (File file : files) {
+                String str = file.getName();
                 Report report = new Report();
                 if (str.indexOf(".txt") > 0) {
                     report.setFile(str.substring(0, str.lastIndexOf(".txt")));
@@ -265,10 +261,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         selectcount = 0;
         Set<String> set = adapter.getmSet();
         if (set != null) {
-            Iterator it = set.iterator();
-            while (it.hasNext()) {
-                String name = (String) it.next();
-
+            for (String name : set) {
                 for (int i = 0; i < listReport.size(); i++) {
                     if (listReport.get(i).getFile().equals(name)) {
                         listReport.get(i).setChecked(true);
@@ -282,13 +275,12 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     }
 
 
-
     /**
      * 刷新标题
      */
-    public void refreshTitle(){
+    private void refreshTitle() {
         DataFragment report = DataFragment.getInstance();
-        if(report != null){
+        if (report != null) {
             report.refreshTitle();
         }
     }
@@ -296,16 +288,15 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
 
     /**
      * 获取标题文字
-     * @return
      */
-    public String getTitleText(){
-        return  mTitle;
+    String getTitleText() {
+        return mTitle;
     }
 
     /**
      * 删除已选中的记录
      */
-    public void deleteCheck(){
+    void deleteCheck() {
         adapter.deleteChecked(count);
         checkBox.setChecked(false);
         adapter.notifyDataSetChanged();
@@ -313,20 +304,15 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.menu_iv:
+        if (v.getId() == R.id.menu_iv) {
+            if (getContext() instanceof MainActivity) {
                 if (getContext() instanceof MainActivity) {
-                    if (getContext() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).onFragSwitch(MainActivity.HOME_ID);
+                    ((MainActivity) getActivity()).onFragSwitch(MainActivity.HOME_ID);
 
-                    }
-                    break;
                 }
-
+            }
         }
     }
-
-
 
 
     @Override
