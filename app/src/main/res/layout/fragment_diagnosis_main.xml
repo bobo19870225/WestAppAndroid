@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#eeeeee"
-    >
+    android:orientation="vertical">
 
     <include layout="@layout/maintoolbar" />
 
@@ -16,12 +15,13 @@
         android:orientation="horizontal"
 
         >
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/diagnosis_addicon"
                 android:layout_width="60dp"
@@ -30,94 +30,91 @@
                 android:layout_marginBottom="10dp"
                 android:scaleType="center"
                 android:text="添加"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <ToggleButton
                 android:id="@+id/carsort"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="@dimen/textSize16"
-                android:textOn="@string/sort_pinyin"
-                android:textOff="@string/sort_number"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/toggle_main_sort"
                 android:textAllCaps="false"
-                />
+                android:textOff="@string/sort_number"
+                android:textOn="@string/sort_pinyin"
+                android:textSize="@dimen/textSize16" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                >
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
                 <ImageButton
                     android:id="@+id/zoomadd"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@mipmap/create_contact"
-                    android:backgroundTint="@color/main_toolbar"
-                    />
+                    android:backgroundTint="@color/main_toolbar" />
+
                 <ImageButton
                     android:id="@+id/zoomreduce"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@mipmap/reduce_contact"
-                    android:backgroundTint="@color/main_toolbar"
-                    />
+                    android:backgroundTint="@color/main_toolbar" />
             </LinearLayout>
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="right"
             android:layout_weight="1"
-            >
+            android:gravity="end">
 
             <LinearLayout
                 android:id="@+id/search"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/bg_broderred"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                >
+                android:orientation="horizontal">
+
                 <AutoCompleteTextView
                     android:id="@+id/diagnosis_search_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:backgroundTint="#ffffff"
                     android:completionThreshold="1"
+                    android:drawableLeft="@mipmap/ic_search_api_holo_light"
+                    android:dropDownWidth="150dp"
+                    android:dropDownVerticalOffset="0.5dp"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:lines="1"
                     android:textColor="@color/colorMain"
                     android:textSize="@dimen/textSize14"
-                    android:backgroundTint="#ffffff"
-                    android:imeOptions="actionSearch"
-                    android:dropDownWidth="150dp"
-                    android:drawableLeft="@mipmap/ic_search_api_holo_light"
-                    android:dropDownVerticalOffset="0.5dp"
-                    android:lines="1"
-                    android:inputType="text"
 
                     />
+
                 <RadioButton
                     android:id="@+id/diagnosis_search_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:button="@null"
                     android:drawableLeft="@mipmap/presence_offline"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
                     android:paddingRight="10dp"
-                    />
+                    android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>
@@ -127,18 +124,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <GridView
             android:id="@+id/gird_Diagnosis_Resion"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:columnWidth="120dp"
+            android:horizontalSpacing="2dp"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="2dp"
-            />
+            android:verticalSpacing="2dp" />
 
     </RelativeLayout>
 

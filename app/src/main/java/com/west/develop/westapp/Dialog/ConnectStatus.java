@@ -12,6 +12,7 @@ import android.hardware.usb.UsbDevice;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,18 +38,17 @@ import static com.west.develop.westapp.Communicate.Service.BluetoothService.ACTI
 import static com.west.develop.westapp.Communicate.Service.UsbService.ACTION_USB_DISCONNECTED;
 
 /**
- * Created by Develop0 on 2017/9/2.
+ * 状态栏,创建的同时开启蓝牙、USB服务，在隐藏的时候关闭
  */
 
 public class ConnectStatus {
 
     private static Context mContext;
-
     private static ConnectStatus instance;
-
+    private static final String TAG = ConnectStatus.class.getSimpleName();
     private boolean isPaused = false;
 
-    public ConnStatusReceiver mReceiver = new ConnStatusReceiver();
+    private ConnStatusReceiver mReceiver = new ConnStatusReceiver();
 
     /**
      * 状态栏  内容
@@ -82,9 +82,6 @@ public class ConnectStatus {
 
     /**
      * 获取单例
-     *
-     * @param context
-     * @return
      */
     public static ConnectStatus getInstance(Context context) {
         mContext = context;
@@ -105,10 +102,13 @@ public class ConnectStatus {
             instance.mParams.gravity = Gravity.LEFT + Gravity.BOTTOM;
             instance.mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
-            /**
+            /*
              * 启动USB服务
              */
             instance.startService(UsbService.class, instance.usbConnection, null);
+            /*
+             * 启动蓝牙服务
+             */
             instance.startService(BluetoothService.class, instance.bluetoothConnection, null);
 
         }
@@ -120,6 +120,9 @@ public class ConnectStatus {
         return mContentView;
     }
 
+    /**
+     * 启动USB或蓝牙服务
+     */
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         if (!UsbService.SERVICE_CONNECTED) {
             Intent startService = new Intent(mContext, service);
@@ -136,7 +139,7 @@ public class ConnectStatus {
         try {
             mContext.getApplicationContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception ex) {
-
+            Log.e(TAG, ex.toString());
         }
     }
 
@@ -173,8 +176,6 @@ public class ConnectStatus {
 
     /**
      * 获取已连接蓝牙
-     *
-     * @return
      */
     public BluetoothSerialPort getBTPort() {
         return mBTPort;
@@ -183,12 +184,9 @@ public class ConnectStatus {
 
     /**
      * 使能蓝牙
-     *
-     * @param enable
-     * @param device
      */
     public void enableBT(boolean enable, BluetoothSerialPort device) {
-        /**
+        /*
          * 如果蓝牙设备未连接，设备断开连接提示音
          */
         if (mBTPort != null && (!enable || device == null)) {
@@ -209,9 +207,6 @@ public class ConnectStatus {
 
     /**
      * 使能USB
-     *
-     * @param enable
-     * @param port
      */
     public void enableUSB(boolean enable, UsbSerialPort port) {
         if (enable) {
@@ -220,8 +215,8 @@ public class ConnectStatus {
             mUSBPort = null;
         }
 
-        /**
-         * 如果蓝牙设备未连接，设备断开连接提示音
+        /*
+         * 如果USB设备未连接，设备断开连接提示音
          */
         if (getUSBPort() == null && getBTPort() == null) {
             SoundUtil.deviceLostSound(mContext);
@@ -239,8 +234,6 @@ public class ConnectStatus {
     /**
      * 发现 蓝牙设备
      * 所述设备是 检测序列号 有返回，但返回不正确的设备
-     *
-     * @param btPort
      */
     public void detectBT(BluetoothSerialPort btPort) {
         if (btPort == null) {
@@ -264,8 +257,6 @@ public class ConnectStatus {
     /**
      * 发现USB设备
      * 发现的设备 检测序列号 有返回，但不是与Android 设备绑定的设备
-     *
-     * @param usbPort
      */
     public void detectUSB(UsbSerialPort usbPort) {
         if (usbPort == null) {
@@ -278,9 +269,6 @@ public class ConnectStatus {
 
     /**
      * 检查是否设备列表中是否包含 设备
-     *
-     * @param port
-     * @return
      */
     public boolean containPort(BaseSerialPort port) {
         if (port == null) {
@@ -309,8 +297,6 @@ public class ConnectStatus {
     /**
      * 检查设备列表中已经搜索不到的设备，将其移除
      * 所述设备是 检测序列号 有返回，但返回不正确的设备
-     *
-     * @param devices
      */
     public void compareBTDevice(List<BluetoothDevice> devices) {
         for (int i = 0; i < mBTSerialPorts.size(); i++) {
@@ -341,8 +327,6 @@ public class ConnectStatus {
     /**
      * 移除USB设备
      * 所述设备是 检测序列号 有返回，但返回不正确的设备
-     *
-     * @param device
      */
     public void removeUsb(UsbDevice device) {
         if (device == null) {
@@ -368,14 +352,14 @@ public class ConnectStatus {
     /**
      * 刷新状态
      */
-    public void refreshState() {
+    private void refreshState() {
         if (mContentView != null) {
-            final TextView stateDeviceTV = (TextView) mContentView.findViewById(R.id.status_Device_TV);
-            final TextView stateUSBTV = (TextView) mContentView.findViewById(R.id.status_USB_TV);
-            final TextView stateBTTV = (TextView) mContentView.findViewById(R.id.status_BT_TV);
-            final ImageView imageDevice = (ImageView) mContentView.findViewById(R.id.state_Device_IMG);
-            final ImageView imageBT = (ImageView) mContentView.findViewById(R.id.state_BT_IMG);
-            final ImageView imageUSB = (ImageView) mContentView.findViewById(R.id.state_USB_IMG);
+            final TextView stateDeviceTV = mContentView.findViewById(R.id.status_Device_TV);
+            final TextView stateUSBTV = mContentView.findViewById(R.id.status_USB_TV);
+            final TextView stateBTTV = mContentView.findViewById(R.id.status_BT_TV);
+            final ImageView imageDevice = mContentView.findViewById(R.id.state_Device_IMG);
+            final ImageView imageBT = mContentView.findViewById(R.id.state_BT_IMG);
+            final ImageView imageUSB = mContentView.findViewById(R.id.state_USB_IMG);
             mContentView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -396,7 +380,10 @@ public class ConnectStatus {
                     }
                     //发现蓝牙设备
                     else {
-                        int count = mBTSerialPorts.size();
+                        int count = 0;
+                        if (mBTSerialPorts != null) {
+                            count = mBTSerialPorts.size();
+                        }
                         if (mBTPort != null) {
                             count++;
                         }
@@ -429,7 +416,10 @@ public class ConnectStatus {
                     }
                     //发现USB设备
                     else {
-                        int count = mUsbSerialPorts.size();
+                        int count = 0;
+                        if (mUsbSerialPorts != null) {
+                            count = mUsbSerialPorts.size();
+                        }
                         if (mUSBPort != null) {
                             count++;
                         }

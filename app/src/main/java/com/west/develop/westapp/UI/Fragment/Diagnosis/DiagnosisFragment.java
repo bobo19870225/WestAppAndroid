@@ -59,7 +59,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
     private Button addIcon;
     private static final int IMAGE_OPEN = 1;
     private TextView title;
-    private final Context context = getContext();
+    private Context context;
 
     public static DiagnosisFragment newInstance(String param1, String param2) {
         return new DiagnosisFragment();
@@ -73,6 +73,7 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diagnosis_main, container, false);
+        context = getContext();
         initView(view);
         initData();
         initListener();
@@ -128,7 +129,6 @@ public class DiagnosisFragment extends BaseFragment implements FragmentBackHandl
                 int fontSize = (int) (width * 0.1);
                 mGridView.setColumnWidth(width);
                 mAdapter.setTextSize(fontSize);
-
                 try {
                     if (context != null) {
                         completeTV.setAdapter(new ArrayAdapter<>(context, R.layout.drop_down_item, items));

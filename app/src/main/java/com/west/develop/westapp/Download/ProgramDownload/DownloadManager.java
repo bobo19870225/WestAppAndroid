@@ -38,10 +38,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class DownloadManager{
+public class DownloadManager {
     private static final String kURL = "download_URL";
     private static final String kFileName = "download_FileName";
-
     private Context mContext;
     private static DownloadManager instance;
 
@@ -79,26 +78,25 @@ public class DownloadManager{
     /**
      * 已完成，待提示 更新路径列表
      */
-    private ArrayList<Map<String,String>> mFinishSet = new ArrayList<>();
+    private ArrayList<Map<String, String>> mFinishSet = new ArrayList<>();
 
-    private  RemoteViews remoteViews;
-    private  PendingIntent pendingIntent;
-    private  NotificationCompat.Builder mBuilder;
+    private RemoteViews remoteViews;
+    private NotificationCompat.Builder mBuilder;
     private NotificationManager mNotificationManager;
     private final int NOTIFICATION_ID = 1;
 
 
     public synchronized static DownloadManager getInstance(Context context) {
-        if(instance == null){
-            synchronized (DownloadManager.class){
+        if (instance == null) {
+            synchronized (DownloadManager.class) {
                 instance = new DownloadManager();
                 instance.mContext = context;
 
-                /**
+                /*
                  * 初始化notifition
                  */
                 instance.initNotification();
-                /**
+                /*
                  * 初始化线程列表
                  */
                 instance.initAll();
@@ -113,7 +111,7 @@ public class DownloadManager{
     private void initNotification() {
         Intent notifyIntent = new Intent(mContext, DownloadTaskActivity.class);
         int requestCode2 = (int) SystemClock.uptimeMillis();
-        pendingIntent = PendingIntent.getActivity(mContext, requestCode2,
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, requestCode2,
                 notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.download_notifi);
@@ -126,47 +124,45 @@ public class DownloadManager{
                 .setTicker("升级程序正在下载")
                 .setContent(remoteViews)
                 .setContentIntent(pendingIntent);
-        mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
     }
 
     /**
      * 添加多条下载 URL
-     * @param urls
      */
-    public void addUrls(ArrayList<String> urls){
-        if(urls == null || urls.size() <= 0){
+    public void addUrls(ArrayList<String> urls) {
+        if (urls == null || urls.size() <= 0) {
             return;
         }
-        for(int i = 0;i < urls.size() ;i++){
+        for (int i = 0; i < urls.size(); i++) {
             addUrl(urls.get(i));
         }
     }
 
     /**
      * 添加单条 下载 URL
-     * @param url
      */
-    public void addUrl(String url){
+    private void addUrl(String url) {
         boolean contain = false;
-        if(mUpgradeThreads == null){
+        if (mUpgradeThreads == null) {
             mUpgradeThreads = new CopyOnWriteArrayList<>();
         }
 
-        for(int i = 0;i < mUpgradeThreads.size();i++){
-            if(mUpgradeThreads.get(i).getUrl().equals(url)){
+        for (int i = 0; i < mUpgradeThreads.size(); i++) {
+            if (mUpgradeThreads.get(i).getUrl().equals(url)) {
                 contain = true;
                 break;
             }
         }
 
-        /**
+        /*
          * 已包含 添加 的URL，不再进行添加
          */
-        if(contain){
+        if (contain) {
             return;
         }
-        ProgramDownLoadThread thread = new ProgramDownLoadThread(mContext,url, 0);
+        ProgramDownLoadThread thread = new ProgramDownLoadThread(mContext, url, 0);
         mUpgradeThreads.add(thread);
 
         DownloadDB bean = new DownloadDB();
@@ -177,27 +173,28 @@ public class DownloadManager{
         MDBHelper.getInstance(mContext).insertDownloadUrl(bean);
 
     }
+
     /**
      * 初始化所有的下载
      * 从数据库读取
      */
-    public void initAll(){
-        if(!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).isConfigured()){
+    public void initAll() {
+        if (!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).isConfigured()) {
             return;
         }
         ArrayList<DownloadDB> allList = MDBHelper.getInstance(mContext).getDownloadList(DownloadDB.STATUS_ALL);
 
-        if(mUpgradeThreads == null){
+        if (mUpgradeThreads == null) {
             mUpgradeThreads = new CopyOnWriteArrayList<>();
         }
         mUpgradeThreads.clear();
-        if(allList != null){
-            for(int i = 0;i < allList.size();i++){
+        if (allList != null) {
+            for (int i = 0; i < allList.size(); i++) {
                 DownloadDB bean = allList.get(i);
-                ProgramDownLoadThread thread = new ProgramDownLoadThread(mContext,bean.getUrl(),bean.getContentSize());
+                ProgramDownLoadThread thread = new ProgramDownLoadThread(mContext, bean.getUrl(), bean.getContentSize());
                 thread.setFileName(bean.getFileName());
                 thread.setStatus(bean.getStatus());
-                if(!isStarted() && bean.getStatus() == DownloadDB.STATUS_DOWNLOAD){
+                if (!isStarted() && bean.getStatus() == DownloadDB.STATUS_DOWNLOAD) {
                     thread.setStatus(DownloadDB.STATUS_WAIT);
                 }
                 //thread.setContentSize(bean.getContentSize());
@@ -212,28 +209,28 @@ public class DownloadManager{
     /**
      * 初始化 已暂停列表
      */
-    public void initPause(){
+    private void initPause() {
 
-        if(!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).isConfigured()){
+        if (!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).isConfigured()) {
             return;
         }
-        if(mPauseThreads == null){
+        if (mPauseThreads == null) {
             mPauseThreads = new ArrayList<>();
         }
 
-        if(mUpgradeThreads == null){
+        if (mUpgradeThreads == null) {
             mUpgradeThreads = new CopyOnWriteArrayList<>();
         }
-        for(ProgramDownLoadThread thread:mUpgradeThreads){
-            if(thread.getStatus() == DownloadDB.STATUS_PAUSE){
+        for (ProgramDownLoadThread thread : mUpgradeThreads) {
+            if (thread.getStatus() == DownloadDB.STATUS_PAUSE) {
                 boolean contain = false;
-                for(int i = 0;i < mPauseThreads.size();i++){
-                    if(mPauseThreads.get(i).getUrl().equals(thread.getUrl())){
+                for (int i = 0; i < mPauseThreads.size(); i++) {
+                    if (mPauseThreads.get(i).getUrl().equals(thread.getUrl())) {
                         contain = true;
                         break;
                     }
                 }
-                if(!contain) {
+                if (!contain) {
                     mPauseThreads.add(thread);
                 }
             }
@@ -244,34 +241,34 @@ public class DownloadManager{
     /**
      * 初始化 正在下载列表
      */
-    private void initDownload(){
+    private void initDownload() {
         if (mDownloadThreads == null) {
             mDownloadThreads = new ArrayList<>();
         }
 
         //处于下载状态时，添加到正在下载列表
-        if(isStarted()) {
+        if (isStarted()) {
             if (mDownloadThreads == null || mDownloadThreads.size() < DOWN_COUNT) {
 
-                /**
+                /*
                  * 添加 所有下载任务中 正在下载的任务
                  */
                 for (ProgramDownLoadThread thread : mUpgradeThreads) {
                     if (thread.getStatus() == DownloadDB.STATUS_DOWNLOAD) {
                         boolean contain = false;
-                        for(int i = 0;i < mDownloadThreads.size();i++){
-                            if(mDownloadThreads.get(i).getUrl().equals(thread.getUrl())){
+                        for (int i = 0; i < mDownloadThreads.size(); i++) {
+                            if (mDownloadThreads.get(i).getUrl().equals(thread.getUrl())) {
                                 contain = true;
                                 break;
                             }
 
                         }
-                        if(!contain) {
+                        if (!contain) {
                             mDownloadThreads.add(thread);
                         }
                     }
                 }
-                /**
+                /*
                  * 在点击开始下载的时候，将暂停的状态改为等待状态
                  */
                 if (!isAllPauseUrl) {
@@ -284,29 +281,29 @@ public class DownloadManager{
                     }
                 }
 
-                /**
+                /*
                  * 所有下载任务中正在下载的任务数量 小于 可同时下载的任务数量,
                  * 将等待状态的任务变为正在下载
                  */
                 if (mDownloadThreads.size() < DOWN_COUNT) {
-                    for (int i = 0;i < mUpgradeThreads.size();i++) {
+                    for (int i = 0; i < mUpgradeThreads.size(); i++) {
                         ProgramDownLoadThread thread = mUpgradeThreads.get(i);
 
                         if (mDownloadThreads.size() >= DOWN_COUNT) {
                             break;
                         }
-                        if (thread.getStatus() == DownloadDB.STATUS_WAIT ) {
+                        if (thread.getStatus() == DownloadDB.STATUS_WAIT) {
                             thread.setStatus(DownloadDB.STATUS_DOWNLOAD);
                             MDBHelper.getInstance(mContext).updateDownStatus(thread.getUrl(), DownloadDB.STATUS_DOWNLOAD);
                             boolean contain = false;
-                            for(int j = 0;j < mDownloadThreads.size();j++){
-                                if(mDownloadThreads.get(j).getUrl().equals(thread.getUrl())){
+                            for (int j = 0; j < mDownloadThreads.size(); j++) {
+                                if (mDownloadThreads.get(j).getUrl().equals(thread.getUrl())) {
                                     contain = true;
                                     break;
                                 }
 
                             }
-                            if(!contain) {
+                            if (!contain) {
                                 mDownloadThreads.add(thread);
                             }
                         }
@@ -316,14 +313,14 @@ public class DownloadManager{
 
             }
         }
-        /**
+        /*
          * 处于非下载状态，所有正在下载的任务改变状态为等待
          */
-        else{
-            for(ProgramDownLoadThread thread:mUpgradeThreads){
-                if(thread.getStatus() == DownloadDB.STATUS_DOWNLOAD){
+        else {
+            for (ProgramDownLoadThread thread : mUpgradeThreads) {
+                if (thread.getStatus() == DownloadDB.STATUS_DOWNLOAD) {
                     thread.setStatus(DownloadDB.STATUS_WAIT);
-                    MDBHelper.getInstance(mContext).updateDownStatus(thread.getUrl(),DownloadDB.STATUS_WAIT);
+                    MDBHelper.getInstance(mContext).updateDownStatus(thread.getUrl(), DownloadDB.STATUS_WAIT);
                 }
             }
             mDownloadThreads.clear();
@@ -335,9 +332,8 @@ public class DownloadManager{
 
     /**
      * 任务 @url 下载完成
-     * @param url
      */
-    public void onDownloadFinish(final String url,String fileName){
+    void onDownloadFinish(final String url, String fileName) {
         //获取图标
         getIcon(url);
         //删除任务
@@ -354,16 +350,16 @@ public class DownloadManager{
         message.what = MSG_REPLACE_PROGRAM_FILE;
         mHandler.sendMessage(message);
         Log.e("Finish-FileName", fileName);
-
     }
 
     private ArrayList<NCarBean> carBeanList;
+
     private void getIcon(String url) {
 
-        if (carBeanList == null){
+        if (carBeanList == null) {
             carBeanList = new ArrayList<NCarBean>();
         }
-        if(mDownloadThreads != null) {
+        if (mDownloadThreads != null) {
             for (int i = 0; i < mDownloadThreads.size(); i++) {
                 if (mDownloadThreads.get(i).getUrl().equals(url)) {
                     if (!carBeanList.contains(mUpgradeThreads.get(i).getmNCarBean())) {
@@ -371,7 +367,7 @@ public class DownloadManager{
                     }
                 }
             }
-        }else if (mUpgradeThreads != null) {
+        } else if (mUpgradeThreads != null) {
             for (int j = 0; j < mUpgradeThreads.size(); j++) {
                 if (mUpgradeThreads.get(j).getUrl().equals(url)) {
                     if (!carBeanList.contains(mUpgradeThreads.get(j).getmNCarBean())) {
@@ -387,37 +383,35 @@ public class DownloadManager{
 
     /**
      * 替换程序文件
-     * @param fileName
      */
-    public void replaceProgram(String fileName) {
-        fileName = fileName.replace("\\","/");
-        if(fileName.startsWith("/")){
+    private void replaceProgram(String fileName) {
+        fileName = fileName.replace("\\", "/");
+        if (fileName.startsWith("/")) {
             fileName = fileName.substring(1);
         }
 
 
-        /**
+        /*
          * 删除本地中的版本
          */
-        String LocalName = fileName.substring(0,fileName.lastIndexOf("/"));
+        String LocalName = fileName.substring(0, fileName.lastIndexOf("/"));
         String programUrl = FileUtil.getProgramRoot(mContext);
-        File file = new File(programUrl+LocalName);
-        if (file.exists() && file.isDirectory()){
-            File files[] = file.listFiles();
+        File file = new File(programUrl + LocalName);
+        if (file.exists() && file.isDirectory()) {
+            File[] files = file.listFiles();
             if (files.length > 0) {
                 for (int i = 0; i < files.length; i++) {
                     try {
                         String childName = files[i].getPath();//files[i].getParent() + "/" + files[i].getName().substring(5);
                         childName = childName.substring(childName.indexOf(FileUtil.PROGRAM_ROOT) + FileUtil.PROGRAM_ROOT.length(), childName.lastIndexOf("_v"));
                         if (files[i].isDirectory() && fileName.equals(childName)) {
-                            File filesend[] = files[i].listFiles();
+                            File[] filesend = files[i].listFiles();
                             for (int j = 0; j < filesend.length; j++) {
                                 filesend[j].delete();
                             }
                         }
                         files[i].delete();
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         continue;
                     }
                 }
@@ -425,27 +419,26 @@ public class DownloadManager{
         }
 
 
-
         try {
-            /**
+            /*
              * 移动文件
              * 从下载目录移动到程序存放目录
              */
             String downloadRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileDownloadRoot = new File(downloadRoot + LocalName);
-            File fileDownloadList[] = fileDownloadRoot.listFiles();
+            File[] fileDownloadList = fileDownloadRoot.listFiles();
             for (int j = 0; j < fileDownloadList.length; j++) {
                 File mDownloadFile = fileDownloadList[j];
                 String mDownloadPath = "";
-                try{
+                try {
                     mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
-                    mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT)+ FileUtil.PRO_DOWNLOAD_ROOT.length()+1,mDownloadPath.lastIndexOf("_v"));
-                }catch (Exception e){
+                    mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
+                } catch (Exception e) {
                     e.printStackTrace();
-                    if (mDownloadFile.exists() && mDownloadFile.isDirectory()){
+                    if (mDownloadFile.exists() && mDownloadFile.isDirectory()) {
                         File[] files = mDownloadFile.listFiles();
-                        for (int i = 0; i < files.length ; i++) {
-                            if (files[i].exists()){
+                        for (int i = 0; i < files.length; i++) {
+                            if (files[i].exists()) {
                                 files[i].delete();
                             }
                         }
@@ -455,14 +448,14 @@ public class DownloadManager{
                 }
 
                 if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
-                    File downloadfiles[] = null;
+                    File[] downloadfiles = null;
                     downloadfiles = mDownloadFile.listFiles();
 
                     for (int i = 0; i < downloadfiles.length; i++) {
                         File mDownLoadFileEnd = downloadfiles[i];
                         String name = mDownLoadFileEnd.getPath();
-                        name = name.substring(name.indexOf(FileUtil.PRO_DOWNLOAD_ROOT)+ FileUtil.PRO_DOWNLOAD_ROOT.length()+1);
-                        File mProgramFile = new File(FileUtil.getProgramRoot(mContext),name);
+                        name = name.substring(name.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1);
+                        File mProgramFile = new File(FileUtil.getProgramRoot(mContext), name);
                         if (!mProgramFile.exists()) {
                             mProgramFile.getParentFile().mkdirs();
                         }
@@ -502,7 +495,7 @@ public class DownloadManager{
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -510,14 +503,14 @@ public class DownloadManager{
 
     //替换图标
     private void replaceIcon(String url) {
-        url = url.replace("\\","/");
+        url = url.replace("\\", "/");
         String name;
         name = url.substring(0, url.indexOf("/"));
         if (carBeanList.size() > 0) {
 
             for (int i = 0; i < carBeanList.size(); i++) {
                 NCarBean mNCarBean = carBeanList.get(i);
-                if (mNCarBean == null){
+                if (mNCarBean == null) {
                     carBeanList.remove(carBeanList.get(i));
                 }
                 if (mNCarBean != null && (mNCarBean.getCarName_CN().equals(name) || mNCarBean.getCarName_EN().equals(name))) {
@@ -535,7 +528,7 @@ public class DownloadManager{
                         }
 
                         try {
-                            if(file.length() != programIconFile.length()) {
+                            if (file.length() != programIconFile.length()) {
                                 InputStream fis = new FileInputStream(file);
                                 FileOutputStream fos = new FileOutputStream(programIconFile);
                                 byte[] buffer = new byte[1024];
@@ -556,7 +549,6 @@ public class DownloadManager{
                         }
 
                     }
-
                     //插入数据库中,数据库中没有时才插入
                     if (!MDBHelper.getInstance(mContext).existCarBean(mNCarBean.getCarID())) {
                         MDBHelper.getInstance(mContext).insertCarBean(mNCarBean);
@@ -570,11 +562,10 @@ public class DownloadManager{
 
     /**
      * 删除任务
-     * @param url
      */
-    public void deleteUrl(String url){
+    public void deleteUrl(String url) {
         //所有任务列表删除
-        if(mUpgradeThreads != null) {
+        if (mUpgradeThreads != null) {
             for (int i = 0; i < mUpgradeThreads.size(); i++) {
                 if (mUpgradeThreads.get(i).getUrl().equals(url)) {
                     mUpgradeThreads.remove(i);
@@ -583,7 +574,7 @@ public class DownloadManager{
             }
         }
         //暂停列表删除
-        if(mPauseThreads != null) {
+        if (mPauseThreads != null) {
             for (int i = 0; i < mPauseThreads.size(); i++) {
                 if (mPauseThreads.get(i).getUrl().equals(url)) {
                     mPauseThreads.remove(i);
@@ -592,14 +583,14 @@ public class DownloadManager{
             }
         }
         // 正在下载列表删除
-        if(mDownloadThreads != null) {
+        if (mDownloadThreads != null) {
             for (int i = 0; i < mDownloadThreads.size(); i++) {
                 try {
                     if (mDownloadThreads.get(i).getUrl().equals(url)) {
                         mDownloadThreads.remove(i);
                         i--;
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -618,11 +609,11 @@ public class DownloadManager{
      */
     private int threadCount = 0;
 
-    public int getThreadCount() {
+    int getThreadCount() {
         return threadCount;
     }
 
-    public void setThreadCount(int threadCount) {
+    void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
     }
 
@@ -692,38 +683,40 @@ public class DownloadManager{
     /**
      * 刷新下载状态
      */
-    public void refreshDowndload(){
+    public void refreshDowndload() {
         //下载状态开启时，启动下载任务
-        if(isStarted()) {
+        if (isStarted()) {
             startDownload();
         }
 
         //下载状态关闭时，将正在下载的任务改变为 等待状态
-        else{
-            for(ProgramDownLoadThread thread : mUpgradeThreads){
+        else {
+            for (ProgramDownLoadThread thread : mUpgradeThreads) {
                 if (isAllPauseUrl) {
                     boolean contain = false;
                     if (mPauseThreads != null) {
-                        for(int i = 0;i < mPauseThreads.size();i++){
-                            if(mPauseThreads.get(i).getUrl().equals(thread.getUrl())){
+                        for (int i = 0; i < mPauseThreads.size(); i++) {
+                            if (mPauseThreads.get(i).getUrl().equals(thread.getUrl())) {
                                 contain = true;
                                 break;
                             }
                         }
                     }
 
-                    if(!contain) {
-                        mPauseThreads.add(thread);
+                    if (!contain) {
+                        if (mPauseThreads != null) {
+                            mPauseThreads.add(thread);
+                        }
                     }
                 }
             }
             isAllPauseUrl = false;
-            if(mDownloadThreads != null) {
+            if (mDownloadThreads != null) {
                 mDownloadThreads.clear();
             }
 
-            remoteViews.setTextViewText(R.id.notifi_downloaded_num,"全部暂停下载");
-            remoteViews.setTextViewText(R.id.notifi_downloading,"");
+            remoteViews.setTextViewText(R.id.notifi_downloaded_num, "全部暂停下载");
+            remoteViews.setTextViewText(R.id.notifi_downloading, "");
             mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
         }
         //更新页面显示列表
@@ -734,9 +727,9 @@ public class DownloadManager{
     /**
      * 暂停所有下载任务
      */
-    public void pauseAllDownload(){
+    public void pauseAllDownload() {
         isStarted = false;
-        for(ProgramDownLoadThread thread:mUpgradeThreads){
+        for (ProgramDownLoadThread thread : mUpgradeThreads) {
             thread.pauseDownload();
         }
         DownloadManager.getInstance(mContext).setThreadCount(0);
@@ -747,11 +740,11 @@ public class DownloadManager{
 
     /**
      * 设置 @url 状态变为下载
-     * @param url
      */
 
-    Boolean isAllPauseUrl = false;
-    public void startUrl(String url, int status){
+    private Boolean isAllPauseUrl = false;
+
+    public void startUrl(String url, int status) {
         isStarted = true;
         isAllPauseUrl = true;
         //当状态是停止时的开始下载情况
@@ -771,17 +764,17 @@ public class DownloadManager{
                     thread.setStatus(DownloadDB.STATUS_DOWNLOAD);
                     MDBHelper.getInstance(mContext).updateDownStatus(url, DownloadDB.STATUS_DOWNLOAD);
                     mPauseThreads.remove(thread);
-                    if (!mDownloadThreads.contains(thread)){
+                    if (!mDownloadThreads.contains(thread)) {
                         mDownloadThreads.add(thread);
                     }
 
                 }
             }
             //当状态是等待时的开始下载情况
-        }else if (status == DownloadDB.STATUS_WAIT){
+        } else if (status == DownloadDB.STATUS_WAIT) {
             for (int j = 0; j < mUpgradeThreads.size(); j++) {
                 ProgramDownLoadThread thread = mUpgradeThreads.get(j);
-                if (url.equals(thread.getUrl())){
+                if (url.equals(thread.getUrl())) {
                     if (mDownloadThreads == null) {
                         mDownloadThreads = new ArrayList<>();
                     }
@@ -792,7 +785,7 @@ public class DownloadManager{
                     }
                     thread.setStatus(DownloadDB.STATUS_DOWNLOAD);
                     MDBHelper.getInstance(mContext).updateDownStatus(url, DownloadDB.STATUS_DOWNLOAD);
-                    if (!mDownloadThreads.contains(thread)){
+                    if (!mDownloadThreads.contains(thread)) {
                         mDownloadThreads.add(thread);
                     }
                 }
@@ -805,47 +798,45 @@ public class DownloadManager{
 
     /**
      * 设置 @url 状态变为等待
-     * @param url
      */
-    public void waitUrl(String url){
-        for(int i = 0;i < mPauseThreads.size();i++){
-            if(url.equals(mPauseThreads.get(i).getUrl())){
+    public void waitUrl(String url) {
+        for (int i = 0; i < mPauseThreads.size(); i++) {
+            if (url.equals(mPauseThreads.get(i).getUrl())) {
                 ProgramDownLoadThread thread = mPauseThreads.get(i);
                 thread.setStatus(DownloadDB.STATUS_WAIT);
-                MDBHelper.getInstance(mContext).updateDownStatus(url,DownloadDB.STATUS_WAIT);
+                MDBHelper.getInstance(mContext).updateDownStatus(url, DownloadDB.STATUS_WAIT);
                 mPauseThreads.remove(thread);
             }
         }
-       refreshDowndload();
+        refreshDowndload();
 
     }
 
     /**
      * 暂停 @url 任务
-     * @param url
      */
-    public void pauseUrl(String url){
-        for(ProgramDownLoadThread thread:mUpgradeThreads){
-            if(thread.getUrl().equals(url)){
+    public void pauseUrl(String url) {
+        for (ProgramDownLoadThread thread : mUpgradeThreads) {
+            if (thread.getUrl().equals(url)) {
                 thread.pauseDownload();
-                if(mDownloadThreads != null) {
+                if (mDownloadThreads != null) {
                     mDownloadThreads.remove(thread);
-                    Log.e("pauseUrl", "pauseUrl"+thread.getFileName());
+                    Log.e("pauseUrl", "pauseUrl" + thread.getFileName());
                 }
 
                 boolean contain = false;
-                for(int i = 0;i < mPauseThreads.size();i++){
-                    if(mPauseThreads.get(i).getUrl().equals(thread.getUrl())){
+                for (int i = 0; i < mPauseThreads.size(); i++) {
+                    if (mPauseThreads.get(i).getUrl().equals(thread.getUrl())) {
                         contain = true;
                         break;
                     }
                 }
-                if(!contain) {
+                if (!contain) {
                     mPauseThreads.add(thread);
                 }
             }
         }
-        Log.e("mPauseThreads", "pauseUrl: "+mPauseThreads.size() );
+        Log.e("mPauseThreads", "pauseUrl: " + mPauseThreads.size());
         isAllPauseUrl = true;
 
         refreshDowndload();
@@ -853,9 +844,8 @@ public class DownloadManager{
 
     /**
      * 获取下载状态
-     * @return
      */
-    public boolean isStarted(){
+    public boolean isStarted() {
         return isStarted;
     }
 
@@ -864,21 +854,19 @@ public class DownloadManager{
      * 请求任务
      * 刷新页面显示列表
      */
-    public void requestThreads(){
+    public void requestThreads() {
         mHandler.sendEmptyMessage(MSG_REFRESH_LIST);
     }
 
     /**
      * 获取所有下载任务
-     * @return
      */
-    public CopyOnWriteArrayList<ProgramDownLoadThread> getUpgradeThreads(){
+    public CopyOnWriteArrayList<ProgramDownLoadThread> getUpgradeThreads() {
         return mUpgradeThreads;
     }
 
     /**
      * 获取正在下载的任务
-     * @return
      */
     public ArrayList<ProgramDownLoadThread> getmDownloadThreads() {
         return mDownloadThreads;
@@ -891,10 +879,10 @@ public class DownloadManager{
     /**
      * 刷新页面显示列表
      */
-    public void onChange(){
-        if(mChangeListener != null) {
-            ArrayList<ProgramDownLoadThread> tempThreads = new ArrayList<>();
-            tempThreads.addAll(mUpgradeThreads);
+    void onChange() {
+        if (mChangeListener != null) {
+//            ArrayList<ProgramDownLoadThread> tempThreads = new ArrayList<>();
+//            tempThreads.addAll(mUpgradeThreads);
             mChangeListener.onChange(mUpgradeThreads);
         }
     }
@@ -903,16 +891,16 @@ public class DownloadManager{
      * 刷新 进度
      * 刷新页面显示列表
      */
-    public void queryProgress(){
+    void queryProgress() {
         mHandler.sendEmptyMessage(MSG_REFRESH_LIST);
     }
 
-    public void queryProgressPerSecond(){
+    public void queryProgressPerSecond() {
         mHandler.sendEmptyMessage(MSG_REQUEST_PROGRESS);
 
     }
 
-    public void setOnChangeListener(OnDownloadChangeListener listener){
+    public void setOnChangeListener(OnDownloadChangeListener listener) {
         mChangeListener = listener;
     }
 
@@ -920,18 +908,17 @@ public class DownloadManager{
     /**
      * 对话框提示 替换文件
      */
-    private void tipReplaceFile(){
+    private void tipReplaceFile() {
         try {
             if (mFinishSet != null && mFinishSet.size() > 0) {
                 final Map<String, String> map = mFinishSet.get(0);
                 final String url = URLDecoder.decode(map.get(kURL), "utf-8");
-                final String fileName  = map.get(kFileName);
+                final String fileName = map.get(kFileName);
                 Log.e("FinishSet", mFinishSet.size() + "");
                 mFinishSet.remove(map);
                 checkOut(url, fileName);
-           }
-        }
-        catch (Exception ex){
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -945,37 +932,35 @@ public class DownloadManager{
             String LocalName = fileName.substring(0, fileName.lastIndexOf("/"));
             String downloadRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileDownloadRoot = new File(downloadRoot + LocalName);
-            File fileDownloadList[] = fileDownloadRoot.listFiles();
-            for (int j = 0; j < fileDownloadList.length; j++) {
-                File mDownloadFile = fileDownloadList[j];
-                String mDownloadPath = "";
-                try {
-                    mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
-                    mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
-                }
-                catch (Exception ex){
-                    /**
-                     * 不是保存 bin 文件的目录
-                     */
-                    continue;
-                }
-
-                if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
-                    File downloadfiles[] = null;
-                    downloadfiles = mDownloadFile.listFiles();
-
-                    for (int i = 0; i < downloadfiles.length; i++) {
-                        File mDownLoadFileEnd = downloadfiles[i];
-                        String name = mDownLoadFileEnd.getPath();
-                        if (name.toLowerCase().endsWith(".bin")) {
-                            String hex = FileUtil.readBinFile(mDownLoadFileEnd);
-                            String data = HexDump.toHexString(FileUtil.readHexData(mContext, name));
-                            data = data.replace(" ", "");
-                            binCount++;
-                            if (!hex.equals(data)) {
-                                mDownLoadFileEnd.delete();
-                                isCheckError = true;
-                                break;
+            File[] fileDownloadList = fileDownloadRoot.listFiles();
+            if (fileDownloadList != null) {
+                for (File mDownloadFile : fileDownloadList) {
+                    String mDownloadPath = "";
+                    try {
+                        mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
+                        mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
+                    } catch (Exception ex) {
+                        /*
+                         * 不是保存 bin 文件的目录
+                         */
+                        continue;
+                    }
+                    if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
+                        File[] downloadFiles = mDownloadFile.listFiles();
+                        if (downloadFiles != null) {
+                            for (File mDownLoadFileEnd : downloadFiles) {
+                                String name = mDownLoadFileEnd.getPath();
+                                if (name.toLowerCase().endsWith(".bin")) {
+                                    String hex = FileUtil.readBinFile(mDownLoadFileEnd);
+                                    String data = HexDump.toHexString(FileUtil.readHexData(mContext, name));
+                                    data = data.replace(" ", "");
+                                    binCount++;
+                                    if (!hex.equals(data)) {
+                                        boolean delete = mDownLoadFileEnd.delete();
+                                        isCheckError = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -1029,17 +1014,17 @@ public class DownloadManager{
                         .requestSystemAlert(true)
                         .build().show();
 
-                for (int j = 0; j < fileDownloadList.length; j++) {
-                    File mDownloadFile = fileDownloadList[j];
+                for (File file : fileDownloadList) {
+                    File mDownloadFile = file;
                     String mDownloadPath = "";
                     mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
                     mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
 
                     if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
-                        while (!("/" +mDownloadFile.getName()).equals(FileUtil.PRO_DOWNLOAD_ROOT)){
+                        while (!("/" + mDownloadFile.getName()).equals(FileUtil.PRO_DOWNLOAD_ROOT)) {
                             mDownloadFile.delete();
                             mDownloadFile = mDownloadFile.getParentFile();
-                            if(mDownloadFile.listFiles() != null){
+                            if (mDownloadFile.listFiles() != null) {
                                 break;
                             }
                         }
@@ -1055,49 +1040,47 @@ public class DownloadManager{
     }
 
 
-    public static final int MSG_REFRESH_LIST = 1;
-    public static final int MSG_REQUEST_PROGRESS = 2;
-    public static final int MSG_REPLACE_PROGRAM_FILE = 3;
-    public static final int MSG_ITEM_PUASE = 4;
+    private static final int MSG_REFRESH_LIST = 1;
+    private static final int MSG_REQUEST_PROGRESS = 2;
+    private static final int MSG_REPLACE_PROGRAM_FILE = 3;
+    private static final int MSG_ITEM_PUASE = 4;
 
 
-    Handler mHandler = new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_REFRESH_LIST:
                     onChange();
                     break;
                 case MSG_REQUEST_PROGRESS:
                     queryProgress();
-                    mHandler.sendEmptyMessageDelayed(MSG_REQUEST_PROGRESS,1000);
+                    mHandler.sendEmptyMessageDelayed(MSG_REQUEST_PROGRESS, 1000);
                     break;
                 case MSG_REPLACE_PROGRAM_FILE:
-                    if(msg.obj != null) {
+                    if (msg.obj != null) {
                         final Map<String, String> map = (Map<String, String>) msg.obj;
                         mFinishSet.add(map);
-                        Log.e("handleMessage", "handleMessage: "+ map);
+                        Log.e("handleMessage", "handleMessage: " + map);
                     }
                     tipReplaceFile();
                     break;
                 case MSG_ITEM_PUASE:
                     for (int i = 0; i < mUpgradeThreads.size(); i++) {
                         ProgramDownLoadThread thread = mUpgradeThreads.get(i);
-                        if (thread.getStatus() == DownloadDB.STATUS_PAUSE){
-                            if (mDownloadThreads.size() > 0 ){
-                                if (mDownloadThreads.contains(thread)){
-                                    mDownloadThreads.remove(thread);
-                                }
+                        if (thread.getStatus() == DownloadDB.STATUS_PAUSE) {
+                            if (mDownloadThreads.size() > 0) {
+                                mDownloadThreads.remove(thread);
                             }
 
                             boolean contain = false;
-                            for(int j = 0;i < mPauseThreads.size();i++){
-                                if(mPauseThreads.get(i).getUrl().equals(thread.getUrl())){
+                            for (int j = 0; i < mPauseThreads.size(); i++) {
+                                if (mPauseThreads.get(i).getUrl().equals(thread.getUrl())) {
                                     contain = true;
                                     break;
                                 }
                             }
-                            if(!contain) {
+                            if (!contain) {
                                 mPauseThreads.add(thread);
                             }
                         }
@@ -1109,8 +1092,6 @@ public class DownloadManager{
             }
         }
     };
-
-
 
 
 }

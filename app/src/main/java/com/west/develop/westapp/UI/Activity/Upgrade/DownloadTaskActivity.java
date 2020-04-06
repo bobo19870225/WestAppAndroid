@@ -32,27 +32,26 @@ public class DownloadTaskActivity extends BaseActivity {
     private TextView title;
     private ListView listView;
     private CheckBox downloadBTN;
-    private List<ProgramDownLoadThread> mDownloadTheads;
+    private List<ProgramDownLoadThread> mDownloadThreads;
     private DownloadTaskAdapter adapter;
-
     private Handler mHandler = new Handler();
 
 
     @Override
     protected View getContentView() {
-        return this.getLayoutInflater().inflate(R.layout.activity_download,null);
+        return this.getLayoutInflater().inflate(R.layout.activity_download, null);
     }
 
     @Override
     protected void initView() {
-        back_tv = (TextView) findViewById(R.id.car_back);
+        back_tv = findViewById(R.id.car_back);
         back_tv.setVisibility(View.VISIBLE);
-        title = (TextView) findViewById(R.id.car_title);
-        downloadBTN = (CheckBox) findViewById(R.id.title_Download_BTN);
+        title = findViewById(R.id.car_title);
+        downloadBTN = findViewById(R.id.title_Download_BTN);
         downloadBTN.setVisibility(View.VISIBLE);
 
 
-        /**
+        /*
          * 下载按钮的监听
          */
         downloadBTN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -66,13 +65,13 @@ public class DownloadTaskActivity extends BaseActivity {
 
 
                 }//如果所有的下载列表都是暂停状态时，将按钮的文字改为开始下载程序
-                else if (!downloadBTN.isChecked() && !DownloadManager.getInstance(DownloadTaskActivity.this).isStarted()){
+                else if (!downloadBTN.isChecked() && !DownloadManager.getInstance(DownloadTaskActivity.this).isStarted()) {
                     downloadBTN.setText(R.string.startdownload);
 
                 }//按钮开始下载程序，文字变为全部暂停
-                else if (downloadBTN.isChecked()){
+                else if (downloadBTN.isChecked()) {
                     //当isItemStart为真时，表示点击了列表中的其中一项，只需改变按钮的状态文字
-                    if (adapter.isItemStart()){
+                    if (adapter.isItemStart()) {
                         downloadBTN.setText(R.string.stopdownload);
                         adapter.setItemStart(false);
                     }
@@ -85,13 +84,13 @@ public class DownloadTaskActivity extends BaseActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.onekeylistview);
+        listView = findViewById(R.id.onekeylistview);
     }
 
     @Override
     protected void initData() {
-        if (mDownloadTheads == null) {
-            mDownloadTheads = new ArrayList<>();
+        if (mDownloadThreads == null) {
+            mDownloadThreads = new ArrayList<>();
         }
 
 
@@ -104,11 +103,11 @@ public class DownloadTaskActivity extends BaseActivity {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (mDownloadTheads == null) {
-                                    mDownloadTheads = new ArrayList<>();
+                                if (mDownloadThreads == null) {
+                                    mDownloadThreads = new ArrayList<>();
                                 }
-                                mDownloadTheads.clear();
-                                mDownloadTheads.addAll(list);
+                                mDownloadThreads.clear();
+                                mDownloadThreads.addAll(list);
                                 int count = 0;
                                 if (list.size() > 0) {
                                     for (int i = 0; i < list.size(); i++) {
@@ -131,7 +130,7 @@ public class DownloadTaskActivity extends BaseActivity {
             }
         });
 
-        adapter = new DownloadTaskAdapter(mDownloadTheads, DownloadTaskActivity.this, downloadBTN);
+        adapter = new DownloadTaskAdapter(mDownloadThreads, DownloadTaskActivity.this, downloadBTN);
         listView.setAdapter(adapter);
 
         DownloadManager.getInstance(this).requestThreads();
@@ -165,11 +164,7 @@ public class DownloadTaskActivity extends BaseActivity {
         } else {
             downloadBTN.setText(R.string.startdownload);
         }
-
-
         title.setText(R.string.upgrade_update);
-
-
     }
 
     public void notifyDataSetChanged() {
@@ -191,11 +186,11 @@ public class DownloadTaskActivity extends BaseActivity {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 new TipDialog.Builder(DownloadTaskActivity.this)
                         .setTitle(getResources().getString(R.string.report_delete))
-                        .setMessage(mDownloadTheads.get(position).getFileName()+", "+getResources().getString(R.string.tip_message_delete))
+                        .setMessage(mDownloadThreads.get(position).getFileName() + ", " + getResources().getString(R.string.tip_message_delete))
                         .setPositiveClickListener(getResources().getString(R.string.tip_yes), new TipDialog.OnClickListener() {
                             @Override
                             public void onClick(Dialog dialogInterface, int index, String label) {
-                                DownloadManager.getInstance(DownloadTaskActivity.this).deleteUrl(mDownloadTheads.get(position).getUrl());
+                                DownloadManager.getInstance(DownloadTaskActivity.this).deleteUrl(mDownloadThreads.get(position).getUrl());
                                 DownloadManager.getInstance(DownloadTaskActivity.this).requestThreads();
                                 dialogInterface.dismiss();
                             }
@@ -228,9 +223,9 @@ public class DownloadTaskActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         //如果一进来就是下载状态，就直接启动到下载模式
-        if(DownloadManager.getInstance(this).isStarted()){
+        if (DownloadManager.getInstance(this).isStarted()) {
             downloadBTN.setText(R.string.stopdownload);
-        }else {
+        } else {
             downloadBTN.setText(R.string.startdownload);
         }
 
