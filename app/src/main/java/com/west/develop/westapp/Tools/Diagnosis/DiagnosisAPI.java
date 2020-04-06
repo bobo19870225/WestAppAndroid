@@ -29,33 +29,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Develop0 on 2017/9/6.
+ * 检测API
+ * 1.下载程序到手持设备
  */
 
 public class DiagnosisAPI {
     private Context mContext;
-
     private static DiagnosisAPI instance;
-
-    private static OnSelectModeListener mSelectListener;
-
-
+//    private static OnSelectModeListener mSelectListener;
     /**
      * 正在运行对话框
      */
     private LoadDialog mLoadDialog;
 
-
-    public static void init(Context context){
+    public static void init(Context context) {
         instance = new DiagnosisAPI(context);
         //DisplayAndOperateAPI.init(context);
     }
 
-    public static DiagnosisAPI getInstance(){
+    public static DiagnosisAPI getInstance() {
         return instance;
     }
 
-    private DiagnosisAPI(Context context){
+    private DiagnosisAPI(Context context) {
         mContext = context;
     }
 
@@ -64,13 +60,12 @@ public class DiagnosisAPI {
 
     /**
      * 运行程序
-     * @param file
      */
     public void startWithFile(final File file, final boolean isDebug) {
-        boolean updateValid = ((MyApplication)mContext.getApplicationContext()).updateFWValid();
+        boolean updateValid = ((MyApplication) mContext.getApplicationContext()).updateFWValid();
 
-        if(updateValid && Config.getInstance(mContext).isSigned()){
-            if(WifiUtil.isSupportWifi(mContext)) {
+        if (updateValid && Config.getInstance(mContext).isSigned()) {
+            if (WifiUtil.isSupportWifi(mContext)) {
                 TipDialog dialog = new TipDialog.Builder(mContext)
                         .setTitle(mContext.getString(R.string.tip_title))
                         .setMessage(mContext.getString(R.string.update_FW_valid))
@@ -88,8 +83,8 @@ public class DiagnosisAPI {
                                 updateFW(file, isDebug, new FWUpdateCallback() {
                                     @Override
                                     public void callback(boolean success) {
-                                        if(!success){
-                                            Toast.makeText(mContext,mContext.getString(R.string.update_FW_Faild),Toast.LENGTH_SHORT).show();
+                                        if (!success) {
+                                            Toast.makeText(mContext, mContext.getString(R.string.update_FW_Faild), Toast.LENGTH_SHORT).show();
                                         }
                                         downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
                                     }
@@ -97,8 +92,7 @@ public class DiagnosisAPI {
                             }
                         }).build();
                 dialog.show();
-            }
-            else if(WifiUtil.isSupportNetwork(mContext)){
+            } else if (WifiUtil.isSupportNetwork(mContext)) {
                 TipDialog dialog = new TipDialog.Builder(mContext)
                         .setTitle(mContext.getString(R.string.tip_title))
                         .setMessage(mContext.getString(R.string.update_FW_valid) + "\n" + mContext.getString(R.string.tip_net_monet))
@@ -116,8 +110,8 @@ public class DiagnosisAPI {
                                 updateFW(file, isDebug, new FWUpdateCallback() {
                                     @Override
                                     public void callback(boolean success) {
-                                        if(!success){
-                                            Toast.makeText(mContext,mContext.getString(R.string.update_FW_Faild),Toast.LENGTH_SHORT).show();
+                                        if (!success) {
+                                            Toast.makeText(mContext, mContext.getString(R.string.update_FW_Faild), Toast.LENGTH_SHORT).show();
                                         }
                                         downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
                                     }
@@ -125,37 +119,31 @@ public class DiagnosisAPI {
                             }
                         }).build();
                 dialog.show();
+            } else {
+                downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
             }
-            else{
-                downloadFile(BaseDriver.UPDATE_TYPE_APP,file,null,isDebug);
-            }
-        }
-        else{
-            downloadFile(BaseDriver.UPDATE_TYPE_APP,file,null,isDebug);
+        } else {
+            downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
         }
 
     }
 
     /**
      * 升级固件程序
-     * @param file
-     * @param isDebug
-     * @param callback
      */
-    private void updateFW(final File file, final boolean isDebug, FWUpdateCallback callback){
+    private void updateFW(final File file, final boolean isDebug, FWUpdateCallback callback) {
         displayLoading(mContext.getString(R.string.tip_FW_downloading));
         final FWDownloadThread thread = new FWDownloadThread(mContext, new FWDownloadThread.Callback() {
             @Override
             public void callback(boolean success, byte[] buffer) {
                 dismiss();
-                if(!success){
-                    Toast.makeText(mContext,mContext.getString(R.string.download_FW_Faild),Toast.LENGTH_SHORT).show();
+                if (!success) {
+                    Toast.makeText(mContext, mContext.getString(R.string.download_FW_Faild), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 displayLoading(mContext.getString(R.string.tip_FW_updating));
-
-                downloadFile(BaseDriver.UPDATE_TYPE_FW,file,buffer,isDebug);
-               // startDownload(BaseDriver.UPDATE_TYPE_FW,file,buffer,"A168-TOOL",isDebug);
+                downloadFile(BaseDriver.UPDATE_TYPE_FW, file, buffer, isDebug);
+                // startDownload(BaseDriver.UPDATE_TYPE_FW,file,buffer,"A168-TOOL",isDebug);
 
             }
         });
@@ -170,23 +158,19 @@ public class DiagnosisAPI {
 
     /**
      * 下载应用程序文件
-     * @param file
-     * @param isDebug
      */
-    private void downloadFile(final int _type,final File file,byte[] buffer,boolean isDebug){
+    private void downloadFile(final int _type, final File file, byte[] buffer, boolean isDebug) {
         if (ConnectStatus.getInstance(mContext).getUSBPort() != null) {
             recordData(mContext, file);
 
             UpDriver.getInstance(mContext).initPort(ConnectStatus.getInstance(mContext).getUSBPort());
-            startDownload(_type, file,buffer, "A168-TOOL",isDebug);
-        }
-        else if (ConnectStatus.getInstance(mContext).getBTPort() != null) {
+            startDownload(_type, file, buffer, "A168-TOOL", isDebug);
+        } else if (ConnectStatus.getInstance(mContext).getBTPort() != null) {
             recordData(mContext, file);
 
             UpDriver.getInstance(mContext).initPort(ConnectStatus.getInstance(mContext).getBTPort());
-            startDownload(_type, file,buffer, "A168-TOOL",isDebug);
-        }
-        else {
+            startDownload(_type, file, buffer, "A168-TOOL", isDebug);
+        } else {
             Toast.makeText(mContext, mContext.getString(R.string.device_not_connect), Toast.LENGTH_SHORT).show();
         }
     }
@@ -196,22 +180,24 @@ public class DiagnosisAPI {
         File parentFile = file.getParentFile();
         String path = file.getPath();
         String fileReport = "";
-        if (path.contains(FileUtil.DEBUG_ROOT)){
-             fileReport = path.substring(path.indexOf(FileUtil.DEBUG_ROOT)+ FileUtil.DEBUG_ROOT.length(),path.lastIndexOf(".BIN"));
-        }else if (path.contains(FileUtil.PROGRAM)) {
+        if (path.contains(FileUtil.DEBUG_ROOT)) {
+            fileReport = path.substring(path.indexOf(FileUtil.DEBUG_ROOT) + FileUtil.DEBUG_ROOT.length(), path.lastIndexOf(".BIN"));
+        } else if (path.contains(FileUtil.PROGRAM)) {
             boolean autoReport = false;
-            if(path.toLowerCase().endsWith("_1.bin")){
+            if (path.toLowerCase().endsWith("_1.bin")) {
                 autoReport = true;
             }
-            String parentPath =parentFile.getPath();
-
-            fileReport = parentPath.substring(path.indexOf(FileUtil.PROGRAM) + FileUtil.PROGRAM.length() + 1);
-            if(autoReport){
-                fileReport += "_1";
+            if (parentFile != null) {
+                String parentPath = parentFile.getPath();
+                fileReport = parentPath.substring(path.indexOf(FileUtil.PROGRAM) + FileUtil.PROGRAM.length() + 1);
+                if (autoReport) {
+                    fileReport += "_1";
+                }
             }
+
         }
 
-        saveReport(context,fileReport);
+        saveReport(context, fileReport);
         ReportUntil.writeDataToReport(context, ReportUntil.REPORT_FILENAME + fileReport);
 
     }
@@ -221,19 +207,17 @@ public class DiagnosisAPI {
         ReportName = ReportName.replace("/", "$");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String now = df.format(new Date());// new Date()为获取当前系统时间
-
         //命名形式用时间+文件名+后缀名组合
-        String name = now+"-"+ReportName + ".txt";
+        String name = now + "-" + ReportName + ".txt";
         UpDriver.getInstance(context).getPack().setFileName(name);
     }
 
 
     /**
      * 刷新进度条
-     * @param progress
      */
-    public void refreshDownloadProgress(int progress){
-        if(mLoadDialog != null){
+    public void refreshDownloadProgress(int progress) {
+        if (mLoadDialog != null) {
             mLoadDialog.setProgress(progress);
         }
         /*//Looper.prepare();
@@ -241,36 +225,34 @@ public class DiagnosisAPI {
         //Looper.loop();*/
     }
 
-    public void displayCancle(LoadDialog.OnClickListener listener){
-        if (mLoadDialog != null){
-            mLoadDialog.setCancel(mContext.getResources().getString(R.string.cancel),listener);
+    private void displayCancle(LoadDialog.OnClickListener listener) {
+        if (mLoadDialog != null) {
+            mLoadDialog.setCancel(mContext.getResources().getString(R.string.cancel), listener);
         }
         //Looper.prepare();
         //Looper.loop();
     }
 
     /**
-     * 程序选择完成，尝试开始
-     * 在本地运行：程序开始运行
+     * 程序选择完成，
+     * 在本地运行：程序开始运行尝试开始
      * 下载到手持机运行：开始下载程序到手持机
-     * @param file
      */
-    public  void startDownload(final int _type , final File file, final byte[] buffer, final String hardType, final boolean isDebug) {
+    private void startDownload(final int _type, final File file, final byte[] buffer, final String hardType, final boolean isDebug) {
 
         if (file.getName().toLowerCase().endsWith(".bin")) {
-            if(_type == BaseDriver.UPDATE_TYPE_APP) {
+            if (_type == BaseDriver.UPDATE_TYPE_APP) {
                 displayLoading(mContext.getResources().getString(R.string.tip_message_download));
-            }
-            else if(_type == BaseDriver.UPDATE_TYPE_FW){
+            } else if (_type == BaseDriver.UPDATE_TYPE_FW) {
                 displayLoading(mContext.getResources().getString(R.string.tip_message_FW_download));
             }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    /**
+                    /*
                      * 升级应用程序才可以中途取消
                      */
-                    if(_type == BaseDriver.UPDATE_TYPE_APP) {
+                    if (_type == BaseDriver.UPDATE_TYPE_APP) {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -323,12 +305,11 @@ public class DiagnosisAPI {
 
                     UpDriver.getInstance(mContext).initDebug(isDebug);
 
-                    if(!UpDriver.getInstance(mContext).DownLoadFun(_type, file,buffer,MaxProSize,ProType,ProgArea)){
+                    if (!UpDriver.getInstance(mContext).DownLoadFun(_type, file, buffer, MaxProSize, ProType, ProgArea)) {
                         Log.e("DownloadProgram", "Finish-False");
-                        DiagnosisAPI.getInstance().finishDownloadProgram(_type,false,file,isDebug);
-                    }
-                    else{
-                        DiagnosisAPI.getInstance().finishDownloadProgram(_type,true,file,isDebug);
+                        DiagnosisAPI.getInstance().finishDownloadProgram(_type, false, file, isDebug);
+                    } else {
+                        DiagnosisAPI.getInstance().finishDownloadProgram(_type, true, file, isDebug);
                     }
                     Looper.loop();
                 }
@@ -341,44 +322,39 @@ public class DiagnosisAPI {
     /**
      * 程序下载到手持机完成
      */
-    public void finishDownloadProgram(int _type,boolean isSuccess,File file,boolean isDebug){
-        /**
+    private void finishDownloadProgram(int _type, boolean isSuccess, File file, boolean isDebug) {
+        /*
          * 升级固件程序
          */
-        if(_type == BaseDriver.UPDATE_TYPE_FW){
+        if (_type == BaseDriver.UPDATE_TYPE_FW) {
             dismiss();
-            if(!isSuccess) {
+            if (!isSuccess) {
                 Toast.makeText(mContext, mContext.getString(R.string.update_FW_Faild), Toast.LENGTH_SHORT).show();
+            } else {
+                ((MyApplication) mContext.getApplicationContext()).updateFWSuccess();
             }
-            else{
-                ((MyApplication)mContext.getApplicationContext()).updateFWSuccess();
-            }
-            downloadFile(BaseDriver.UPDATE_TYPE_APP,file,null,isDebug);
-
-
+            downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
         }
-        /**
+        /*
          * 下载应用程序
          */
-        else if(_type == BaseDriver.UPDATE_TYPE_APP) {
+        else if (_type == BaseDriver.UPDATE_TYPE_APP) {
             if (!isSuccess) {
                 ReportUntil.writeDataToReport(mContext, "downLoad failed");
                 Toast.makeText(mContext, mContext.getString(R.string.downloadFailed), Toast.LENGTH_SHORT).show();
             } else if (mContext instanceof DescActivity) {
                 ReportUntil.writeDataToReport(mContext, "downLoad success");
                 ((DescActivity) mContext).refreshIniFile(file);
-                int count = Config.getInstance(mContext).getRegCount();
+//                int count = Config.getInstance(mContext).getRegCount();
                /* if (count < Config.TRYCOUNT) { //在试用次数大于试用的最高次数时，就不执行以下程序了
                     Config.getInstance(mContext).getRegCount();
                 }*/
-                if(Config.getInstance(mContext).isConfigured()) {
+                if (Config.getInstance(mContext).isConfigured()) {
                     Config.getInstance(mContext).addRegCount();
                 }
+            } else if (mContext instanceof DiagnosisActivity) {
+                ((DiagnosisActivity) mContext).refreshIniFile(file);
             }
-            else if(mContext instanceof DiagnosisActivity){
-                ((DiagnosisActivity)mContext).refreshIniFile(file);
-            }
-
             dismiss();
         }
 
@@ -386,10 +362,9 @@ public class DiagnosisAPI {
 
     /**
      * 显示 正在 XX 对话框
-     * @param message
      */
-    public void displayLoading(String message){
-        if(mLoadDialog != null) {
+    private void displayLoading(String message) {
+        if (mLoadDialog != null) {
             mLoadDialog.dismiss();
         }
         mLoadDialog = null;
@@ -401,18 +376,18 @@ public class DiagnosisAPI {
     /**
      * 退出对话框
      */
-    public void dismiss(){
-        if(mLoadDialog != null){
+    public void dismiss() {
+        if (mLoadDialog != null) {
             mLoadDialog.dismiss();
         }
     }
 
 
-    private  interface OnSelectModeListener{
+    private interface OnSelectModeListener {
         void onSelect(int mode, String deviceSN, String hardType);
     }
 
-    private interface FWUpdateCallback{
+    private interface FWUpdateCallback {
         void callback(boolean success);
     }
 

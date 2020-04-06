@@ -3,7 +3,7 @@ package com.west.develop.westapp.Tools.Diagnosis;
 import com.west.develop.westapp.Protocol.Drivers.RunningDriver;
 
 /**
- * Created by Develop11 on 2017/8/17.
+ * 自定义按键事件
  */
 
 public class KeyEvent {
@@ -18,28 +18,28 @@ public class KeyEvent {
     /**
      * NO 按钮
      */
-    public static final  int KEY_ESC = 0x03;
+    public static final int KEY_ESC = 0x03;
 
     /**
      * YES 按钮
      */
-    public static final  int KEY_ENTER = 0x01;
+    public static final int KEY_ENTER = 0x01;
     /**
      * UP 按钮
      */
-    public static final  int KEY_UP = 0x02;
+    public static final int KEY_UP = 0x02;
     /**
      * DOWN 按钮
      */
-    public static final  int KEY_DOWN = 0x05;
+    public static final int KEY_DOWN = 0x05;
     /**
      * LEFT 按钮
      */
-    public static final  int KEY_LEFT = 0x04;
+    public static final int KEY_LEFT = 0x04;
     /**
      * RIGHT 按钮
-      */
-    public static final  int KEY_RIGHT = 0x06;
+     */
+    public static final int KEY_RIGHT = 0x06;
 
     /**
      * 单例
@@ -48,10 +48,9 @@ public class KeyEvent {
 
     /**
      * 获取单例
-     * @return
      */
-    public static KeyEvent getInstance(){
-        if(instance == null){
+    public static KeyEvent getInstance() {
+        if (instance == null) {
             instance = new KeyEvent();
         }
 
@@ -60,10 +59,9 @@ public class KeyEvent {
 
     /**
      * 用户按键 回调
-     * @param value
      */
-    public static void onKeyClick(int value){
-        if(RunningDriver.getInstance() != null) {
+    public static void onKeyClick(int value) {
+        if (RunningDriver.getInstance() != null) {
             RunningDriver.getInstance().onKeyEvent(value);
         }
     }

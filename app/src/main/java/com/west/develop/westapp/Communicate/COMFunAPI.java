@@ -30,26 +30,19 @@ public class COMFunAPI {
     /**
      * 打开串口
      *
-     * @param port
-     * @param baud  波特率
-     * @return
+     * @param baud 波特率
      */
     public boolean COMPortOpen(BaseSerialPort port, int baud) {
         //boolean result = UsbService.getInstance().COMPortOpen(port,baud);
         if (port instanceof UsbSerialPort) {
             UsbSerialPort usbPort = (UsbSerialPort) port;
-            boolean result = false;
-
             UsbService.getInstance().COMPortOpen(usbPort, baud);
             //usbPort.setDTR(true);
-            if (usbPort == null || !usbPort.isOpened()) {
-                return result;
+            if (!usbPort.isOpened()) {
+                return false;
             }
-
             usbPort.setParameters(baud, UsbSerialPort.DATABITS_8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
-
             usbPort.purgeHwBuffers(true, true);
-
             return true;
         } else if (port instanceof BluetoothSerialPort) {
             BluetoothSerialPort bluetoothPort = (BluetoothSerialPort) port;
@@ -57,26 +50,14 @@ public class COMFunAPI {
             if (!bluetoothPort.isOpened()) {
                 bluetoothPort.open(BluetoothService.getInstance().mConnectListener);
             }
-            if (!bluetoothPort.isOpened()) {
-                return false;
-            }
-
-            return true;
+            return bluetoothPort.isOpened();
         }
-
         return false;
-
     }
-
-
 
 
     /**
      * 发送一个字节数据函数
-     *
-     * @param port
-     * @param outData
-     * @return
      */
     public boolean COMOutByte(BaseSerialPort port, byte outData) {
         boolean result = false;
@@ -116,6 +97,7 @@ public class COMFunAPI {
 
     /**
      * 关闭串口
+     *
      * @param port
      */
     public void COMPortClose(BaseSerialPort port) {
@@ -125,7 +107,6 @@ public class COMFunAPI {
         }
         //port.close();
     }
-
 
 
     public void COMDTRSet(BaseSerialPort port, boolean enable) {
@@ -146,9 +127,10 @@ public class COMFunAPI {
 
     /**
      * 延时
+     *
      * @param T 时间
      */
-    public void Delayms(int T){
+    public void Delayms(int T) {
         SystemClock.sleep(T);
         /*try {
             Thread.sleep(T);
@@ -161,7 +143,7 @@ public class COMFunAPI {
     }
 
 
-    public void Delayms(long T){
+    public void Delayms(long T) {
         SystemClock.sleep(T);
         /*try {
             Thread.sleep(T);
@@ -174,6 +156,7 @@ public class COMFunAPI {
 
     /**
      * 已接收到的字节长度
+     *
      * @param port
      * @return
      */
@@ -190,6 +173,7 @@ public class COMFunAPI {
 
     /**
      * 发送字符串
+     *
      * @param port
      * @param OutStr
      * @return
@@ -206,16 +190,13 @@ public class COMFunAPI {
         }
 
         int len = port.write(OutStr.getBytes(), 0);
-        if (len == OutStr.length()) {
-            return true;
-        }
-
-        return false;
+        return len == OutStr.length();
     }
 
 
     /**
      * 发送 {@UNPack} 起始的{@size} 长度的数据
+     *
      * @param port
      * @param UNPack
      * @param size
@@ -248,6 +229,7 @@ public class COMFunAPI {
 
     /**
      * 发送{@OutPack} 起始{@DataSize} 长度的数据，每个byte 间隔{@Time} ms
+     *
      * @param port
      * @param OutPack
      * @param DataSize
@@ -300,17 +282,12 @@ public class COMFunAPI {
 
 
     /**
-     * 接收{@size}字节的数据
-     * @param port
-     * @param UNPack
-     * @param size
-     * @return
+     * 接收size字节的数据
      */
     public boolean COMInCh(BaseSerialPort port, byte[] UNPack, int size) {
-        boolean result = false;
-
+//        boolean result = false;
         if (port == null || !port.isOpened()) {
-            return result;
+            return false;
         }
         byte[] buffer = port.getReadBytes(size);
 
@@ -329,11 +306,11 @@ public class COMFunAPI {
 
     /**
      * 清除缓冲区数据
+     *
      * @param port
-     * @param flf
-     *          {@FLUSH_TX}     清除发送缓冲区
-     *          {@FLUSH_RX}     清楚接收缓冲区
-     *          {@FLUSH_BOTH}   清除发送和接收缓冲区
+     * @param flf  {@FLUSH_TX}     清除发送缓冲区
+     *             {@FLUSH_RX}     清楚接收缓冲区
+     *             {@FLUSH_BOTH}   清除发送和接收缓冲区
      * @return
      */
     public boolean COMBufClt(BaseSerialPort port, int flf) {
@@ -384,11 +361,7 @@ public class COMFunAPI {
             }
         }
 
-        if (VerifyCount % 2 == 0) {
-            Verify = true;
-        } else {
-            Verify = false;
-        }
+        Verify = VerifyCount % 2 == 0;
         port.setCommBreak();
         Delayms(TimeT);
 
@@ -431,6 +404,7 @@ public class COMFunAPI {
 
     /**
      * 发送数据
+     *
      * @param port
      * @param OutData
      * @return
@@ -458,7 +432,7 @@ public class COMFunAPI {
         }
 
         byte[] buffer = port.getReadBytes(0);
-        System.arraycopy(buffer,0,RevData,0,buffer.length);
+        System.arraycopy(buffer, 0, RevData, 0, buffer.length);
         port.purgeHwBuffers(true, true);
         result = true;
         return result;
