@@ -41,6 +41,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DownloadManager {
     private static final String kURL = "download_URL";
     private static final String kFileName = "download_FileName";
+
     private Context mContext;
     private static DownloadManager instance;
 
@@ -81,6 +82,7 @@ public class DownloadManager {
     private ArrayList<Map<String, String>> mFinishSet = new ArrayList<>();
 
     private RemoteViews remoteViews;
+    private PendingIntent pendingIntent;
     private NotificationCompat.Builder mBuilder;
     private NotificationManager mNotificationManager;
     private final int NOTIFICATION_ID = 1;
@@ -92,11 +94,11 @@ public class DownloadManager {
                 instance = new DownloadManager();
                 instance.mContext = context;
 
-                /*
+                /**
                  * 初始化notifition
                  */
                 instance.initNotification();
-                /*
+                /**
                  * 初始化线程列表
                  */
                 instance.initAll();
@@ -111,7 +113,7 @@ public class DownloadManager {
     private void initNotification() {
         Intent notifyIntent = new Intent(mContext, DownloadTaskActivity.class);
         int requestCode2 = (int) SystemClock.uptimeMillis();
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, requestCode2,
+        pendingIntent = PendingIntent.getActivity(mContext, requestCode2,
                 notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.download_notifi);
@@ -130,6 +132,8 @@ public class DownloadManager {
 
     /**
      * 添加多条下载 URL
+     *
+     * @param urls
      */
     public void addUrls(ArrayList<String> urls) {
         if (urls == null || urls.size() <= 0) {
@@ -142,8 +146,10 @@ public class DownloadManager {
 
     /**
      * 添加单条 下载 URL
+     *
+     * @param url
      */
-    private void addUrl(String url) {
+    public void addUrl(String url) {
         boolean contain = false;
         if (mUpgradeThreads == null) {
             mUpgradeThreads = new CopyOnWriteArrayList<>();
@@ -156,7 +162,7 @@ public class DownloadManager {
             }
         }
 
-        /*
+        /**
          * 已包含 添加 的URL，不再进行添加
          */
         if (contain) {
@@ -209,7 +215,7 @@ public class DownloadManager {
     /**
      * 初始化 已暂停列表
      */
-    private void initPause() {
+    public void initPause() {
 
         if (!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).isConfigured()) {
             return;
@@ -250,7 +256,7 @@ public class DownloadManager {
         if (isStarted()) {
             if (mDownloadThreads == null || mDownloadThreads.size() < DOWN_COUNT) {
 
-                /*
+                /**
                  * 添加 所有下载任务中 正在下载的任务
                  */
                 for (ProgramDownLoadThread thread : mUpgradeThreads) {
@@ -268,7 +274,7 @@ public class DownloadManager {
                         }
                     }
                 }
-                /*
+                /**
                  * 在点击开始下载的时候，将暂停的状态改为等待状态
                  */
                 if (!isAllPauseUrl) {
@@ -281,7 +287,7 @@ public class DownloadManager {
                     }
                 }
 
-                /*
+                /**
                  * 所有下载任务中正在下载的任务数量 小于 可同时下载的任务数量,
                  * 将等待状态的任务变为正在下载
                  */
@@ -313,7 +319,7 @@ public class DownloadManager {
 
             }
         }
-        /*
+        /**
          * 处于非下载状态，所有正在下载的任务改变状态为等待
          */
         else {
@@ -332,8 +338,10 @@ public class DownloadManager {
 
     /**
      * 任务 @url 下载完成
+     *
+     * @param url
      */
-    void onDownloadFinish(final String url, String fileName) {
+    public void onDownloadFinish(final String url, String fileName) {
         //获取图标
         getIcon(url);
         //删除任务
@@ -350,6 +358,7 @@ public class DownloadManager {
         message.what = MSG_REPLACE_PROGRAM_FILE;
         mHandler.sendMessage(message);
         Log.e("Finish-FileName", fileName);
+
     }
 
     private ArrayList<NCarBean> carBeanList;
@@ -383,15 +392,17 @@ public class DownloadManager {
 
     /**
      * 替换程序文件
+     *
+     * @param fileName
      */
-    private void replaceProgram(String fileName) {
+    public void replaceProgram(String fileName) {
         fileName = fileName.replace("\\", "/");
         if (fileName.startsWith("/")) {
             fileName = fileName.substring(1);
         }
 
 
-        /*
+        /**
          * 删除本地中的版本
          */
         String LocalName = fileName.substring(0, fileName.lastIndexOf("/"));
@@ -420,7 +431,7 @@ public class DownloadManager {
 
 
         try {
-            /*
+            /**
              * 移动文件
              * 从下载目录移动到程序存放目录
              */
@@ -549,6 +560,7 @@ public class DownloadManager {
                         }
 
                     }
+
                     //插入数据库中,数据库中没有时才插入
                     if (!MDBHelper.getInstance(mContext).existCarBean(mNCarBean.getCarID())) {
                         MDBHelper.getInstance(mContext).insertCarBean(mNCarBean);
@@ -562,6 +574,8 @@ public class DownloadManager {
 
     /**
      * 删除任务
+     *
+     * @param url
      */
     public void deleteUrl(String url) {
         //所有任务列表删除
@@ -609,11 +623,11 @@ public class DownloadManager {
      */
     private int threadCount = 0;
 
-    int getThreadCount() {
+    public int getThreadCount() {
         return threadCount;
     }
 
-    void setThreadCount(int threadCount) {
+    public void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
     }
 
@@ -704,9 +718,7 @@ public class DownloadManager {
                     }
 
                     if (!contain) {
-                        if (mPauseThreads != null) {
-                            mPauseThreads.add(thread);
-                        }
+                        mPauseThreads.add(thread);
                     }
                 }
             }
@@ -740,9 +752,11 @@ public class DownloadManager {
 
     /**
      * 设置 @url 状态变为下载
+     *
+     * @param url
      */
 
-    private Boolean isAllPauseUrl = false;
+    Boolean isAllPauseUrl = false;
 
     public void startUrl(String url, int status) {
         isStarted = true;
@@ -798,6 +812,8 @@ public class DownloadManager {
 
     /**
      * 设置 @url 状态变为等待
+     *
+     * @param url
      */
     public void waitUrl(String url) {
         for (int i = 0; i < mPauseThreads.size(); i++) {
@@ -814,6 +830,8 @@ public class DownloadManager {
 
     /**
      * 暂停 @url 任务
+     *
+     * @param url
      */
     public void pauseUrl(String url) {
         for (ProgramDownLoadThread thread : mUpgradeThreads) {
@@ -844,6 +862,8 @@ public class DownloadManager {
 
     /**
      * 获取下载状态
+     *
+     * @return
      */
     public boolean isStarted() {
         return isStarted;
@@ -860,6 +880,8 @@ public class DownloadManager {
 
     /**
      * 获取所有下载任务
+     *
+     * @return
      */
     public CopyOnWriteArrayList<ProgramDownLoadThread> getUpgradeThreads() {
         return mUpgradeThreads;
@@ -867,6 +889,8 @@ public class DownloadManager {
 
     /**
      * 获取正在下载的任务
+     *
+     * @return
      */
     public ArrayList<ProgramDownLoadThread> getmDownloadThreads() {
         return mDownloadThreads;
@@ -879,10 +903,10 @@ public class DownloadManager {
     /**
      * 刷新页面显示列表
      */
-    void onChange() {
+    public void onChange() {
         if (mChangeListener != null) {
-//            ArrayList<ProgramDownLoadThread> tempThreads = new ArrayList<>();
-//            tempThreads.addAll(mUpgradeThreads);
+            ArrayList<ProgramDownLoadThread> tempThreads = new ArrayList<>();
+            tempThreads.addAll(mUpgradeThreads);
             mChangeListener.onChange(mUpgradeThreads);
         }
     }
@@ -891,7 +915,7 @@ public class DownloadManager {
      * 刷新 进度
      * 刷新页面显示列表
      */
-    void queryProgress() {
+    public void queryProgress() {
         mHandler.sendEmptyMessage(MSG_REFRESH_LIST);
     }
 
@@ -933,34 +957,35 @@ public class DownloadManager {
             String downloadRoot = FileUtil.getProgramDownloadRoot(mContext);
             File fileDownloadRoot = new File(downloadRoot + LocalName);
             File[] fileDownloadList = fileDownloadRoot.listFiles();
-            if (fileDownloadList != null) {
-                for (File mDownloadFile : fileDownloadList) {
-                    String mDownloadPath = "";
-                    try {
-                        mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
-                        mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
-                    } catch (Exception ex) {
-                        /*
-                         * 不是保存 bin 文件的目录
-                         */
-                        continue;
-                    }
-                    if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
-                        File[] downloadFiles = mDownloadFile.listFiles();
-                        if (downloadFiles != null) {
-                            for (File mDownLoadFileEnd : downloadFiles) {
-                                String name = mDownLoadFileEnd.getPath();
-                                if (name.toLowerCase().endsWith(".bin")) {
-                                    String hex = FileUtil.readBinFile(mDownLoadFileEnd);
-                                    String data = HexDump.toHexString(FileUtil.readHexData(mContext, name));
-                                    data = data.replace(" ", "");
-                                    binCount++;
-                                    if (!hex.equals(data)) {
-                                        boolean delete = mDownLoadFileEnd.delete();
-                                        isCheckError = true;
-                                        break;
-                                    }
-                                }
+            for (int j = 0; j < fileDownloadList.length; j++) {
+                File mDownloadFile = fileDownloadList[j];
+                String mDownloadPath = "";
+                try {
+                    mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
+                    mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
+                } catch (Exception ex) {
+                    /**
+                     * 不是保存 bin 文件的目录
+                     */
+                    continue;
+                }
+
+                if (mDownloadFile.isDirectory() && fileName.equals(mDownloadPath)) {
+                    File[] downloadfiles = null;
+                    downloadfiles = mDownloadFile.listFiles();
+
+                    for (int i = 0; i < downloadfiles.length; i++) {
+                        File mDownLoadFileEnd = downloadfiles[i];
+                        String name = mDownLoadFileEnd.getPath();
+                        if (name.toLowerCase().endsWith(".bin")) {
+                            String hex = FileUtil.readBinFile(mDownLoadFileEnd);
+                            String data = HexDump.toHexString(FileUtil.readHexData(mContext, name));
+                            data = data.replace(" ", "");
+                            binCount++;
+                            if (!hex.equals(data)) {
+                                mDownLoadFileEnd.delete();
+                                isCheckError = true;
+                                break;
                             }
                         }
                     }
@@ -1014,8 +1039,8 @@ public class DownloadManager {
                         .requestSystemAlert(true)
                         .build().show();
 
-                for (File file : fileDownloadList) {
-                    File mDownloadFile = file;
+                for (int j = 0; j < fileDownloadList.length; j++) {
+                    File mDownloadFile = fileDownloadList[j];
                     String mDownloadPath = "";
                     mDownloadPath = mDownloadFile.getPath();//mDownloadFile.getParent() + "/" + mDownloadFile.getName().substring(5);
                     mDownloadPath = mDownloadPath.substring(mDownloadPath.indexOf(FileUtil.PRO_DOWNLOAD_ROOT) + FileUtil.PRO_DOWNLOAD_ROOT.length() + 1, mDownloadPath.lastIndexOf("_v"));
@@ -1040,10 +1065,10 @@ public class DownloadManager {
     }
 
 
-    private static final int MSG_REFRESH_LIST = 1;
-    private static final int MSG_REQUEST_PROGRESS = 2;
-    private static final int MSG_REPLACE_PROGRAM_FILE = 3;
-    private static final int MSG_ITEM_PUASE = 4;
+    public static final int MSG_REFRESH_LIST = 1;
+    public static final int MSG_REQUEST_PROGRESS = 2;
+    public static final int MSG_REPLACE_PROGRAM_FILE = 3;
+    public static final int MSG_ITEM_PUASE = 4;
 
 
     Handler mHandler = new Handler() {

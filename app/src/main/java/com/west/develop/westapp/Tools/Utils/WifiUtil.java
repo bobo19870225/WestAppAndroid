@@ -12,10 +12,10 @@ public class WifiUtil {
 
     public static boolean isSupportWifi(Context context) {
         if (context != null) {
-            WifiManager manager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-            boolean isEnable = manager.isWifiEnabled();
-            return manager.isWifiEnabled();
-
+            WifiManager manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (manager != null) {
+                return manager.isWifiEnabled();
+            }
         }
         return false;
     }
@@ -24,9 +24,7 @@ public class WifiUtil {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if (mNetworkInfo != null) {
-                return true;
-            }
+            return mNetworkInfo != null;
         }
         return false;
     }
