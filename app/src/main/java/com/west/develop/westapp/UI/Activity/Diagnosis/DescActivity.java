@@ -47,6 +47,7 @@ import java.util.List;
 public class DescActivity extends BaseActivity {
     public static final int MSG_DIALOG_SHOW = 2;
 
+    private int mProType = RunActivity.TYPE_RELEASE;
     private String mProgName;
     private File mProFile;
 
@@ -88,12 +89,14 @@ public class DescActivity extends BaseActivity {
     @Override
     protected void initData() {
         String proFile = getIntent().getStringExtra(RunActivity.kStartFile);
-        int mProType = getIntent().getIntExtra(RunActivity.kProgType, RunActivity.TYPE_RELEASE);
-        if (proFile != null) {
-            mProFile = new File(proFile);
-        }
+
+        mProType = getIntent().getIntExtra(RunActivity.kProgType, RunActivity.TYPE_RELEASE);
+
+        mProFile = new File(proFile);
+
         if (mProType == RunActivity.TYPE_RELEASE) {
             String progRoot = FileUtil.getProgramRoot(this);
+
             String parent = mProFile.getParent();
             String fileName = mProFile.getName();
             String proName = parent + "/" + fileName.substring(4, fileName.toLowerCase().lastIndexOf(".bin"));
@@ -111,12 +114,13 @@ public class DescActivity extends BaseActivity {
 
             File programRoot = mProFile.getParentFile();
             String str = "";
-            if (programRoot != null && programRoot.exists()) {
+            if (programRoot.exists()) {
                 File[] files = programRoot.listFiles();
                 if (files != null) {
-                    for (File file : files) {
-                        if (file.getName().toLowerCase().endsWith(".txt")) {
-                            str = FileUtil.readBinFileDecsData(file);
+                    for (int j = 0; j < files.length; j++) {
+                        if (files[j].getName().toLowerCase().endsWith(".txt")) {
+                            File fileIni = files[j];
+                            str = FileUtil.readBinFileDecsData(fileIni);
                         }
                     }
                 }
@@ -141,7 +145,7 @@ public class DescActivity extends BaseActivity {
      * 运行程序
      */
     private void onCommit() {
-        /*
+        /**
          * 设备已激活，或未完成配置，或者未激活但剩余试用次数
          */
         if (Config.getInstance(this).isSigned() || !Config.getInstance(this).isConfigured() ||
@@ -181,7 +185,7 @@ public class DescActivity extends BaseActivity {
                 }
             }
         }
-        /*
+        /**
          * 试用次数已经用完
          */
         else {
@@ -260,7 +264,6 @@ public class DescActivity extends BaseActivity {
             dialog.show();
         }
     }
-
     LoadDialog loadDialog;
     TipDialog tipDialog;
     private Handler mHandler = new Handler() {
@@ -298,6 +301,7 @@ public class DescActivity extends BaseActivity {
                             .build();
 
                     tipDialog.show();
+
                     registerConnect();
                     /*BluetoothService.getInstance().setConnectCallback(new BluetoothService.ConnectCallback(){
                         @Override
@@ -324,9 +328,11 @@ public class DescActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RequestCodeConstant.CODE_SIGN_ACTIVITY && resultCode == RESULT_OK) {
             onCommit();
         }
+
         if (requestCode == RequestCodeConstant.CODE_RUN_ACTIVITY) {
             if (resultCode == RunActivity.RESULT_EXIT) {
                 mFuncListView.setVisibility(View.GONE);
@@ -345,12 +351,13 @@ public class DescActivity extends BaseActivity {
                 line.setVisibility(View.VISIBLE);
                 File programRoot = file.getParentFile();
                 String line = "";
-                if (programRoot != null && programRoot.exists()) {
+                if (programRoot.exists()) {
                     File[] files = programRoot.listFiles();
                     if (files != null) {
-                        for (File value : files) {
-                            if (value.getName().toLowerCase().endsWith(".ini")) {
-                                line = FileUtil.readIniData(value);
+                        for (int j = 0; j < files.length; j++) {
+                            if (files[j].getName().toLowerCase().endsWith(".ini")) {
+                                File fileIni = files[j];
+                                line = FileUtil.readIniData(fileIni);
                             }
                         }
                     }
@@ -473,7 +480,7 @@ public class DescActivity extends BaseActivity {
 
                 } else {
                     int count = Config.getInstance(DescActivity.this).getRegCount();
-                    /*
+                    /**
                      * 使用次数到达提示次数
                      */
                     if (Config.getInstance(DescActivity.this).getRegCount() < Config.getInstance(DescActivity.this).getSetRegCount() &&
@@ -503,7 +510,7 @@ public class DescActivity extends BaseActivity {
                                 .build();
                         dialog.show();
                     } else if (Config.getInstance(DescActivity.this).getRegCount() >= Config.getInstance(DescActivity.this).getSetRegCount()) {
-                        /*
+                        /**
                          * 使用次数已经使用完
                          */
                         TipDialog dialog = new TipDialog.Builder(DescActivity.this)
@@ -549,14 +556,14 @@ public class DescActivity extends BaseActivity {
                             if (ReportFragment.getInstance() != null) {
                                 ReportFragment.getInstance().refresh();
                             }
-                            /*
+                            /**
                              * 记录文件已  _1.txt 结尾，自动上传记录
                              */
                             String fileName = UpDriver.getInstance(DescActivity.this).getPack().getFileName();
                             if (fileName.toLowerCase().endsWith("_1.txt")) {
                                 ReportUntil.postReport(DescActivity.this, fileName);
                             }
-                            /*
+                            /**
                              * 播放警告声音，直到点击确定按钮才停止
                              */
                             //SoundUtil.programExitSound(DescActivity.this);
@@ -611,20 +618,29 @@ public class DescActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (action != null) {
-                switch (action) {
-                    case UsbService.ACTION_USB_CHECK_SUCCESS:
-                    case BluetoothService.ACTION_BLUETOOTH_CHECK_SUCCESS:
-                        if (tipDialog != null) {
-                            tipDialog.dismiss();
-                        }
-                        if (loadDialog != null && loadDialog.isShowing()) {
-                            loadDialog.dismiss();
-                            onCommit();
-                        }
-                        unregisterConnect();
-                        break;
-                }
+            switch (action) {
+
+                case UsbService.ACTION_USB_CHECK_SUCCESS:
+                    if (tipDialog != null) {
+                        tipDialog.dismiss();
+                    }
+                    if (loadDialog != null && loadDialog.isShowing()) {
+                        loadDialog.dismiss();
+                        onCommit();
+                    }
+                    unregisterConnect();
+                    break;
+                case BluetoothService.ACTION_BLUETOOTH_CHECK_SUCCESS:
+                    if (tipDialog != null) {
+                        tipDialog.dismiss();
+                    }
+                    if (loadDialog != null && loadDialog.isShowing()) {
+                        loadDialog.dismiss();
+                        onCommit();
+                    }
+                    unregisterConnect();
+                    break;
+
             }
         }
     };

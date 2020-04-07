@@ -1,22 +1,22 @@
 package com.west.develop.westapp.Protocol.Drivers;
 
 /**
- * 下位机通讯指令集
+ * Created by Develop0 on 2018/1/12.
  */
 public abstract class BaseCMD {
 
     /**
      * 解密返回值
-     * 0x0A  通读错误
-     * 0x0E  硬件序列号错
-     * 0x0D  超时
-     * 0x0C  数据CRC错
-     * 0x0F  写入错
-     * 0x10  写入成功
-     * 0x11  命令不支持
-     * 0x13  电源控制错
-     * 0x0B  命令完成或序列号正确
-     * 0x14  不匹配
+     *          0x0A  通读错误
+     *          0x0E  硬件序列号错
+     *          0x0D  超时
+     *          0x0C  数据CRC错
+     *          0x0F  写入错
+     *          0x10  写入成功
+     *          0x11  命令不支持
+     *          0x13  电源控制错
+     *          0x0B  命令完成或序列号正确
+     *          0x14  不匹配
      */
     public static final byte CHK_BACK_COM_ERROR = 0x0A;
     public static final byte CHK_BACK_SN_ERROR = (byte) 0x0E;
@@ -32,36 +32,36 @@ public abstract class BaseCMD {
     /**
      * 进入Boot 模式
      */
-    static final byte CMD_USER_TO_BOOT = (byte) 0xC4;
+    public static final byte CMD_USER_TO_BOOT = (byte) 0xC4;
     /**
      * 进入Boot 返回
      * 返回 主、从 CPU ID
      */
-    static final byte CMD_USER_TO_BOOT_BACK = (byte) 0xA5;
+    public static final byte CMD_USER_TO_BOOT_BACK = (byte) 0xA5;
 
 
     /**
      * 读取固件版本
      * 正确回复：{@CMD_READ_VER_BACK}
      */
-    static final byte CMD_READ_VER = (byte) 0xC8;
+    public static final byte CMD_READ_VER = (byte) 0xC8;
 
     /**
      * 读取固件版本返回
      */
-    static final byte CMD_READ_VER_BACK = (byte) 0xA8;
+    public static final byte CMD_READ_VER_BACK = (byte) 0xA8;
 
     /**
      * 校验设备序列号
      * 正确回复：{@BACK_CHECK_TRUE}
      */
-    static final byte CMD_CHECK_SN = (byte) 0x01;
+    public static final byte CMD_CHECK_SN = (byte) 0x01;
 
     /**
      * 准备写入
      * 正确回复：{@BACK_CHECK_TRUE}
      */
-    static final byte CMD_READY_PRO = (byte) 0x02;
+    public static final byte CMD_READY_PRO = (byte) 0x02;
 
     /**
      * 下载本地调试程序，不需要手持机不需要解密
@@ -71,7 +71,7 @@ public abstract class BaseCMD {
     /**
      * 读取设备序列号
      */
-    static final byte CMD_READ_SN = (byte) 0xC9;
+    public static final byte CMD_READ_SN = (byte) 0xC9;
     /**
      * 读取设备序列号返回
      * 返回 设备序列号 取反
@@ -84,36 +84,36 @@ public abstract class BaseCMD {
      * 下载程序 {每包 256 字节}
      * {@CMD_DOWNLOAD_WRITE}  0xFF {@CONTENT 256 byte} {@CRC 2 byte}
      */
-    static final byte CMD_DOWNLOAD_WRITE = (byte) 0x09;
+    public static final byte CMD_DOWNLOAD_WRITE = (byte) 0x09;
 
     /**
      * {@CMD_DOWNLOAD_WRITE} 文件过大
      */
-    static final byte CMD_DOWNLOAD_BACK_LARGE = (byte) 0xF0;
+    public static final byte CMD_DOWNLOAD_BACK_LARGE = (byte) 0xF0;
 
     /**
      * 下载校验 / Boot 转 APP
      */
-    static final byte CMD_CHECK_DOWNLOAD_CRC = (byte) 0x0B;
+    public static final byte CMD_CHECK_DOWNLOAD_CRC = (byte) 0x0B;
     /**
      * {@CMD_CHECK_DOWNLOAD_CRC} 下载校验 正确
      */
-    static final byte CMD_CHECK_DOWNLOAD_CRC_TRUE = (byte) 0x57;
+    public static final byte CMD_CHECK_DOWNLOAD_CRC_TRUE = (byte) 0x57;
     /**
      * 读取下载 的校验值
      */
-    static final byte CMD_READ_DOWNLOAD_CRC = (byte) 0x05;
+    public static final byte CMD_READ_DOWNLOAD_CRC = (byte) 0x05;
 
     /**
      * 执行函数
      * {@CMD_RUN_FUNC} + {函数(0x01 - 0x08)}
      */
-    static final byte CMD_RUN_FUNC = (byte) 0xF0;
+    public static final byte CMD_RUN_FUNC = (byte) 0xF0;
 
     /**
      * 显示内容
      */
-    static final byte CMD_DISPLAY = (byte) 0x31;
+    public static final byte CMD_DISPLAY = (byte) 0x31;
 
     /**
      * {@CMD_RUN_FUNC} 所执行的函数 执行完成
@@ -125,14 +125,14 @@ public abstract class BaseCMD {
     /**
      * 键盘事件
      * {@CMD_KEY_EVENT} {@KEY_VALUE}
-     *
-     * @KEY_VALUE: UP      {@KeyEvent.KEY_UP}
-     * DOWN    {@KeyEvent.KEY_DOWN}
-     * LEFT    {@KeyEvent.KEY_LEFT}
-     * RIGHT   {@KeyEvent.KEY_RIGHT}
-     * YES     {@KeyEvent.KEY_YES}
-     * ESC     {@KeyEvent.KEY_ESC}
-     * RELEASE {@KeyEvent.KEY_RELEASE}
+     * @KEY_VALUE:
+     *              UP      {@KeyEvent.KEY_UP}
+     *              DOWN    {@KeyEvent.KEY_DOWN}
+     *              LEFT    {@KeyEvent.KEY_LEFT}
+     *              RIGHT   {@KeyEvent.KEY_RIGHT}
+     *              YES     {@KeyEvent.KEY_YES}
+     *              ESC     {@KeyEvent.KEY_ESC}
+     *              RELEASE {@KeyEvent.KEY_RELEASE}
      */
     public static final byte CMD_KEY_EVENT = (byte) 0x30;
 

@@ -10,9 +10,7 @@ import com.west.develop.westapp.Config.Config;
 import com.west.develop.westapp.Tools.Utils.HexUtil;
 
 /**
- * 设备类
- * 1.读取设备信息  UNSN ,COMCHKM,COMCHKS
- * 2.检查能用硬件序列号Moto, EEPROM
+ * Created by Develop0 on 2017/12/28.
  */
 
 public class DeviceDriver extends BaseDriver {
@@ -51,6 +49,7 @@ public class DeviceDriver extends BaseDriver {
                 callback.callback(null, null);
             }
         }
+
         port.setDTR(true);
 
         /*
@@ -85,12 +84,16 @@ public class DeviceDriver extends BaseDriver {
 
     /**
      * 读取设备信息  UNSN ,COMCHKM,COMCHKS
+     *
+     * @param port
+     * @return
      */
     public String[] ReadDevice(final BaseSerialPort port) {
-//        boolean result = false;
+        boolean result = false;
         if (!COMFunAPI.getInstance().COMPortOpen(port, pack.getCOMBT())) {
             return null;
         }
+
         COMFunAPI.getInstance().Delayms(100);
         String SN = ReadUNSN(port);
         if (SN == null) {
@@ -111,12 +114,14 @@ public class DeviceDriver extends BaseDriver {
         String[] DeviceInfo = new String[]{SN, HexUtil.toHexString(COMCHK[0]), HexUtil.toHexString(COMCHK[1])};
 
         COMFunAPI.getInstance().COMPortClose(port);
+
         return DeviceInfo;
+
     }
 
 
-    private String ReadVersion(final BaseSerialPort port) {
-        String version;
+    public String ReadVersion(final BaseSerialPort port) {
+        String version = null;
         /*if(!COMFunAPI.getInstance().COMPortOpen(port,pack.getCOMBT())){
             return null;
         }*/
@@ -128,30 +133,40 @@ public class DeviceDriver extends BaseDriver {
         PackCRC();
         COMFunAPI.getInstance().COMOutCh(port, WUNPack, 12);
         // COMFunAPI.getInstance().COMDTRSet(port, true);         //DTR 状态
+
         for (int delay = 0; delay <= 3000; delay++) {
             int size = COMFunAPI.getInstance().COMInSize(port);
             if (size >= 12) {
                 RUNPack[0] = COMFunAPI.getInstance().COMInByte(port);
+
                 if (RUNPack[0] == CMD_READ_VER_BACK) {
                     COMFunAPI.getInstance().COMInCh(port, RUNPack, 11); //读入11 Byte ,上面读了1 Byte
+
                     byte[] verBuf = new byte[5];
-                    System.arraycopy(RUNPack, 4, verBuf, 0, 5);
+                    for (int index = 4; index <= 8; index++) {
+                        verBuf[index - 4] = RUNPack[index];
+                    }
+
                     version = new String(verBuf);
                     return version;
                 }
             }
             COMFunAPI.getInstance().Delayms(1);
         }
-        return null;
+        return version;
     }
 
 
     /**
      * 跳到Boot区
+     *
+     * @return
      */
-    private byte[] UserToBoot(final BaseSerialPort port) {
+    public byte[] UserToBoot(final BaseSerialPort port) {
         int recDataSize = 0;
-        byte[] COMCHK;
+
+        byte[] COMCHK = null;
+
         for (int tempCrc = 1; tempCrc <= 9; tempCrc++) {
             WUNPack[tempCrc] = 0x0;
         }
@@ -187,7 +202,7 @@ public class DeviceDriver extends BaseDriver {
             COMFunAPI.getInstance().Delayms(1);
             recDataSize++;
         }
-        return null;
+        return COMCHK;
     }
 
 
@@ -239,18 +254,29 @@ public class DeviceDriver extends BaseDriver {
 
     /**
      * 读设备序列号
+     *
+     * @param port
+     * @return
      */
-    private String ReadUNSN(final BaseSerialPort port) {
-//        boolean result = false;
+    public String ReadUNSN(final BaseSerialPort port) {
+        boolean result = false;
+
         String SN = null;
+
         WUNPack[0] = CMD_READ_SN;
+
         for (int i = 1; i <= 9; i++) {
             WUNPack[i] = 0;
         }
+
         PackCRC();
+
         port.purgeHwBuffers(true, false);
+
         COMFunAPI.getInstance().COMOutCh(port, WUNPack, 12);  //发送包
+
         COMFunAPI.getInstance().COMDTRSet(port, true);         //DTR 状态
+
         for (int delay = 0; delay < 3000; delay++) {
             int size = COMFunAPI.getInstance().COMInSize(port);
             //Log.e("ReadSN",size + "");
@@ -268,19 +294,23 @@ public class DeviceDriver extends BaseDriver {
                     SN = new String(SNbuffer);
                     Log.e("ReadSN", SN);
                     //pack.setFirmwareSN(SN);
-//                    result = true;
+                    result = true;
                     break;
                 }
             }
             COMFunAPI.getInstance().Delayms(1);
         }
+
         return SN;
     }
 
     /**
      * 退出Boot
+     *
+     * @param port
+     * @return
      */
-    private boolean BootToUserMode(BaseSerialPort port) {
+    public boolean BootToUserMode(BaseSerialPort port) {
         int tempCyc;
         for (tempCyc = 1; tempCyc <= 9; tempCyc++) {
             WUNPack[tempCyc] = 0;//序列号入包

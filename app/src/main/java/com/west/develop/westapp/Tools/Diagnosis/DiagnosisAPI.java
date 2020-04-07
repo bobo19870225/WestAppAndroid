@@ -29,18 +29,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 检测API
- * 1.下载程序到手持设备
+ * Created by Develop0 on 2017/9/6.
  */
 
 public class DiagnosisAPI {
     private Context mContext;
+
     private static DiagnosisAPI instance;
-//    private static OnSelectModeListener mSelectListener;
+
+    private static OnSelectModeListener mSelectListener;
+
+
     /**
      * 正在运行对话框
      */
     private LoadDialog mLoadDialog;
+
 
     public static void init(Context context) {
         instance = new DiagnosisAPI(context);
@@ -60,6 +64,7 @@ public class DiagnosisAPI {
 
     /**
      * 运行程序
+     * @param file
      */
     public void startWithFile(final File file, final boolean isDebug) {
         boolean updateValid = ((MyApplication) mContext.getApplicationContext()).updateFWValid();
@@ -130,6 +135,9 @@ public class DiagnosisAPI {
 
     /**
      * 升级固件程序
+     * @param file
+     * @param isDebug
+     * @param callback
      */
     private void updateFW(final File file, final boolean isDebug, FWUpdateCallback callback) {
         displayLoading(mContext.getString(R.string.tip_FW_downloading));
@@ -142,6 +150,7 @@ public class DiagnosisAPI {
                     return;
                 }
                 displayLoading(mContext.getString(R.string.tip_FW_updating));
+
                 downloadFile(BaseDriver.UPDATE_TYPE_FW, file, buffer, isDebug);
                 // startDownload(BaseDriver.UPDATE_TYPE_FW,file,buffer,"A168-TOOL",isDebug);
 
@@ -158,6 +167,8 @@ public class DiagnosisAPI {
 
     /**
      * 下载应用程序文件
+     * @param file
+     * @param isDebug
      */
     private void downloadFile(final int _type, final File file, byte[] buffer, boolean isDebug) {
         if (ConnectStatus.getInstance(mContext).getUSBPort() != null) {
@@ -187,14 +198,12 @@ public class DiagnosisAPI {
             if (path.toLowerCase().endsWith("_1.bin")) {
                 autoReport = true;
             }
-            if (parentFile != null) {
-                String parentPath = parentFile.getPath();
-                fileReport = parentPath.substring(path.indexOf(FileUtil.PROGRAM) + FileUtil.PROGRAM.length() + 1);
-                if (autoReport) {
-                    fileReport += "_1";
-                }
-            }
+            String parentPath = parentFile.getPath();
 
+            fileReport = parentPath.substring(path.indexOf(FileUtil.PROGRAM) + FileUtil.PROGRAM.length() + 1);
+            if (autoReport) {
+                fileReport += "_1";
+            }
         }
 
         saveReport(context, fileReport);
@@ -207,6 +216,7 @@ public class DiagnosisAPI {
         ReportName = ReportName.replace("/", "$");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String now = df.format(new Date());// new Date()为获取当前系统时间
+
         //命名形式用时间+文件名+后缀名组合
         String name = now + "-" + ReportName + ".txt";
         UpDriver.getInstance(context).getPack().setFileName(name);
@@ -215,6 +225,7 @@ public class DiagnosisAPI {
 
     /**
      * 刷新进度条
+     * @param progress
      */
     public void refreshDownloadProgress(int progress) {
         if (mLoadDialog != null) {
@@ -225,7 +236,7 @@ public class DiagnosisAPI {
         //Looper.loop();*/
     }
 
-    private void displayCancle(LoadDialog.OnClickListener listener) {
+    public void displayCancle(LoadDialog.OnClickListener listener) {
         if (mLoadDialog != null) {
             mLoadDialog.setCancel(mContext.getResources().getString(R.string.cancel), listener);
         }
@@ -234,11 +245,12 @@ public class DiagnosisAPI {
     }
 
     /**
-     * 程序选择完成，
-     * 在本地运行：程序开始运行尝试开始
+     * 程序选择完成，尝试开始
+     * 在本地运行：程序开始运行
      * 下载到手持机运行：开始下载程序到手持机
+     * @param file
      */
-    private void startDownload(final int _type, final File file, final byte[] buffer, final String hardType, final boolean isDebug) {
+    public void startDownload(final int _type, final File file, final byte[] buffer, final String hardType, final boolean isDebug) {
 
         if (file.getName().toLowerCase().endsWith(".bin")) {
             if (_type == BaseDriver.UPDATE_TYPE_APP) {
@@ -249,7 +261,7 @@ public class DiagnosisAPI {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    /*
+                    /**
                      * 升级应用程序才可以中途取消
                      */
                     if (_type == BaseDriver.UPDATE_TYPE_APP) {
@@ -322,8 +334,8 @@ public class DiagnosisAPI {
     /**
      * 程序下载到手持机完成
      */
-    private void finishDownloadProgram(int _type, boolean isSuccess, File file, boolean isDebug) {
-        /*
+    public void finishDownloadProgram(int _type, boolean isSuccess, File file, boolean isDebug) {
+        /**
          * 升级固件程序
          */
         if (_type == BaseDriver.UPDATE_TYPE_FW) {
@@ -334,8 +346,10 @@ public class DiagnosisAPI {
                 ((MyApplication) mContext.getApplicationContext()).updateFWSuccess();
             }
             downloadFile(BaseDriver.UPDATE_TYPE_APP, file, null, isDebug);
+
+
         }
-        /*
+        /**
          * 下载应用程序
          */
         else if (_type == BaseDriver.UPDATE_TYPE_APP) {
@@ -345,7 +359,7 @@ public class DiagnosisAPI {
             } else if (mContext instanceof DescActivity) {
                 ReportUntil.writeDataToReport(mContext, "downLoad success");
                 ((DescActivity) mContext).refreshIniFile(file);
-//                int count = Config.getInstance(mContext).getRegCount();
+                int count = Config.getInstance(mContext).getRegCount();
                /* if (count < Config.TRYCOUNT) { //在试用次数大于试用的最高次数时，就不执行以下程序了
                     Config.getInstance(mContext).getRegCount();
                 }*/
@@ -355,6 +369,7 @@ public class DiagnosisAPI {
             } else if (mContext instanceof DiagnosisActivity) {
                 ((DiagnosisActivity) mContext).refreshIniFile(file);
             }
+
             dismiss();
         }
 
@@ -362,8 +377,9 @@ public class DiagnosisAPI {
 
     /**
      * 显示 正在 XX 对话框
+     * @param message
      */
-    private void displayLoading(String message) {
+    public void displayLoading(String message) {
         if (mLoadDialog != null) {
             mLoadDialog.dismiss();
         }

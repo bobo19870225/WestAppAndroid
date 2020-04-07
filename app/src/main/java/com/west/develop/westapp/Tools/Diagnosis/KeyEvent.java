@@ -3,7 +3,7 @@ package com.west.develop.westapp.Tools.Diagnosis;
 import com.west.develop.westapp.Protocol.Drivers.RunningDriver;
 
 /**
- * 自定义按键事件
+ * Created by Develop11 on 2017/8/17.
  */
 
 public class KeyEvent {
@@ -48,6 +48,7 @@ public class KeyEvent {
 
     /**
      * 获取单例
+     * @return
      */
     public static KeyEvent getInstance() {
         if (instance == null) {
@@ -59,6 +60,7 @@ public class KeyEvent {
 
     /**
      * 用户按键 回调
+     * @param value
      */
     public static void onKeyClick(int value) {
         if (RunningDriver.getInstance() != null) {

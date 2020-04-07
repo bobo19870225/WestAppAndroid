@@ -17,9 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 //import com.west.develop.westapp.Protocol.UPFile_IOPack;
 
 /**
- * 诊断的设备类时
- * 1.发送指令给下位机，接收到下位机的数据显示到平板上
- * 2.虚拟出按键
+ * Created by Develop0 on 2017/11/14.
  */
 public class RunningDriver extends BaseDriver {
 
@@ -51,6 +49,7 @@ public class RunningDriver extends BaseDriver {
 
     /**
      * 设置超时计数
+     * @param count
      */
     public void countTimeout(boolean count) {
         if (!count) {
@@ -63,6 +62,7 @@ public class RunningDriver extends BaseDriver {
 
     /**
      * 获取超时时间
+     * @return
      */
     public int getTimeout() {
         if (!COUNT_TIMEOUT || TIMEOUT_STAMP == 0) {
@@ -104,7 +104,7 @@ public class RunningDriver extends BaseDriver {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    /*
+                    /**
                      * 当接口为空时，等待接口连接
                      */
                     while (getPort() == null) {
@@ -129,9 +129,14 @@ public class RunningDriver extends BaseDriver {
                     //Log.e("RunningDriver","port YES");
                     //开始接收
                     getPort().setRevListener(mReceiveListener);
-                    Looper.prepare();
-                    callback.onSuccess();
-                    Looper.loop();
+
+
+                    if (callback != null) {
+                        Looper.prepare();
+                        callback.onSuccess();
+                        Looper.loop();
+                    }
+
                 }
             });
             synchronized (thread) {
@@ -150,17 +155,21 @@ public class RunningDriver extends BaseDriver {
     }
 
 
+    boolean PAUSE_LISTEN = false;
     /**
      * 接收监听
      */
-    private ReceiveListener mReceiveListener = new ReceiveListener() {
+    ReceiveListener mReceiveListener = new ReceiveListener() {
         @Override
         public void onReceive(int bufferSize) {
             if (mContext instanceof RunActivity) {
                 ((RunActivity) mContext).redoCount();
             }
-//            boolean PAUSE_LISTEN = false;
-            Log.e("PAUSE_LISTEN", false + "");
+            Log.e("PAUSE_LISTEN", PAUSE_LISTEN + "");
+            if (PAUSE_LISTEN) {
+                return;
+            }
+
             try {
                 mCOMInLock.lock();
                 int len = COMFunAPI.getInstance().COMInSize(getPort());
@@ -170,9 +179,12 @@ public class RunningDriver extends BaseDriver {
                 }
                 while (len > 0) {
                     len = COMFunAPI.getInstance().COMInSize(getPort());
+
+
                     while (TempV == CMD_DISPLAY) {
                         //接收到显示信息
                         DISPLAY_IN(TempV);
+
                         len = COMFunAPI.getInstance().COMInSize(getPort());
                         if (len <= 0) {
                             break;
@@ -277,6 +289,8 @@ public class RunningDriver extends BaseDriver {
 
     /**
      * 等待完整包
+     * @param length
+     * @return
      */
     private boolean waitFullPack(final int length) {
         boolean received = false;
@@ -297,7 +311,7 @@ public class RunningDriver extends BaseDriver {
 
     private void DISPLAY_IN(byte TempV) {
         //接收到显示信息
-        boolean received;
+        boolean received = false;
         int len = COMFunAPI.getInstance().COMInSize(getPort());
         if (len < 11) {
             //未收到完整的包
@@ -321,7 +335,7 @@ public class RunningDriver extends BaseDriver {
     }
 
     private void FINISH_FUNC(byte TempV) {
-        boolean received;
+        boolean received = false;
         int len = COMFunAPI.getInstance().COMInSize(getPort());
         if (len < 11) {
             // 未收到完整包
@@ -351,6 +365,8 @@ public class RunningDriver extends BaseDriver {
 
     /**
      * 保存上传文件
+     * @param TempV
+     * @return
      */
     private byte FILE_UPLOAD_IN(byte TempV) {
         //接收到显示信息
@@ -411,7 +427,10 @@ public class RunningDriver extends BaseDriver {
                     byte[] data = new byte[260];
                     data[0] = TempV;
                     data[1] = lenByt;
-                    System.arraycopy(RUNPack, 0, data, 2, 258);
+                    for (int i = 2; i < 260; i++) {
+                        data[i] = RUNPack[i - 2];
+                    }
+
                     byte result = CHK_BACK_CMD_UNSURPPOT;
                     if (mContext instanceof RunActivity) {
                         if (((RunActivity) mContext).UPFILE_INDATA(data)) {
@@ -467,8 +486,8 @@ public class RunningDriver extends BaseDriver {
                             ((RunActivity) mContext).LOAD_BACKUP_NEW(flagByte);
                         }
                         return 0x00;
-                    } else {
-                        int start = 0, length;
+                    } else if (TempV == CMD_LOAD_BACKUP_START) {
+                        int start = 0, length = 0;
                         for (int i = 0; i < 4; i++) {
                             int times = (int) Math.pow(256, 3 - i);
                             int value = (RUNPack[i] & 0xFF);
@@ -513,7 +532,10 @@ public class RunningDriver extends BaseDriver {
         }
         byte[] data = new byte[12];
         data[0] = CMD_DISPLAY;
-        System.arraycopy(RUNPack, 0, data, 1, 11);
+
+        for (int i = 0; i < 11; i++) {
+            data[i + 1] = RUNPack[i];
+        }
         if (mContext instanceof RunActivity) {
             if (DISP_IOPack.getInstance() != null) {
                 //存在未接收完全的待显示字符
@@ -531,8 +553,10 @@ public class RunningDriver extends BaseDriver {
                         byte Disp_FUN = (byte) (RUNPack[2] & 0xF0);
                         byte NotDisp = (byte) (RUNPack[2] & 0x0F);
                         byte StrLen = RUNPack[3];
-                        // 创建字符显示接收
-                        DISP_IOPack.newInstance(mContext, PAG, COL, Disp_FUN, NotDisp, StrLen);
+                        if (RUNPack[8] == (byte) 0x00 || DISP_IOPack.getInstance() == null) {
+                            // 创建字符显示接收
+                            DISP_IOPack.newInstance(mContext, PAG, COL, Disp_FUN, NotDisp, StrLen);
+                        }
                         DISP_IOPack.getInstance().In_EN_CN_ASCII(data, packIndex);
                     } else if (RUNPack[8] == (byte) 0xFF) {
                         // 清屏
@@ -541,6 +565,7 @@ public class RunningDriver extends BaseDriver {
                         }
                         // 显示进度
                         else if ((byte) (RUNPack[2] & 0xF0) == (byte) 0x50
+                                && RUNPack[8] == (byte) 0xFF
                         ) {
                             int progress = RUNPack[3];
                             if (progress < 0) {
@@ -573,61 +598,88 @@ public class RunningDriver extends BaseDriver {
         SendPack(pack);
     }
 
-//    public boolean onReturn(byte[] pack) {
-//        boolean result = false;
-//
-//        return result;
-//    }
+    public boolean onReturn(byte[] pack) {
+        boolean result = false;
 
-    private boolean onReturn(byte byt) {
-        boolean result;
+        return result;
+    }
+
+    public boolean onReturn(byte byt) {
+        boolean result = false;
+
         WUNPack[0] = RevertCOMCHK(byt, pack.getCOMCHK());
-        result = SendByte();
+
+        SendByte();
+
         return result;
     }
 
     /**
      * 按钮事件
+     * @param keyValue
+     * @return
      */
     public boolean onKeyEvent(int keyValue) {
+        boolean result = false;
         WUNPack[0] = CMD_KEY_EVENT;
         WUNPack[1] = (byte) keyValue;
+
         for (int i = 2; i < 10; i++) {
             WUNPack[i] = 0;
         }
-        return SendPack(pack);
+
+        if (!SendPack(pack)) {
+            return result;
+        }
+        result = true;
+        return result;
     }
 
 
     /**
      * 准备接收上传文件数据
+     * @return
      */
     public boolean receiveUPFILE() {
-        boolean result;
+        boolean result = false;
+
+
         // SendByte();
+
         WUNPack[0] = RevertCOMCHK(CHK_BACK_CMD_SUCCESS, pack.getCOMCHK());
-        result = SendByte();
+
+        SendByte();
        /* for (int i = 1; i < 10; i++) {
             WUNPack[i] = 0;
         }
+
         if (!SendPack(pack)) {
             return result;
         }*/
-//        result = true;
+        result = true;
+
         return result;
     }
 
     /**
      * 取消备份
+     * @return
      */
     public boolean UPFile_Cancel() {
-//        boolean result = false;
+        boolean result = false;
+
         WUNPack[0] = CMD_UPFILE_CANCEL;
+
         for (int i = 1; i < 10; i++) {
             WUNPack[i] = 0;
         }
-        return SendPack(pack);
-//        result = true;
+
+        if (!SendPack(pack)) {
+            return result;
+        }
+        result = true;
+
+        return result;
     }
 
 
@@ -705,10 +757,13 @@ public class RunningDriver extends BaseDriver {
 
 
         int failTimes = 0;
-        for (byte[] bytes : packArray) {
+        for (int i = 0; i < packArray.length; i++) {
             WUNPack[0] = CMD_LOAD_BACKUP_DATA;
             WUNPack[1] = (byte) 0xFF;
-            System.arraycopy(bytes, 0, WUNPack, 2, bytes.length);
+
+            for (int index = 0; index < packArray[i].length; index++) {
+                WUNPack[index + 2] = packArray[i][index];
+            }
             SendLongPack(pack);
            /* PAUSE_LISTEN = true;
             if (SendLongPack(pack)) {
@@ -750,8 +805,10 @@ public class RunningDriver extends BaseDriver {
 
     /**
      * 备份数据包列表
+     * @param buffer
+     * @return
      */
-    private byte[][] BACKUP_PACK_ARRAY(byte[] buffer) {
+    public byte[][] BACKUP_PACK_ARRAY(byte[] buffer) {
         if (buffer == null) {
             return null;
         }
