@@ -62,11 +62,11 @@ public class DiagnosisActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        backTv = (TextView) findViewById(R.id.car_back);
-        title = (TextView) findViewById(R.id.car_title);    //标题
+        backTv = findViewById(R.id.car_back);
+        title = findViewById(R.id.car_title);    //标题
         title.setText(R.string.main_diagnosis);
 
-        mListView = (ListView) findViewById(R.id.list_Diagnosis);
+        mListView = findViewById(R.id.list_Diagnosis);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -80,7 +80,7 @@ public class DiagnosisActivity extends BaseActivity {
                      * 正常模式
                      */
                     File fileName = null;
-                    File files[] = file.listFiles();
+                    File[] files = file.listFiles();
                     if (files != null) {
                         for (int i = 0; i < files.length; i++) {
                             if (files[i].getName().toLowerCase().contains(".bin")) {
@@ -136,7 +136,7 @@ public class DiagnosisActivity extends BaseActivity {
                                     intent.putExtra(RunActivity.kStartFile, mProFile.getPath());
                                     startActivityForResult(intent, RequestCodeConstant.CODE_RUN_ACTIVITY);
 
-                                    ReportUntil.writeDataToReport(DiagnosisActivity.this,"\n\n\n");
+                                    ReportUntil.writeDataToReport(DiagnosisActivity.this, "\n\n\n");
                                     ReportUntil.writeDataToReport(DiagnosisActivity.this, ReportUntil.REPORT_FUNCTION + str[position]);
                                 }
 
@@ -149,7 +149,7 @@ public class DiagnosisActivity extends BaseActivity {
                     setTitlePath(file, FileUtil.DEBUG_ROOT);//设置标题栏
                 }
 
-                /**
+                /*
                  * 点击目录
                  */
                 if (file.isDirectory()) {
@@ -174,7 +174,7 @@ public class DiagnosisActivity extends BaseActivity {
             } else {
                 Toast.makeText(this, getString(R.string.device_not_connect), Toast.LENGTH_SHORT).show();
 
-                /**
+                /*
                  * 判断设备是否可用蓝牙,蓝牙开关打开
                  */
                 if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
@@ -243,7 +243,7 @@ public class DiagnosisActivity extends BaseActivity {
                                         @Override
                                         public void run() {
                                             tipDialog.dismiss();
-                                            if (loadDialog != null && loadDialog.isShowing()){
+                                            if (loadDialog != null && loadDialog.isShowing()) {
                                                 loadDialog.dismiss();
                                                 onCommit();
                                             }
@@ -300,8 +300,8 @@ public class DiagnosisActivity extends BaseActivity {
 
                 mFiles.clear();
                 str = getResources().getStringArray(R.array.menu_Debug);
-                for (int i = 0; i < str.length; i++) {
-                    File file = new File(str[i]);
+                for (String s : str) {
+                    File file = new File(s);
                     mFiles.add(file);
                 }
 
@@ -366,9 +366,9 @@ public class DiagnosisActivity extends BaseActivity {
             File[] files = programRoot.listFiles();
 
             if (files != null) {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].getName().toLowerCase().endsWith(".bin") || files[i].isDirectory()) {
-                        mFiles.add(files[i]);
+                for (File file : files) {
+                    if (file.getName().toLowerCase().endsWith(".bin") || file.isDirectory()) {
+                        mFiles.add(file);
                     }
                 }
             }
@@ -389,7 +389,7 @@ public class DiagnosisActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        /**
+        /*
          * 未达到 该车品牌程序根目录
          * 显示上一级
          */
@@ -414,7 +414,7 @@ public class DiagnosisActivity extends BaseActivity {
                                 refreshFiles();
                                 dialogInterface.dismiss();
 
-                                /**
+                                /*
                                  * 播放警告声音，直到点击确定按钮才停止
                                  */
                                 //SoundUtil.programExitSound(DiagnosisActivity.this);
@@ -465,7 +465,7 @@ public class DiagnosisActivity extends BaseActivity {
                                 refreshFiles();
                                 dialogInterface.dismiss();
 
-                                /**
+                                /*
                                  * 播放警告声音，直到点击确定按钮才停止
                                  */
                                 //SoundUtil.programExitSound(DiagnosisActivity.this);
@@ -519,9 +519,6 @@ public class DiagnosisActivity extends BaseActivity {
 
     /***
      * 点击item时 回退时 标题栏的名称
-     *
-     * @param file
-     * @param programRoot
      */
     private void setTitlePath(File file, String programRoot) {
         String fileStr = file.toString();

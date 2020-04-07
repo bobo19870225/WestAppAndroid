@@ -370,12 +370,12 @@ public class ConnectStatus {
      */
     public void refreshState() {
         if (mContentView != null) {
-            final TextView stateDeviceTV = (TextView) mContentView.findViewById(R.id.status_Device_TV);
-            final TextView stateUSBTV = (TextView) mContentView.findViewById(R.id.status_USB_TV);
-            final TextView stateBTTV = (TextView) mContentView.findViewById(R.id.status_BT_TV);
-            final ImageView imageDevice = (ImageView) mContentView.findViewById(R.id.state_Device_IMG);
-            final ImageView imageBT = (ImageView) mContentView.findViewById(R.id.state_BT_IMG);
-            final ImageView imageUSB = (ImageView) mContentView.findViewById(R.id.state_USB_IMG);
+            final TextView stateDeviceTV = mContentView.findViewById(R.id.status_Device_TV);
+            final TextView stateUSBTV = mContentView.findViewById(R.id.status_USB_TV);
+            final TextView stateBTTV = mContentView.findViewById(R.id.status_BT_TV);
+            final ImageView imageDevice = mContentView.findViewById(R.id.state_Device_IMG);
+            final ImageView imageBT = mContentView.findViewById(R.id.state_BT_IMG);
+            final ImageView imageUSB = mContentView.findViewById(R.id.state_USB_IMG);
             mContentView.post(new Runnable() {
                 @Override
                 public void run() {

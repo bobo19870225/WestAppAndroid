@@ -45,23 +45,23 @@ public class BluetoothSerialPort extends BaseSerialPort {
 
     private Handler mHandler = new Handler();
 
-    public BluetoothSerialPort(BluetoothDevice device){
+    public BluetoothSerialPort(BluetoothDevice device) {
         super();
         mDevice = device;
     }
 
-    public BluetoothDevice getDevice(){
+    public BluetoothDevice getDevice() {
         return mDevice;
     }
 
 
-    public void setState(int state){
-        if(state == STATE_CONNECTED || state == STATE_CONNECTING || state == STATE_LISTEN || state == STATE_NONE){
+    public void setState(int state) {
+        if (state == STATE_CONNECTED || state == STATE_CONNECTING || state == STATE_LISTEN || state == STATE_NONE) {
             mState = state;
         }
     }
 
-    public int getState(){
+    public int getState() {
         return mState;
     }
 
@@ -87,10 +87,10 @@ public class BluetoothSerialPort extends BaseSerialPort {
     /**
      * 连接失败
      */
-    public void connectionFailed(){
+    public void connectionFailed() {
         Log.i(TAG, "connectFailed");
         setState(STATE_NONE);
-        if(mConnectListener != null){
+        if (mConnectListener != null) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -104,12 +104,12 @@ public class BluetoothSerialPort extends BaseSerialPort {
     /**
      * 断开连接
      */
-    public void connectionLost(){
+    public void connectionLost() {
         Log.i(TAG, "connectLost");
         setState(STATE_NONE);
 
         close();
-        if(mConnectListener != null){
+        if (mConnectListener != null) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -123,13 +123,13 @@ public class BluetoothSerialPort extends BaseSerialPort {
     /**
      * 打开（连接）
      */
-    public void open(ConnectListener listener){
+    public void open(ConnectListener listener) {
         mConnectListener = listener;
 
-        if(isOpened()){
+        if (isOpened()) {
             return;
         }
-        if(mConnectedThread != null){
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
@@ -149,7 +149,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
                 isSuccess = true;
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Log.e("bluetooth",ex.toString());
+                Log.e("bluetooth", ex.toString());
             }
 
             if (mmSocket != null && isSuccess) {
@@ -157,19 +157,18 @@ public class BluetoothSerialPort extends BaseSerialPort {
                 return;
             }
             connectionFailed();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public ConnectListener getConnectListener(){
+    public ConnectListener getConnectListener() {
         return mConnectListener;
     }
 
 
     @Override
-    public void close(){
+    public void close() {
 
 /*
         if(mConnectedThread != null){
@@ -178,8 +177,8 @@ public class BluetoothSerialPort extends BaseSerialPort {
         }*/
     }
 
-    public void destroy(){
-        if(mConnectedThread != null){
+    public void destroy() {
+        if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
@@ -205,9 +204,9 @@ public class BluetoothSerialPort extends BaseSerialPort {
 
 
     @Override
-    public synchronized int write(byte[] data,int timeoutMillis){
+    public synchronized int write(byte[] data, int timeoutMillis) {
         Log.e("write", HexDump.dumpHexString(data));
-        if(mConnectedThread != null){
+        if (mConnectedThread != null) {
             mConnectedThread.write(data);
             return data.length;
         }
@@ -220,7 +219,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
         byte[] buffer = new byte[1];
         buffer[0] = b;
 
-        write(buffer,0);
+        write(buffer, 0);
         return false;
     }
 
@@ -228,57 +227,57 @@ public class BluetoothSerialPort extends BaseSerialPort {
     public boolean isOpened() {
         return mmSocket != null && mmSocket.isConnected();
         //mmSocket.isConnected();
-       // return mConnectedThread != null;
+        // return mConnectedThread != null;
     }
 
 
     @Override
-    public  boolean getCD(){
+    public boolean getCD() {
         return false;
     }
 
     @Override
-    public  boolean getCTS(){
+    public boolean getCTS() {
         return false;
     }
 
     @Override
-    public  boolean getDSR(){
+    public boolean getDSR() {
         return false;
     }
 
     @Override
-    public  boolean getDTR(){
+    public boolean getDTR() {
         return false;
     }
 
     @Override
-    public  void setDTR(boolean value){
+    public void setDTR(boolean value) {
 
     }
 
     @Override
-    public  boolean getRI(){
+    public boolean getRI() {
         return false;
     }
 
     @Override
-    public  boolean getRTS(){
+    public boolean getRTS() {
         return false;
     }
 
     @Override
-    public  void setRTS(boolean value){
+    public void setRTS(boolean value) {
 
     }
 
     @Override
-    public boolean purgeHwBuffers(boolean flushRX, boolean flushTX){
-        if(flushRX){
+    public boolean purgeHwBuffers(boolean flushRX, boolean flushTX) {
+        if (flushRX) {
             mReadIndex = 0;
             mReceiveIndex = 0;
         }
-        if(flushTX){
+        if (flushTX) {
             mWriteBuffer = new byte[DEFAULT_WRITE_BUFFER_SIZE];
         }
 
@@ -295,7 +294,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
 
     }
 
-    public interface ConnectListener{
+    public interface ConnectListener {
         void onSuccess(BluetoothSerialPort port);
         void onFailed(BluetoothSerialPort port);
         void onLose(BluetoothSerialPort port);

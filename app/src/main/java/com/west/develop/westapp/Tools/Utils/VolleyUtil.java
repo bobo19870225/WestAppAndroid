@@ -109,8 +109,8 @@ public class VolleyUtil {
 
 
     public interface IVolleyCallback {
-        abstract void getResponse(JSONObject jsonObject);
-        abstract void onErrorResponse(VolleyError error);
+        void getResponse(JSONObject jsonObject);
+        void onErrorResponse(VolleyError error);
     }
 
 

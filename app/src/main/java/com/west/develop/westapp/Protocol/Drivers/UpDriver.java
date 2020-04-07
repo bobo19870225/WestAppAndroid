@@ -43,7 +43,7 @@ public class UpDriver extends BaseDriver {
         return instance;
     }
 
-    public void initDebug(boolean isDebug){
+    public void initDebug(boolean isDebug) {
         pack.setDebugMode(isDebug);
     }
 
@@ -63,28 +63,27 @@ public class UpDriver extends BaseDriver {
      * @param memorySize
      * @return
      */
-    public boolean DownFileLoad(int _type,File file, byte[] buffer,int memorySize) {
+    public boolean DownFileLoad(int _type, File file, byte[] buffer, int memorySize) {
         long fileSize = 0;
-        if(_type == UPDATE_TYPE_APP) {
-            fileSize = file == null?0:file.length();
-        }
-        else if(_type == UPDATE_TYPE_FW){
-            fileSize = buffer==null?0:buffer.length;
+        if (_type == UPDATE_TYPE_APP) {
+            fileSize = file == null ? 0 : file.length();
+        } else if (_type == UPDATE_TYPE_FW) {
+            fileSize = buffer == null ? 0 : buffer.length;
         }
 
-        if(fileSize <= 0){
+        if (fileSize <= 0) {
             return false;
         }
 
         if (fileSize % (pack.getPackSize() + 1) != 0) {
             fileSize += ((pack.getPackSize() + 1) - (fileSize % (pack.getPackSize() + 1)));//MEGA64的每页数据需要256 BYTE，不足则要补充0xFF
         }
-        pack.setCtrlSize((int)fileSize); //文件大小
-        if (pack.getCtrlSize() > memorySize + 4096){
+        pack.setCtrlSize((int) fileSize); //文件大小
+        if (pack.getCtrlSize() > memorySize + 4096) {
             pack.setStateRe((byte) 0x40);   //文件太大
             return false;
         }
-        if (pack.getCtrlSize() == 0x20000){
+        if (pack.getCtrlSize() == 0x20000) {
             pack.setCtrlSize(pack.getCtrlSize() - 4096);
         }
         return true;
@@ -97,12 +96,12 @@ public class UpDriver extends BaseDriver {
      * @param buffer        固件程序缓存
      * @return
      */
-    public boolean DownloadCRC(int _type,File file,byte[] buffer){
+    public boolean DownloadCRC(int _type, File file, byte[] buffer) {
         byte[] CRC = new byte[2];
         boolean result = false;
 
-        if(_type == UPDATE_TYPE_APP) {
-            if(!pack.isDebugMode()) {
+        if (_type == UPDATE_TYPE_APP) {
+            if (!pack.isDebugMode()) {
                 String crcPath = file.getParent() + "/" + FileUtil.DOWNLOAD_CRC_NAME;
                 File CRCFile = new File(crcPath);
                 if (!CRCFile.exists()) {
@@ -116,35 +115,33 @@ public class UpDriver extends BaseDriver {
                 } catch (IOException ex) {
                     return result;
                 }
-            }
-            else{
+            } else {
 
             }
-        }
-        else if(_type == UPDATE_TYPE_FW){
-            if(buffer == null || buffer.length == 0){
+        } else if (_type == UPDATE_TYPE_FW) {
+            if (buffer == null || buffer.length == 0) {
                 return result;
             }
             int Index = 0;
             long sum = 0;
-            for(int i = 0;i <= buffer.length;i++){
+            for (int i = 0; i <= buffer.length; i++) {
                 sum += buffer[i];
-                if(buffer[i] < 0){
+                if (buffer[i] < 0) {
                     //byte 转 int 变成负数
                     sum += 256;
                 }
                 Index++;
-                if(Index >= buffer.length){
+                if (Index >= buffer.length) {
                     //不足一包的，在包后补 0xFF
-                    for(;i <= pack.getPackSize();i++){
+                    for (; i <= pack.getPackSize(); i++) {
                         sum += 0xFF;
                     }
                     break;
                 }
             }
 
-            CRC[0] = (byte)(sum >> 8);
-            CRC[1] = (byte)sum;
+            CRC[0] = (byte) (sum >> 8);
+            CRC[1] = (byte) sum;
         }
 
         pack.setDownloadCRC(CRC);
@@ -161,11 +158,11 @@ public class UpDriver extends BaseDriver {
      * @param memoryArea
      * @return
      */
-    public boolean DownLoadFun(int _type,File file, byte[] buffer,int memorySize, byte DeviceType, byte memoryArea) {
+    public boolean DownLoadFun(int _type, File file, byte[] buffer, int memorySize, byte DeviceType, byte memoryArea) {
         boolean result = false;
         pack.setDownloading(true);
 
-        if(_type != UPDATE_TYPE_APP && _type != UPDATE_TYPE_FW){
+        if (_type != UPDATE_TYPE_APP && _type != UPDATE_TYPE_FW) {
             pack.setDownloading(false);
             return result;
         }
@@ -174,8 +171,7 @@ public class UpDriver extends BaseDriver {
             case 1:
                 if (DeviceType == (byte) 0x35) {
                     pack.setPackSize(0xFF); //每次写 $FF + 1个字节
-                }
-                else if (DeviceType == (byte) 0x38) {
+                } else if (DeviceType == (byte) 0x38) {
                     pack.setPackSize(0xFF);
 //A168ToolSPICarEncry(UpData,0,UpdataSize - 1);
                 } else {
@@ -203,18 +199,18 @@ public class UpDriver extends BaseDriver {
         /**
          * 加载文件大小
          */
-        if (!DownFileLoad(_type,file,buffer, memorySize)) {
+        if (!DownFileLoad(_type, file, buffer, memorySize)) {
             pack.setDownloading(false);
-            ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.large_File));
+            ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.large_File));
             return result;
         }
 
         /**
          * 加载校验和
          */
-        if(!pack.isDebugMode() && !DownloadCRC(_type,file,buffer)){
+        if (!pack.isDebugMode() && !DownloadCRC(_type, file, buffer)) {
             pack.setDownloading(false);
-            ReportUntil.writeDataToReport(mContext,"Read DownloadTaskActivity CRC Failed");
+            ReportUntil.writeDataToReport(mContext, "Read DownloadTaskActivity CRC Failed");
             return result;
         }
 
@@ -223,7 +219,7 @@ public class UpDriver extends BaseDriver {
          */
         if (!COMFunAPI.getInstance().COMPortOpen(getPort(), pack.getCOMBT())) {
             pack.setDownloading(false);
-            ReportUntil.writeDataToReport(mContext,"port opened failed");
+            ReportUntil.writeDataToReport(mContext, "port opened failed");
             return result;
         }
         COMFunAPI.getInstance().COMDTRSet(getPort(), true);
@@ -237,12 +233,12 @@ public class UpDriver extends BaseDriver {
         /**
          * 升级固件程序需要跳转到BOOT
          */
-        if(_type == UPDATE_TYPE_FW){
-            if(!UserToBoot()){
+        if (_type == UPDATE_TYPE_FW) {
+            if (!UserToBoot()) {
                 pack.setDownloading(false);
                 COMFunAPI.getInstance().COMDTRSet(getPort(), false);
                 COMFunAPI.getInstance().COMPortClose(getPort());
-                ReportUntil.writeDataToReport(mContext,"Jump to BOOT failed");
+                ReportUntil.writeDataToReport(mContext, "Jump to BOOT failed");
             }
         }
 
@@ -254,40 +250,40 @@ public class UpDriver extends BaseDriver {
             pack.setDownloading(false);
             COMFunAPI.getInstance().COMDTRSet(getPort(), false);
             COMFunAPI.getInstance().COMPortClose(getPort());
-            ReportUntil.writeDataToReport(mContext,"CheckUNSN failed");
+            ReportUntil.writeDataToReport(mContext, "CheckUNSN failed");
             return result;
         }
 
         /**
          * 准备写入
          */
-        if (!ReadyProg(_type,DeviceType, memoryArea)) {
+        if (!ReadyProg(_type, DeviceType, memoryArea)) {
             //BootToUserMode();
             pack.setDownloading(false);
             pack.setStateRe((byte) 38);
             COMFunAPI.getInstance().COMDTRSet(getPort(), false);
             COMFunAPI.getInstance().COMPortClose(getPort());
-            ReportUntil.writeDataToReport(mContext,"ReadyPro failed");
+            ReportUntil.writeDataToReport(mContext, "ReadyPro failed");
             return result;
         }
 
         /**
          * 下载数据
          */
-        if (!WriteDataFun(_type,file,buffer)) {
+        if (!WriteDataFun(_type, file, buffer)) {
             //BootToUserMode();
             pack.setDownloading(false);
             pack.setStateRe((byte) 17);
             COMFunAPI.getInstance().COMDTRSet(getPort(), false);
             COMFunAPI.getInstance().COMPortClose(getPort());
-            ReportUntil.writeDataToReport(mContext,"WriteData failed");
+            ReportUntil.writeDataToReport(mContext, "WriteData failed");
             return result;
         }
 
         /**
          * 检验校验和
          */
-        if(!pack.isDebugMode() && !CheckDownloadCRC()){
+        if (!pack.isDebugMode() && !CheckDownloadCRC()) {
             pack.setDownloading(false);
             switch (DeviceType) {
                 case 0x34:
@@ -306,7 +302,7 @@ public class UpDriver extends BaseDriver {
 
             COMFunAPI.getInstance().COMDTRSet(getPort(), false);
             COMFunAPI.getInstance().COMPortClose(getPort());
-            ReportUntil.writeDataToReport(mContext,"BootToUser failed");
+            ReportUntil.writeDataToReport(mContext, "BootToUser failed");
             return result;
         }
 
@@ -316,8 +312,8 @@ public class UpDriver extends BaseDriver {
         return true;
     }
 
-    private void ReadCRC(){
-        for(int i = 1;i <= 9;i++){
+    private void ReadCRC() {
+        for (int i = 1; i <= 9; i++) {
             WUNPack[i] = 0;
         }
 
@@ -348,7 +344,7 @@ public class UpDriver extends BaseDriver {
                 if (RUNPack[0] == CMD_USER_TO_BOOT_BACK) {
                     COMFunAPI.getInstance().COMInCh(getPort(), RUNPack, 11); //读入11 Byte ,上面读了1 Byte
 
-                    byte COMCHKM,COMCHKS;
+                    byte COMCHKM, COMCHKS;
                     COMCHKM = (byte) ((byte) (RUNPack[0] << 1) | (byte) ((RUNPack[1] & 0xFF) >>> 7));  //再 异或 8A
                     COMCHKM = (byte) (COMCHKM ^ 0x8A);
                     COMCHKM = (byte) (((COMCHKM & 0xFF) >> 5) | (COMCHKM << 3));
@@ -361,11 +357,11 @@ public class UpDriver extends BaseDriver {
                 }
 
             }
-            if(size >= 1){
+            if (size >= 1) {
                 byte TempV = COMFunAPI.getInstance().COMInByte(getPort());
                 byte ResultData = CheckCOMCHK(TempV, WUNPack[9]);
 
-                if(ResultData == CHK_BACK_CMD_UNSURPPOT){
+                if (ResultData == CHK_BACK_CMD_UNSURPPOT) {
                     return true;
                 }
             }
@@ -380,11 +376,11 @@ public class UpDriver extends BaseDriver {
      * 检验下载校验值
      * @return
      */
-    public boolean CheckDownloadCRC(){
+    public boolean CheckDownloadCRC() {
         int tempCyc;
         byte TempV;
         boolean result = false;
-        for (tempCyc = 1;tempCyc <= 9;tempCyc++) {
+        for (tempCyc = 1; tempCyc <= 9; tempCyc++) {
             WUNPack[tempCyc] = 0;
         }
 
@@ -392,17 +388,17 @@ public class UpDriver extends BaseDriver {
 
         byte[] downloadCRC = pack.getDownloadCRC();
 
-        if(downloadCRC != null){
-            for(tempCyc = 1;tempCyc <= 2;tempCyc++){
+        if (downloadCRC != null) {
+            for (tempCyc = 1; tempCyc <= 2; tempCyc++) {
                 WUNPack[tempCyc] = downloadCRC[downloadCRC.length - tempCyc];
             }
         }
 
         PackCRC();
 
-        COMFunAPI.getInstance().COMOutCh(getPort(),WUNPack,12);
+        COMFunAPI.getInstance().COMOutCh(getPort(), WUNPack, 12);
         //本地调试没有校验，直接返回
-        if(!pack.isDebugMode()) {
+        if (!pack.isDebugMode()) {
             for (int i = 0; i < 3000; i++) {
                 int len = COMFunAPI.getInstance().COMInSize(getPort());
                 if (len > 0) {
@@ -422,8 +418,7 @@ public class UpDriver extends BaseDriver {
                 }
                 COMFunAPI.getInstance().Delayms(1);
             }
-        }
-        else{
+        } else {
             return true;
         }
 
@@ -439,7 +434,7 @@ public class UpDriver extends BaseDriver {
         byte TempV;
 
         DeviceBean deviceBean = Config.getInstance(mContext).getBondDevice();
-        if(!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).getBondDevice() == null){
+        if (!Config.getInstance(mContext).isSigned() && Config.getInstance(mContext).getBondDevice() == null) {
             return result;
         }
 
@@ -455,10 +450,10 @@ public class UpDriver extends BaseDriver {
         //SendPack(pack);
         PackCRC();
         SendPack(pack);
-       // COMFunAPI.getInstance().COMOutCh(getPort(),WUNPack,12);
+        // COMFunAPI.getInstance().COMOutCh(getPort(),WUNPack,12);
 
         COMFunAPI.getInstance().COMDTRSet(getPort(), true);         //DTR 状态
-        for(int i = 0;i < 3000;i++){
+        for (int i = 0; i < 3000; i++) {
             int len = COMFunAPI.getInstance().COMInSize(getPort());
             if (len > 0) {
                 TempV = COMFunAPI.getInstance().COMInByte(getPort());
@@ -490,13 +485,11 @@ public class UpDriver extends BaseDriver {
         WUNPack[0] = CMD_READY_PRO;
         long startAddress;
 
-        if(_type == UPDATE_TYPE_APP){
+        if (_type == UPDATE_TYPE_APP) {
             startAddress = START_ADDR_APPLICATION;
-        }
-        else if(_type == UPDATE_TYPE_FW){
+        } else if (_type == UPDATE_TYPE_FW) {
             startAddress = START_ADDR_SYSTEM;
-        }
-        else {
+        } else {
             return result;
         }
 
@@ -511,7 +504,7 @@ public class UpDriver extends BaseDriver {
         /**
          * 本地调试模式，下载的程序不需要解密
          */
-        if(pack.isDebugMode()){
+        if (pack.isDebugMode()) {
             //WUNPack[9] = BaseCMD.CMD_WRITE_TYPE_DEBUG;
         }
 
@@ -525,7 +518,7 @@ public class UpDriver extends BaseDriver {
                 byte TempV = COMFunAPI.getInstance().COMInByte(getPort());
                 byte ResultData = CheckCOMCHK(TempV, pack.getCOMCHK());
 
-                Log.e("ReadyPro","result-" + HexUtil.toHexString(ResultData));
+                Log.e("ReadyPro", "result-" + HexUtil.toHexString(ResultData));
                 if (ResultData == CHK_BACK_CMD_SUCCESS) {
                     return true;
                 }
@@ -542,7 +535,7 @@ public class UpDriver extends BaseDriver {
      * @param buffer
      * @return
      */
-    public boolean WriteDataFun(int _type,File file,byte[] buffer) {
+    public boolean WriteDataFun(int _type, File file, byte[] buffer) {
         int RCycA, OverTime;
         byte RStr;
 
@@ -554,32 +547,32 @@ public class UpDriver extends BaseDriver {
 
         long pageCount = pack.getCtrlSize() / (pack.getPackSize() + 1);
         //Log.e("WriteDataFun", "comchk: "+pack.getCOMCHK());
-        if (pack.getCOMCHK() == 7){
+        if (pack.getCOMCHK() == 7) {
             WUNPack[0] = CMD_DOWNLOAD_SHORT;
             for (pageIndex = 0; pageIndex < pageCount; pageIndex++) {
-                if(!pack.isDownloading()){
-                    Log.e("downloadCancel","cancel");
+                if (!pack.isDownloading()) {
+                    Log.e("downloadCancel", "cancel");
                     COMFunAPI.getInstance().Delayms(1);
                     //BootToUserMode();
                     return result;
                 }
-                byte[] filePack = PackFile(_type,file,buffer, pageIndex);
+                byte[] filePack = PackFile(_type, file, buffer, pageIndex);
                 for (int i = 0; i < (pack.getPackSize() + 1); i++) {
                     WUNPack[i + 2] = filePack[i];            //缓冲数据送入数据包
                 }
                 if (!SendLongPack(pack)) {      //发送包发送失败
                     pack.setStateRe((byte) 26);//通讯错误
-                    ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.communite_Error));
+                    ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.communite_Error));
                     return result;
                 }
                 int progress = (int) (((float) (pageIndex + 1) / pageCount) * 100);
                 DiagnosisAPI.getInstance().refreshDownloadProgress(progress);
             }
-        }else {
+        } else {
             WUNPack[0] = CMD_DOWNLOAD_WRITE;                     //动态字节数写入命令 09
             WUNPack[1] = (byte) pack.getPackSize();
             for (pageIndex = 0; pageIndex < pageCount; pageIndex++) {
-                if (!pack.isDownloading()){
+                if (!pack.isDownloading()) {
                     //Log.e("downloadCancel","cancel");
                     COMFunAPI.getInstance().Delayms(1);
                     //BootToUserMode();
@@ -588,11 +581,11 @@ public class UpDriver extends BaseDriver {
                 int progress = (int) (((float) (pageIndex + 1) / pageCount) * 100);
                 DiagnosisAPI.getInstance().refreshDownloadProgress(progress);
 
-                Log.e("packIndex",pageIndex + "");
-                byte[] filePack = PackFile(_type,file,buffer, pageIndex);
+                Log.e("packIndex", pageIndex + "");
+                byte[] filePack = PackFile(_type, file, buffer, pageIndex);
 
-                if(filePack == null){
-                    ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.readData_Error));
+                if (filePack == null) {
+                    ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.readData_Error));
                     return false;
                 }
 
@@ -600,18 +593,18 @@ public class UpDriver extends BaseDriver {
                     WUNPack[i + 2] = filePack[i];  //缓冲数据送入数据包
                 }
 
-                COMFunAPI.getInstance().COMBufClt(getPort(),COMFunAPI.FLUSH_RX);
+                COMFunAPI.getInstance().COMBufClt(getPort(), COMFunAPI.FLUSH_RX);
 
-                getPort().purgeHwBuffers(true,false);
+                getPort().purgeHwBuffers(true, false);
                 if (!SendLongPack(pack)) {    //发送包发送失败
                     pack.setStateRe((byte) 26);//通讯错误
                     //Log.e("WriteDataFun", "WriteDataFun: sendlongpack");
-                    ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.communite_Error));
+                    ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.communite_Error));
                     return result;
                 }
                 RCycA = 0;
                 for (int i = 0; i < 2000; i++) {
-                    if (!pack.isDownloading()){
+                    if (!pack.isDownloading()) {
                         Log.e("WriteDataFun", "WriteDataFun: Cancel");
                         //BootToUserMode();
                         return false;
@@ -625,22 +618,20 @@ public class UpDriver extends BaseDriver {
                             if (CheckCOMCHK(RStr, pack.getCOMCHK()) == CHK_BACK_WTITE_SUCCESS) {
                                 RCycA = 0;
                                 break;
-                            }
-                            else if(CheckCOMCHK(RStr,pack.getCOMCHK()) == CMD_DOWNLOAD_BACK_LARGE){
+                            } else if (CheckCOMCHK(RStr, pack.getCOMCHK()) == CMD_DOWNLOAD_BACK_LARGE) {
                                 Log.e("WriteDataFun", "WriteDataFun: Large file");
-                                ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.large_File));
+                                ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.large_File));
                                 return result;
-                            }
-                            else {
+                            } else {
                                 pack.setStateRe((byte) 17);
                                 Log.e("WriteDataFun", "WriteDataFun: setStateRe-17");
-                                ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.communite_Error) + " WriteDataFun: setStateRe-17");
+                                ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.communite_Error) + " WriteDataFun: setStateRe-17");
                                 return result;
                             }
                         } else {
                             pack.setStateRe((byte) 26);
                             Log.e("WriteDataFun", "WriteDataFun: sendlongpack-26---" + len);
-                            ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.communite_Error) + " WriteDataFun: sendlongpack-26");
+                            ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.communite_Error) + " WriteDataFun: sendlongpack-26");
                             return result;
                         }
                     } else {
@@ -652,7 +643,7 @@ public class UpDriver extends BaseDriver {
                 if (RCycA > OverTime) {
                     pack.setStateRe((byte) 25);
                     Log.e("WriteDataFun", "WriteDataFun: sendlongpack-25");
-                    ReportUntil.writeDataToReport(mContext,mContext.getString(R.string.communite_Error));
+                    ReportUntil.writeDataToReport(mContext, mContext.getString(R.string.communite_Error));
                     return result;
                 }
 
@@ -669,48 +660,46 @@ public class UpDriver extends BaseDriver {
      * @param isTwice
      * @return
      */
-    public boolean RUNFun(int funcIndex,boolean isTwice) {
+    public boolean RUNFun(int funcIndex, boolean isTwice) {
         boolean result = false;
 
-        if(!COMFunAPI.getInstance().COMPortOpen(getPort(),pack.getCOMBT())){
+        if (!COMFunAPI.getInstance().COMPortOpen(getPort(), pack.getCOMBT())) {
             return result;
         }
 
         WUNPack[0] = CMD_RUN_FUNC;
-        WUNPack[1] = (byte)funcIndex;
+        WUNPack[1] = (byte) funcIndex;
 
-        for (int i = 2;i < 10;i++){
+        for (int i = 2; i < 10; i++) {
             WUNPack[i] = 0;
         }
 
         PackCRC();
 
-        getPort().purgeHwBuffers(true,false);
+        getPort().purgeHwBuffers(true, false);
         SendPack(pack);
 
-        for(int i = 0;i < 3000;i++){
+        for (int i = 0; i < 3000; i++) {
             int len = COMFunAPI.getInstance().COMInSize(getPort());
-            if(len >= 1){
+            if (len >= 1) {
                 byte TempV = COMFunAPI.getInstance().COMInByte(getPort());
 
                 byte ResultData = CheckCOMCHK(TempV, pack.getCOMCHK());
                 Log.e("resultData", HexUtil.toHexString(ResultData));
-                if(ResultData == BaseCMD.CHK_BACK_CMD_SUCCESS){
+                if (ResultData == BaseCMD.CHK_BACK_CMD_SUCCESS) {
                     result = true;
                     COMFunAPI.getInstance().COMPortClose(getPort());
                     return result;
-                }
-                else if(ResultData == BaseCMD.CHK_BACK_COM_ERROR){
+                } else if (ResultData == BaseCMD.CHK_BACK_COM_ERROR) {
                     /**
                      * 失败后再次运行
                      */
-                    if(!isTwice){
+                    if (!isTwice) {
                         ExitFunc();
 
                         COMFunAPI.getInstance().Delayms(400);
-                        return RUNFun(funcIndex,true);
-                    }
-                    else {
+                        return RUNFun(funcIndex, true);
+                    } else {
                         COMFunAPI.getInstance().COMPortClose(getPort());
                         return result;
                     }
@@ -720,16 +709,16 @@ public class UpDriver extends BaseDriver {
         }
 
         COMFunAPI.getInstance().COMPortClose(getPort());
-       // COMFunAPI.getInstance().Delayms(5);
-        return  result;
+        // COMFunAPI.getInstance().Delayms(5);
+        return result;
     }
 
 
     /**
      * 强制退出运行
      */
-    public void ExitFunc(){
-        for(int i = 1;i <= 9;i++){
+    public void ExitFunc() {
+        for (int i = 1; i <= 9; i++) {
             WUNPack[i] = 0;
         }
 
@@ -748,9 +737,9 @@ public class UpDriver extends BaseDriver {
      * @param index
      * @return
      */
-    private byte[] PackFile(int _type,File file,byte[] buffer, int index) {
+    private byte[] PackFile(int _type, File file, byte[] buffer, int index) {
         byte[] pack = new byte[this.pack.getPackSize() + 1];
-        if(_type == UPDATE_TYPE_APP) {
+        if (_type == UPDATE_TYPE_APP) {
             try {
                 FileInputStream fis = new FileInputStream(file);
 
@@ -773,18 +762,16 @@ public class UpDriver extends BaseDriver {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
-        else if(_type == UPDATE_TYPE_FW){
+        } else if (_type == UPDATE_TYPE_FW) {
             int start = index * (this.pack.getPackSize() + 1);
 
-            if(start >= buffer.length){
-                return  null;
+            if (start >= buffer.length) {
+                return null;
             }
-            for(int i = 0;i < this.pack.getPackSize() + 1;i++){
-                if(start + i >= buffer.length){
-                    pack[i] = (byte)0xFF;
-                }
-                else{
+            for (int i = 0; i < this.pack.getPackSize() + 1; i++) {
+                if (start + i >= buffer.length) {
+                    pack[i] = (byte) 0xFF;
+                } else {
                     pack[i] = buffer[start + i];
                 }
 

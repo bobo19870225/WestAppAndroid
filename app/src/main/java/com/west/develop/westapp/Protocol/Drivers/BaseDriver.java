@@ -10,10 +10,10 @@ import com.west.develop.westapp.Tools.Utils.HexUtil;
 /**
  * Created by Develop0 on 2017/11/14.
  */
-public abstract class BaseDriver extends BaseCMD{
+public abstract class BaseDriver extends BaseCMD {
     public static final int DEFAULT_PACK_MAX_SIZE = 260;
 
-   // protected byte[] UNPack = new byte[DEFAULT_PACK_MAX_SIZE];
+    // protected byte[] UNPack = new byte[DEFAULT_PACK_MAX_SIZE];
 
     public static final int UPDATE_TYPE_APP = 0;
     public static final int UPDATE_TYPE_FW = 1;
@@ -26,10 +26,10 @@ public abstract class BaseDriver extends BaseCMD{
     /**
      * 固件程序下载地址
      */
-    public static final int START_ADDR_SYSTEM       = 0x00000;
+    public static final int START_ADDR_SYSTEM = 0x00000;
 
     protected byte[] RUNPack = new byte[DEFAULT_PACK_MAX_SIZE];
-    protected byte[] WUNPack =new byte[DEFAULT_PACK_MAX_SIZE];
+    protected byte[] WUNPack = new byte[DEFAULT_PACK_MAX_SIZE];
 
     protected TIOPack pack = new TIOPack();
 
@@ -38,11 +38,11 @@ public abstract class BaseDriver extends BaseCMD{
     BaseSerialPort mPort;
 
 
-    public BaseSerialPort getPort(){
+    public BaseSerialPort getPort() {
         return mPort;
     }
 
-    public void initPort(BaseSerialPort port){
+    public void initPort(BaseSerialPort port) {
         mPort = port;
     }
 
@@ -77,10 +77,7 @@ public abstract class BaseDriver extends BaseCMD{
      */
     public boolean SendLongPack(TIOPack pack) {
         LongPackCRC(pack.getPackSize());
-        if (COMFunAPI.getInstance().COMOutCh(getPort(), WUNPack, (pack.getPackSize() + 1) + 4)) {
-            return true;
-        }
-        return false;
+        return COMFunAPI.getInstance().COMOutCh(getPort(), WUNPack, (pack.getPackSize() + 1) + 4);
 
     }
 
@@ -103,10 +100,7 @@ public abstract class BaseDriver extends BaseCMD{
         }
         packCRCH = (byte) ((tempV & 0xFF) >> 8);//取高位
         packCRCL = (byte) ((tempV << 24) >> 24);//取低位
-        if (packCRCH == RUNPack[packlong + 3] && packCRCL == RUNPack[packlong + 4]) {
-            return true;
-        }
-        return false;
+        return packCRCH == RUNPack[packlong + 3] && packCRCL == RUNPack[packlong + 4];
     }
 
     /**
@@ -117,24 +111,21 @@ public abstract class BaseDriver extends BaseCMD{
      * @param packlong
      * @return
      */
-    public boolean CheckLongPackCRC(byte TempV,byte lenByt,int packlong) {
+    public boolean CheckLongPackCRC(byte TempV, byte lenByt, int packlong) {
         int length = lenByt & 0xFF;
         int sum = (TempV & 0xFF) + (lenByt & 0xFF);
 
         int tempCyc;
         for (tempCyc = 0; tempCyc < packlong; tempCyc++) {
-           // Log.e("tempV",RUNPack[tempCyc] + "");
+            // Log.e("tempV",RUNPack[tempCyc] + "");
             sum += RUNPack[tempCyc] & 0xFF;
         }
         byte packCRCH = (byte) (sum >> 8);//取高位
-        byte packCRCL = (byte) (sum );//取低位
+        byte packCRCL = (byte) (sum);//取低位
 
         Log.e("crcH", HexUtil.toHexString(packCRCH) + "");
         Log.e("crcH", HexUtil.toHexString(RUNPack[packlong]) + "");
-        if (packCRCH == RUNPack[packlong] && packCRCL == RUNPack[packlong + 1]) {
-            return true;
-        }
-        return false;
+        return packCRCH == RUNPack[packlong] && packCRCL == RUNPack[packlong + 1];
     }
 
 
@@ -148,15 +139,15 @@ public abstract class BaseDriver extends BaseCMD{
         boolean result = false;
         PackCRC(); //算CRC
 
-        result = COMFunAPI.getInstance().COMOutCh(getPort(),WUNPack,12);
+        result = COMFunAPI.getInstance().COMOutCh(getPort(), WUNPack, 12);
 
         return result;
     }
 
-    public boolean SendByte(){
+    public boolean SendByte() {
         boolean result = false;
 
-        result = COMFunAPI.getInstance().COMOutByte(getPort(),WUNPack[0]);
+        result = COMFunAPI.getInstance().COMOutByte(getPort(), WUNPack[0]);
         return result;
     }
 
@@ -173,23 +164,23 @@ public abstract class BaseDriver extends BaseCMD{
         byte pack11;
         for (tempCyc = 0; tempCyc <= 9; tempCyc++) {
             int packV = RUNPack[tempCyc];
-            if (packV < 0){
+            if (packV < 0) {
                 packV += 256;
             }
             tempV += packV;
         }
         pack10 = (byte) (tempV >> 8);  //去高位
-        pack11 = (byte)tempV; //取低位
+        pack11 = (byte) tempV; //取低位
         if (pack10 == RUNPack[10] && pack11 == RUNPack[11]) {
             result = true;
         }
-        Log.e("CheckPackCRC", "Checkresult: "+result);
+        Log.e("CheckPackCRC", "Checkresult: " + result);
         return result;
     }
 
     /**
      * 检查信息包中的CRC,正确是返回true
-     * @CMD     指令
+     * @CMD 指令
      * @return
      */
     public boolean CheckPackCRC(byte CMD) {
@@ -200,18 +191,18 @@ public abstract class BaseDriver extends BaseCMD{
         byte pack11;
         for (tempCyc = 0; tempCyc <= 8; tempCyc++) {
             int packV = RUNPack[tempCyc];
-            if (packV < 0){
+            if (packV < 0) {
                 packV += 256;
             }
             tempV += packV;
         }
         int cmd = CMD;
-        if(cmd < 0){
+        if (cmd < 0) {
             cmd += 256;
         }
         tempV += cmd;
         pack10 = (byte) (tempV >> 8);  //去高位
-        pack11 = (byte)tempV; //取低位
+        pack11 = (byte) tempV; //取低位
         if (pack10 == RUNPack[9] && pack11 == RUNPack[10]) {
             result = true;
         }
@@ -239,8 +230,8 @@ public abstract class BaseDriver extends BaseCMD{
         return (byte) (~rev - (chk & 0x0F));
     }
 
-    public byte RevertCOMCHK(byte res,byte chk){
-        return (byte)~res;
+    public byte RevertCOMCHK(byte res, byte chk) {
+        return (byte) ~res;
     }
 
     /**
@@ -263,10 +254,10 @@ public abstract class BaseDriver extends BaseCMD{
     }
 
 
-    public int CpyByte(byte[] from,int offset,byte[] dest){
-        int len = Math.min(from.length - offset,dest.length);
+    public int CpyByte(byte[] from, int offset, byte[] dest) {
+        int len = Math.min(from.length - offset, dest.length);
 
-        for(int i = 0;i < len;i++){
+        for (int i = 0; i < len; i++) {
             dest[i] = from[i + offset];
         }
 
@@ -274,8 +265,8 @@ public abstract class BaseDriver extends BaseCMD{
     }
 
 
-    public void SEND_TIMEOUT(){
-        COMFunAPI.getInstance().COMOutByte(getPort(),CMD_CLEAR_TIMEOUT);
+    public void SEND_TIMEOUT() {
+        COMFunAPI.getInstance().COMOutByte(getPort(), CMD_CLEAR_TIMEOUT);
     }
 
 }

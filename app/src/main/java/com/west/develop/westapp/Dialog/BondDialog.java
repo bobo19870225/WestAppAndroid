@@ -38,7 +38,7 @@ import java.util.List;
  * Created by Develop0 on 2018/1/9.
  */
 
-public class BondDialog extends Dialog implements View.OnClickListener{
+public class BondDialog extends Dialog implements View.OnClickListener {
     public static int STEP_NOTICE = 0;
     public static int STEP_READ = 1;
     public static int STEP_COMMIT = 2;
@@ -49,22 +49,22 @@ public class BondDialog extends Dialog implements View.OnClickListener{
 
     private static BondDialog instance;
 
-    public static BondDialog getInstance(){
+    public static BondDialog getInstance() {
         return instance;
     }
 
-    public static BondDialog newInstance(Context context){
-        if(instance == null){
+    public static BondDialog newInstance(Context context) {
+        if (instance == null) {
             instance = new BondDialog(context);
         }
-        instance.setStep(STEP_NOTICE,"");
+        instance.setStep(STEP_NOTICE, "");
 
         return instance;
     }
 
-    public static BondDialog newInstance(Context context, int step){
-        if(instance == null){
-            instance = new BondDialog(context,step);
+    public static BondDialog newInstance(Context context, int step) {
+        if (instance == null) {
+            instance = new BondDialog(context, step);
         }
         instance.setStep(step, "");
 
@@ -135,32 +135,32 @@ public class BondDialog extends Dialog implements View.OnClickListener{
         initView();
     }
 
-    private BondDialog(Context context){
+    private BondDialog(Context context) {
         super(context);
         mContext = context;
 
         setOnDismissListener(onDismissListener);
     }
 
-    private BondDialog(Context context, int step){
+    private BondDialog(Context context, int step) {
         this(context);
 
         setStep(step, "");
     }
 
 
-    private void initView(){
-        mPositiveBTN = (Button)findViewById(R.id.dialog_Positive_BTN);
-        mNegativeBTN = (Button)findViewById(R.id.dialog_Negative_BTN);
-        mMessageTV = (TextView)findViewById(R.id.dialog_Message_TV);
-        mTitleTV = (TextView) findViewById(R.id.dialog_title);
+    private void initView() {
+        mPositiveBTN = findViewById(R.id.dialog_Positive_BTN);
+        mNegativeBTN = findViewById(R.id.dialog_Negative_BTN);
+        mMessageTV = findViewById(R.id.dialog_Message_TV);
+        mTitleTV = findViewById(R.id.dialog_title);
         mTitleTV.setText(mContext.getResources().getString(R.string.device_bond_title));
 
         mPositiveBTN.setVisibility(View.VISIBLE);
 
-        if(mNegativeText != null || mNegativeClickListener != null){
+        if (mNegativeText != null || mNegativeClickListener != null) {
             mNegativeBTN.setVisibility(View.VISIBLE);
-            mNegativeBTN.setText(mNegativeText == null?mContext.getString(R.string.bond_cancle):mNegativeText);
+            mNegativeBTN.setText(mNegativeText == null ? mContext.getString(R.string.bond_cancle) : mNegativeText);
         }
 
         mPositiveBTN.setOnClickListener(this);
@@ -184,7 +184,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getString(R.string.Sure));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.VISIBLE);
                 mNegativeBTN.setText(mContext.getString(R.string.cancel));
             }
@@ -206,7 +206,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getString(R.string.cancel));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.GONE);
 
             }
@@ -214,8 +214,8 @@ public class BondDialog extends Dialog implements View.OnClickListener{
         if (step == STEP_COMMIT) {
             mStep_Index = STEP_COMMIT;
 
-            if(mMessageTV != null){
-                mMessageTV.setText(mContext.getString(R.string.sign_deviceSN) +" "+
+            if (mMessageTV != null) {
+                mMessageTV.setText(mContext.getString(R.string.sign_deviceSN) + " " +
                         deviceInfos[0] + " " +
                         mContext.getString(R.string.sign_deviceSN_Ask));
             }
@@ -225,15 +225,15 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setText(mContext.getResources().getString(R.string.sign_Commit_YES));
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.VISIBLE);
                 mNegativeBTN.setText(mContext.getResources().getString(R.string.sign_Commit_NO));
             }
         }
-        if (step == STEP_BOND){
+        if (step == STEP_BOND) {
             mStep_Index = STEP_BOND;
 
-            if(mMessageTV != null){
+            if (mMessageTV != null) {
                 mMessageTV.setText(mContext.getResources().getString(R.string.bonding_device));
             }
 
@@ -241,7 +241,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                 mPositiveBTN.setVisibility(View.GONE);
             }
 
-            if(mNegativeBTN != null){
+            if (mNegativeBTN != null) {
                 mNegativeBTN.setVisibility(View.GONE);
             }
         }
@@ -265,21 +265,21 @@ public class BondDialog extends Dialog implements View.OnClickListener{
             if (mMessageTV != null) {
                 mMessageTV.setText(s);
                 mMessageTV.setGravity(Gravity.CENTER);
-                if (errMessage != null || !isBond || mSignIndex >= mPorts.size()){ //最后一个接口的情况，还是没有绑定成功，还有是设备已经被绑定过的，就直接退出了
+                if (errMessage != null || !isBond || mSignIndex >= mPorts.size()) { //最后一个接口的情况，还是没有绑定成功，还有是设备已经被绑定过的，就直接退出了
                     if (mPositiveBTN != null) {
                         mPositiveBTN.setVisibility(View.VISIBLE);
                         mPositiveBTN.setText(mContext.getResources().getString(R.string.Sure));
                     }
-                    if (mNegativeBTN != null){
+                    if (mNegativeBTN != null) {
                         mNegativeBTN.setVisibility(View.GONE);
 
                     }
-                }else {
+                } else {
                     if (mPositiveBTN != null) {
                         mPositiveBTN.setVisibility(View.VISIBLE);
                         mPositiveBTN.setText(mContext.getResources().getString(R.string.bond_sure));
                     }
-                    if (mNegativeBTN != null){
+                    if (mNegativeBTN != null) {
                         mNegativeBTN.setVisibility(View.VISIBLE);
                         mNegativeBTN.setText(mContext.getResources().getString(R.string.bond_cancle));
                     }
@@ -291,11 +291,11 @@ public class BondDialog extends Dialog implements View.OnClickListener{
         return this;
     }
 
-    public void startSign(){
+    public void startSign() {
         startSign = true;
     }
 
-    public boolean waitSign(){
+    public boolean waitSign() {
         return startSign;
     }
 
@@ -303,10 +303,10 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      * 设置 确定按钮 点击事件
      * @param listener
      */
-    public BondDialog setNegativeClickListener(String text, OnClickListener listener){
+    public BondDialog setNegativeClickListener(String text, OnClickListener listener) {
         mNegativeText = text;
-        if(mNegativeBTN != null){
-            mNegativeBTN.setText(mNegativeText== null?mContext.getString(R.string.cancel):mNegativeText);
+        if (mNegativeBTN != null) {
+            mNegativeBTN.setText(mNegativeText == null ? mContext.getString(R.string.cancel) : mNegativeText);
         }
         setNegativeClickListener(listener);
         return this;
@@ -316,35 +316,34 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      * 设置 取消按钮 点击事件
      * @param listener
      */
-    public BondDialog setNegativeClickListener(OnClickListener listener){
+    public BondDialog setNegativeClickListener(OnClickListener listener) {
         mNegativeClickListener = listener;
-        if(mNegativeBTN != null){
+        if (mNegativeBTN != null) {
             mNegativeBTN.setVisibility(View.VISIBLE);
         }
         return this;
     }
 
-    public BondDialog setBondCallback(BondCallback callback){
+    public BondDialog setBondCallback(BondCallback callback) {
         mBondCallback = callback;
         return this;
     }
 
 
-    public BaseSerialPort getReadPort(){
+    public BaseSerialPort getReadPort() {
         return mReadPort;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.dialog_Negative_BTN:
                 if (mStep_Index == STEP_COMMIT) {
                     isBond = false;
                     setStep(STEP_READ, "");
                     mSignIndex++;
                     signIndex(mSignIndex);
-                }
-                else {
+                } else {
                     dismiss();
                 }
                 if (mReadPort instanceof UsbSerialPort) {
@@ -356,36 +355,35 @@ public class BondDialog extends Dialog implements View.OnClickListener{
 
                 break;
             case R.id.dialog_Positive_BTN:
-                if (errMessage != null || (!isBond && mStep_Index == STEP_BOND_FAILED ) || mStep_Index == STEP_READ) {
+                if (errMessage != null || (!isBond && mStep_Index == STEP_BOND_FAILED) || mStep_Index == STEP_READ) {
                     if (mNegativeClickListener != null) {
                         mNegativeClickListener.onClick(this);
                     }
                     break;
                 }
-                if (mStep_Index == STEP_BOND_SUCCESS){
+                if (mStep_Index == STEP_BOND_SUCCESS) {
                     dismiss();
                     break;
                 }
-                if(mStep_Index == STEP_BOND_FAILED){
+                if (mStep_Index == STEP_BOND_FAILED) {
                     mStep_Index = STEP_NOTICE;
                     mSignIndex = 0;
                     setStep(mStep_Index, "");
                     break;
-                }else if (mStep_Index == STEP_COMMIT){
+                } else if (mStep_Index == STEP_COMMIT) {
                     isBond = true;
                     bondDevice();
                     break;
-                }
-                else{
-                    if(mReadPort instanceof UsbSerialPort){
+                } else {
+                    if (mReadPort instanceof UsbSerialPort) {
                         mReadPort.close();
                     }
                    /* if(mReadPort instanceof BluetoothSerialPort){
                         ((BluetoothSerialPort)mReadPort).destroy();
                     }*/
                 }
-                if(mStep_Index == STEP_NOTICE){
-                    if(!BluetoothService.getInstance().isEnabled()){
+                if (mStep_Index == STEP_NOTICE) {
+                    if (!BluetoothService.getInstance().isEnabled()) {
                         BluetoothService.getInstance().enableBluetooth();
                     }
 
@@ -401,47 +399,46 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      * 启动绑定
      * @param port
      */
-    public void bondWithPort(BaseSerialPort port){
+    public void bondWithPort(BaseSerialPort port) {
 
-        if(port instanceof BluetoothSerialPort){
+        if (port instanceof BluetoothSerialPort) {
             boolean contain = false;
-            for(int i= 0;i < mPorts.size();i++){
-                if(mPorts.get(i)instanceof BluetoothSerialPort){
-                    BluetoothSerialPort bluetoothPort = (BluetoothSerialPort)port;
-                    BluetoothSerialPort bluetoothSerialPort = (BluetoothSerialPort)mPorts.get(i);
-                    if(bluetoothPort.getDevice().equals(bluetoothSerialPort.getDevice())){
+            for (int i = 0; i < mPorts.size(); i++) {
+                if (mPorts.get(i) instanceof BluetoothSerialPort) {
+                    BluetoothSerialPort bluetoothPort = (BluetoothSerialPort) port;
+                    BluetoothSerialPort bluetoothSerialPort = (BluetoothSerialPort) mPorts.get(i);
+                    if (bluetoothPort.getDevice().equals(bluetoothSerialPort.getDevice())) {
                         contain = true;
                         break;
                     }
                 }
             }
-            if(!contain){
+            if (!contain) {
                 mPorts.add(port);
             }
-        }
-        else if(!mPorts.contains(port)){
+        } else if (!mPorts.contains(port)) {
             mPorts.add(port);
         }
 
-        if(mPorts.size() > 0 && !isSigning){
+        if (mPorts.size() > 0 && !isSigning) {
             signIndex(mSignIndex);
         }
-        Log.e("sign","port");
+        Log.e("sign", "port");
     }
 
     /**
      * 绑定第 {@index} 个串口
      * @param index
      */
-    public void signIndex(int index){
+    public void signIndex(int index) {
         isSigning = true;
-       // setStep(STEP_READ);
-        if(index >= mPorts.size()){
-            bondFinish(false,mContext.getString(R.string.bond_failed));
+        // setStep(STEP_READ);
+        if (index >= mPorts.size()) {
+            bondFinish(false, mContext.getString(R.string.bond_failed));
             //mBondCallback.onFinish(false,this,mContext.getString(R.string.bond_failed));
-            if (!isBond){
+            if (!isBond) {
                 setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed_msg));
-            }else {
+            } else {
                 setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed_sn));
             }
 
@@ -459,14 +456,14 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      *          {@deviceInfos[0]}   DeviceSN
      *          {@deviceInfos[1]}   COMCHK
      */
-    public void onDeviceRead(BaseSerialPort readPort){
+    public void onDeviceRead(BaseSerialPort readPort) {
         stopRead();
-        if(deviceInfos == null){
-            if(mReadPort instanceof UsbSerialPort){
+        if (deviceInfos == null) {
+            if (mReadPort instanceof UsbSerialPort) {
                 mReadPort.close();
             }
-            if(mReadPort instanceof BluetoothSerialPort){
-                ((BluetoothSerialPort)mReadPort).destroy();
+            if (mReadPort instanceof BluetoothSerialPort) {
+                ((BluetoothSerialPort) mReadPort).destroy();
             }
             readSNCount++;
             if (readSNCount >= 3) {
@@ -487,7 +484,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      *          {@deviceInfos[0]}   DeviceSN
      *          {@deviceInfos[1]}   COMCHK
      */
-    private void commitDevice(){
+    private void commitDevice() {
         setStep(STEP_COMMIT, "");
     }
 
@@ -497,25 +494,25 @@ public class BondDialog extends Dialog implements View.OnClickListener{
      *          {@deviceInfos[0]}   DeviceSN
      *          {@deviceInfos[1]}   COMCHK
      */
-    private void bondDevice(){
+    private void bondDevice() {
         setStep(STEP_BOND, "");
-        String authCode = deviceInfos[1].replace(" ","");
+        String authCode = deviceInfos[1].replace(" ", "");
 
         String url = URLConstant.urlDeviceBond + "?" +
                 "deviceSN=" + deviceInfos[0] + "&" +
                 "id1=" + deviceInfos[1] + "&" +
                 "id2=" + deviceInfos[2] + "&" +
                 "targetID=" + Config.getAndroidID(getContext());
-        url = url.replaceAll(" ","");
+        url = url.replaceAll(" ", "");
         VolleyUtil.jsonPostRequest(url, getContext(), new VolleyUtil.IVolleyCallback() {
             @Override
             public void getResponse(JSONObject jsonObject) {
-                try{
+                try {
                     // mDialog.dismiss();
                     int code = jsonObject.getInt("code");
                     JSONObject data = jsonObject.getJSONObject("data");
                     //Success
-                    if(code == 0){
+                    if (code == 0) {
                         Gson gson = new Gson();
 
                         int setRegCount = data.getJSONObject("Device").getInt("setRegCount");
@@ -524,44 +521,41 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                         Config.getInstance(mContext).setSetRegCount(setRegCount);
                         Config.getInstance(mContext).setRegCount(RegCount);
 
-                        DeviceBean device = gson.fromJson(data.getJSONObject("Device").toString(),DeviceBean.class);
+                        DeviceBean device = gson.fromJson(data.getJSONObject("Device").toString(), DeviceBean.class);
                         Config.getInstance(getContext()).setBondDevice(device);
 
                         boolean configured = data.getBoolean("configured");
                         Config.getInstance(getContext()).setConfigured(configured);
 
 
-                        bondFinish(true,"");
+                        bondFinish(true, "");
                         //mBondCallback.onFinish(true,BondDialog.this, "");
                         setStep(STEP_BOND_SUCCESS, "");
-                    }
-                    else{
+                    } else {
                         errMessage = data.getString("error");
 
-                        bondFinish(false,errMessage);
+                        bondFinish(false, errMessage);
                         //mBondCallback.onFinish(false,BondDialog.this,errMessage);
                         setStep(STEP_BOND_FAILED, errMessage);
 
                     }
-                }
-                catch (JSONException ex){
-                    bondFinish(false,mContext.getString(R.string.bond_failed));
-                   // mBondCallback.onFinish(false,BondDialog.this,mContext.getString(R.string.bond_failed));
-                    setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed)+","+mContext.getString(R.string.bonding_getnetdate));
+                } catch (JSONException ex) {
+                    bondFinish(false, mContext.getString(R.string.bond_failed));
+                    // mBondCallback.onFinish(false,BondDialog.this,mContext.getString(R.string.bond_failed));
+                    setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed) + "," + mContext.getString(R.string.bonding_getnetdate));
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(error instanceof TimeoutError){
-                    bondFinish(false,mContext.getString(R.string.toast_netconn_moreTime));
+                if (error instanceof TimeoutError) {
+                    bondFinish(false, mContext.getString(R.string.toast_netconn_moreTime));
                     //mBondCallback.onFinish(false,BondDialog.this,mContext.getString(R.string.toast_netconn_moreTime));
-                    setStep(STEP_BOND_FAILED,mContext.getString(R.string.bond_failed)+","+mContext.getString(R.string.toast_netconn_moreTime));
-                }
-                else {
-                    bondFinish(false,mContext.getString(R.string.toast_inspect_netconn));
+                    setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed) + "," + mContext.getString(R.string.toast_netconn_moreTime));
+                } else {
+                    bondFinish(false, mContext.getString(R.string.toast_inspect_netconn));
                     //mBondCallback.onFinish(false,BondDialog.this,mContext.getString(R.string.toast_inspect_netconn));
-                    setStep(STEP_BOND_FAILED,mContext.getString(R.string.bond_failed)+","+mContext.getString(R.string.toast_inspect_netconn));
+                    setStep(STEP_BOND_FAILED, mContext.getString(R.string.bond_failed) + "," + mContext.getString(R.string.toast_inspect_netconn));
                 }
 
             }
@@ -569,9 +563,8 @@ public class BondDialog extends Dialog implements View.OnClickListener{
     }
 
 
-
-    private void bondFinish(boolean success, String message){
-        if(success){
+    private void bondFinish(boolean success, String message) {
+        if (success) {
             /**
              * 激活成功
              */
@@ -600,8 +593,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
                     }
                 }
             }
-        }
-        else{
+        } else {
             /**
              * 激活失败
              */
@@ -616,7 +608,7 @@ public class BondDialog extends Dialog implements View.OnClickListener{
             }
         }
 
-        if(mBondCallback != null) {
+        if (mBondCallback != null) {
             mBondCallback.onFinish(success, this, message);
         }
     }
@@ -624,9 +616,10 @@ public class BondDialog extends Dialog implements View.OnClickListener{
     /**
      * 从设备读取信息的线程
      */
-    private class ReadThread extends Thread{
+    private class ReadThread extends Thread {
         BaseSerialPort mPort;
-        public ReadThread(BaseSerialPort port){
+
+        public ReadThread(BaseSerialPort port) {
             mPort = port;
         }
 
@@ -652,9 +645,9 @@ public class BondDialog extends Dialog implements View.OnClickListener{
     }
 
 
-    public void stopRead(){
-        if(mReadThread != null){
-            mReadThread.interrupt();;
+    public void stopRead() {
+        if (mReadThread != null) {
+            mReadThread.interrupt();
             mReadThread = null;
         }
     }
@@ -663,8 +656,8 @@ public class BondDialog extends Dialog implements View.OnClickListener{
     /**
      * 销毁
      */
-    public static void clear(){
-        if(instance != null){
+    public static void clear() {
+        if (instance != null) {
             instance.stopRead();
         }
         instance = null;
@@ -674,11 +667,11 @@ public class BondDialog extends Dialog implements View.OnClickListener{
     /**
      * 点击事件监听接口
      */
-    public interface OnClickListener{
-        public abstract void onClick(Dialog dialog);
+    public interface OnClickListener {
+        void onClick(Dialog dialog);
     }
 
-    public interface BondCallback{
+    public interface BondCallback {
         void onFinish(boolean success, BondDialog dialog, String message);
     }
 }

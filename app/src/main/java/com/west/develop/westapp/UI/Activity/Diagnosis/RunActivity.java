@@ -46,7 +46,7 @@ import java.io.File;
  * Created by Develop0 on 2017/11/14.
  */
 public class RunActivity extends BaseActivity implements
-        View.OnClickListener,View.OnTouchListener{
+        View.OnClickListener, View.OnTouchListener {
     public static final String kStartFile = "startFile";
     public static final String kProgType = "progType";
     public static final String kFuncName = "functionName";
@@ -61,7 +61,7 @@ public class RunActivity extends BaseActivity implements
     /**
      * 本地调试模式
      */
-    public static final int TYPE_DEBUG   = 2;
+    public static final int TYPE_DEBUG = 2;
 
     private int mProType = TYPE_RELEASE;
     public String mProgName;
@@ -91,14 +91,14 @@ public class RunActivity extends BaseActivity implements
         params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
 
         window.setAttributes(params);
-        window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         registerReceiver();
-        if(RunningDriver.getInstance() != null) {
+        if (RunningDriver.getInstance() != null) {
             RunningDriver.initContext(this);
             RunningDriver.getInstance().startListen(listenCallback);
         }
-        return this.getLayoutInflater().inflate(R.layout.activity_run,null);
+        return this.getLayoutInflater().inflate(R.layout.activity_run, null);
     }
 
     @Override
@@ -106,15 +106,15 @@ public class RunActivity extends BaseActivity implements
         mVideoController = new VideoController(this);
 
 
-        backTv = (TextView) findViewById(R.id.car_back);
-        title = (TextView) findViewById(R.id.car_title);    //标题
+        backTv = findViewById(R.id.car_back);
+        title = findViewById(R.id.car_title);    //标题
 
         title.setText(R.string.main_diagnosis);
 
         backTv.setOnClickListener(this);
 
-        mScreenView = (ScreenView)findViewById(R.id.screenView);
-        mContentLayout = (RelativeLayout)findViewById(R.id.contentLayout);
+        mScreenView = findViewById(R.id.screenView);
+        mContentLayout = findViewById(R.id.contentLayout);
         onConfigurationChanged(this.getResources().getConfiguration());
 
     }
@@ -133,46 +133,46 @@ public class RunActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        String proFile  = getIntent().getStringExtra(kStartFile);
+        String proFile = getIntent().getStringExtra(kStartFile);
         String funcName = getIntent().getStringExtra(kFuncName);
-        mProType = getIntent().getIntExtra(kProgType,TYPE_RELEASE);
+        mProType = getIntent().getIntExtra(kProgType, TYPE_RELEASE);
 
         mProFile = new File(proFile);
 
-        if(mProType == TYPE_RELEASE){
+        if (mProType == TYPE_RELEASE) {
             String progRoot = FileUtil.getProgramRoot(this);
 
             File parentFile = mProFile.getParentFile();
             String proName = parentFile.getPath();//parentFile.getParentFile().getPath() + "/" + parentFile.getName().substring(5);
 
             int end = proName.length();
-            if(proName.lastIndexOf("_v") > 0){
+            if (proName.lastIndexOf("_v") > 0) {
                 end = proName.lastIndexOf("_v");
             }
-            mProgName  = proName.substring(proName.indexOf(progRoot) + progRoot.length(),end);
+            mProgName = proName.substring(proName.indexOf(progRoot) + progRoot.length(), end);
 
             //检查视频和帮助文档是否存在
             mVideoController.initData();
         }
-        if(mProType == TYPE_DEBUG){
+        if (mProType == TYPE_DEBUG) {
             findViewById(R.id.onlineVideo).setVisibility(View.GONE);
             findViewById(R.id.helpfile).setVisibility(View.GONE);
-            mProgName  = mProFile.getName();
-            Log.e("initData", "initData: "+mProFile.getPath() );
-            Log.e("initData", "initData: "+mProgName );
-            if(mProgName.toLowerCase().indexOf(".bin") > 0){
-                mProgName = mProgName.substring(0,mProgName.toLowerCase().lastIndexOf(".bin"));
+            mProgName = mProFile.getName();
+            Log.e("initData", "initData: " + mProFile.getPath());
+            Log.e("initData", "initData: " + mProgName);
+            if (mProgName.toLowerCase().indexOf(".bin") > 0) {
+                mProgName = mProgName.substring(0, mProgName.toLowerCase().lastIndexOf(".bin"));
             }
         }
         title.setText(mProgName + "/" + funcName);
 
     }
 
-    private void showTimeOut(){
-        if(waitThread != null) {
+    private void showTimeOut() {
+        if (waitThread != null) {
             waitThread.Stop();
         }
-        if(timeDialog == null){
+        if (timeDialog == null) {
 
             timeDialog = new TipDialog.Builder(this)
                     .setTitle(getString(R.string.tip_title))
@@ -181,7 +181,7 @@ public class RunActivity extends BaseActivity implements
                         @Override
                         public void onClick(Dialog dialogInterface, int index, String label) {
                             dialogInterface.dismiss();
-                            if(waitThread != null){
+                            if (waitThread != null) {
                                 waitThread.Stop();
                                 waitThread = null;
                             }
@@ -205,7 +205,7 @@ public class RunActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.car_back:
                 onBackPressed();
                 break;
@@ -218,12 +218,12 @@ public class RunActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        if(RunningDriver.getInstance() != null) {
+        if (RunningDriver.getInstance() != null) {
             RunningDriver.getInstance().stopListen();
             COMFunAPI.getInstance().COMPortClose(RunningDriver.getInstance().getPort());
         }
         unRegisterReceiver();
-        if(waitThread != null){
+        if (waitThread != null) {
             waitThread.Stop();
         }
         waitThread = null;
@@ -238,8 +238,8 @@ public class RunActivity extends BaseActivity implements
     /**
      * 清除屏幕
      */
-    public void Clr_Scr(){
-        ReportUntil.writeDataToReport(RunActivity.this,"CLR_SCR");  //记录信息
+    public void Clr_Scr() {
+        ReportUntil.writeDataToReport(RunActivity.this, "CLR_SCR");  //记录信息
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -258,13 +258,13 @@ public class RunActivity extends BaseActivity implements
      * @param STR_LEN
      * @param STRING
      */
-    public void GENERAL_CN_EN_STR(final int PAG,final int COL, final int NOT_DISP, final int STR_LEN, final String STRING){
-        ReportUntil.writeDataToReport(RunActivity.this,"GENERAL_CN_EN_STR(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING );  //记录信息
+    public void GENERAL_CN_EN_STR(final int PAG, final int COL, final int NOT_DISP, final int STR_LEN, final String STRING) {
+        ReportUntil.writeDataToReport(RunActivity.this, "GENERAL_CN_EN_STR(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING);  //记录信息
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.e("GENERAL_CN_EN-STRING", "run: "+STRING );
-                mScreenView.GENERAL_CN_EN_STR(PAG,COL,NOT_DISP,STR_LEN,STRING);
+                Log.e("GENERAL_CN_EN-STRING", "run: " + STRING);
+                mScreenView.GENERAL_CN_EN_STR(PAG, COL, NOT_DISP, STR_LEN, STRING);
             }
         };
 
@@ -279,12 +279,12 @@ public class RunActivity extends BaseActivity implements
      * @param STR_LEN
      * @param STRING
      */
-    public void SPECIFY_CN_EN_STR(final int PAG, final int COL, final int NOT_DISP, final int STR_LEN, final String STRING){
-        ReportUntil.writeDataToReport(RunActivity.this,"SPECIFY_CN_EN_STR(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING );  //记录信息
+    public void SPECIFY_CN_EN_STR(final int PAG, final int COL, final int NOT_DISP, final int STR_LEN, final String STRING) {
+        ReportUntil.writeDataToReport(RunActivity.this, "SPECIFY_CN_EN_STR(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING);  //记录信息
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.e("SPECIFY_CN_EN-STRING", "run: "+STRING );
+                Log.e("SPECIFY_CN_EN-STRING", "run: " + STRING);
                 mScreenView.SPECIFY_CN_EN_STR(PAG, COL, NOT_DISP, STR_LEN, STRING);
             }
         };
@@ -300,13 +300,13 @@ public class RunActivity extends BaseActivity implements
      * @param STR_LEN
      * @param STRING
      */
-    public void ASCII_6x8(final int PAG, final int COL, final int NOT_DISP, final int STR_LEN, final String STRING){
-        ReportUntil.writeDataToReport(RunActivity.this,"ASCII_6x8(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING );  //记录信息
+    public void ASCII_6x8(final int PAG, final int COL, final int NOT_DISP, final int STR_LEN, final String STRING) {
+        ReportUntil.writeDataToReport(RunActivity.this, "ASCII_6x8(PAG:" + PAG + ",COL:" + COL + ",NOT_DISP:" + (NOT_DISP == 0) + ",LEN:" + STRING.length() + ")\n   " + STRING);  //记录信息
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.e("ASCII_6x8-STRING", "run: "+STRING );
+                Log.e("ASCII_6x8-STRING", "run: " + STRING);
                 mScreenView.ASCII_6x8(PAG, COL, NOT_DISP, STR_LEN, STRING);
             }
         };
@@ -314,8 +314,8 @@ public class RunActivity extends BaseActivity implements
     }
 
 
-    public void PROGRESS(final int progress){
-        ReportUntil.writeDataToReport(RunActivity.this,"PROGRESS(" + progress +")");  //记录信息
+    public void PROGRESS(final int progress) {
+        ReportUntil.writeDataToReport(RunActivity.this, "PROGRESS(" + progress + ")");  //记录信息
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -331,9 +331,9 @@ public class RunActivity extends BaseActivity implements
      * 启动文件上传接收
      * @param length
      */
-    public void UPFILE_NEW(final int length){
-        ReportUntil.writeDataToReport(RunActivity.this,"BACKUP_START: " + length + "Bytes");  //记录信息
-        if(BackupDialog.getInstance() != null){
+    public void UPFILE_NEW(final int length) {
+        ReportUntil.writeDataToReport(RunActivity.this, "BACKUP_START: " + length + "Bytes");  //记录信息
+        if (BackupDialog.getInstance() != null) {
             BackupDialog.destory();
         }
         mHandler.post(new Runnable() {
@@ -348,11 +348,11 @@ public class RunActivity extends BaseActivity implements
                     }
 
                     @Override
-                    public void onFinish(int resultCode,byte[] buffer) {
-                        ReportUntil.writeDataToReport(RunActivity.this,"BACKUP_FINISH: " + resultCode);  //记录信息
+                    public void onFinish(int resultCode, byte[] buffer) {
+                        ReportUntil.writeDataToReport(RunActivity.this, "BACKUP_FINISH: " + resultCode);  //记录信息
                         BackupDialog.destory();
                         RunningDriver.getInstance().countTimeout(false);
-                        if(resultCode != BackupDialog.RESULT_OK){
+                        if (resultCode != BackupDialog.RESULT_OK) {
                             RunningDriver.getInstance().UPFile_Cancel();
                         }
 
@@ -360,7 +360,7 @@ public class RunActivity extends BaseActivity implements
 
                     @Override
                     public void onCancel() {
-                        ReportUntil.writeDataToReport(RunActivity.this,"BACKUP_CANCEL: ");  //记录信息
+                        ReportUntil.writeDataToReport(RunActivity.this, "BACKUP_CANCEL: ");  //记录信息
                         HolderThread.Stop();
                         RunningDriver.getInstance().UPFile_Cancel();
                         BackupDialog.destory();
@@ -372,17 +372,17 @@ public class RunActivity extends BaseActivity implements
 
     }
 
-    public boolean UPFILE_INDATA(final byte[] buffer){
-        if(BackupDialog.getInstance() == null){
-            ReportUntil.writeDataToReport(RunActivity.this,"BACKUP_REC: NO TASK");  //记录信息
+    public boolean UPFILE_INDATA(final byte[] buffer) {
+        if (BackupDialog.getInstance() == null) {
+            ReportUntil.writeDataToReport(RunActivity.this, "BACKUP_REC: NO TASK");  //记录信息
             return false;
         }
         RunningDriver.getInstance().reCountTimeout();
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                ReportUntil.writeDataToReport(RunActivity.this,"BACKUP_REC: " + (buffer==null?0:buffer.length - 4));  //记录信息
-                if(BackupDialog.getInstance() != null){
+                ReportUntil.writeDataToReport(RunActivity.this, "BACKUP_REC: " + (buffer == null ? 0 : buffer.length - 4));  //记录信息
+                if (BackupDialog.getInstance() != null) {
                     BackupDialog.getInstance().inUPData(buffer);
                 }
 
@@ -393,11 +393,11 @@ public class RunActivity extends BaseActivity implements
     }
 
 
-    public void UPFILE_FINISH(){
+    public void UPFILE_FINISH() {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if(BackupDialog.getInstance() != null){
+                if (BackupDialog.getInstance() != null) {
                     BackupDialog.getInstance().finishUP();
 
                 }
@@ -410,22 +410,21 @@ public class RunActivity extends BaseActivity implements
     /**
      * 加载备份文件
      */
-    public void LOAD_BACKUP_NEW(final byte flagByte){
+    public void LOAD_BACKUP_NEW(final byte flagByte) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                ReportUntil.writeDataToReport(RunActivity.this,"BROWSE_BACKUP: " + HexUtil.toHexString(flagByte));  //记录信息
-                if(flagByte == (byte)0x01 && FileDialog.getInstance() != null){
+                ReportUntil.writeDataToReport(RunActivity.this, "BROWSE_BACKUP: " + HexUtil.toHexString(flagByte));  //记录信息
+                if (flagByte == (byte) 0x01 && FileDialog.getInstance() != null) {
                     FileDialog.getInstance().onSelect();
-                }
-                else{
-                    FileDialog.newDownInstance(RunActivity.this,flagByte, new FileDialog.OnLoadFileListener() {
+                } else {
+                    FileDialog.newDownInstance(RunActivity.this, flagByte, new FileDialog.OnLoadFileListener() {
                         @Override
                         public void onSelect(File file) {
-                            if(file != null && file.exists()) {
+                            if (file != null && file.exists()) {
                                 // FileDialog.getInstance().dismiss();
                                 HolderThread.Stop();
-                                RunningDriver.getInstance().BACKUP_Lengh(file.length(),flagByte);
+                                RunningDriver.getInstance().BACKUP_Lengh(file.length(), flagByte);
                             }
                         }
 
@@ -443,22 +442,21 @@ public class RunActivity extends BaseActivity implements
 
                         @Override
                         public void onRead(byte[] buffer) {
-                            ReportUntil.writeDataToReport(RunActivity.this,"BROWSE_BACKUP_RETURN:" + (buffer == null?0:buffer.length));  //记录信息
+                            ReportUntil.writeDataToReport(RunActivity.this, "BROWSE_BACKUP_RETURN:" + (buffer == null ? 0 : buffer.length));  //记录信息
                             boolean success = RunningDriver.getInstance().BACKUP_WRITE(buffer);
-                            if(FileDialog.getInstance() != null) {
+                            if (FileDialog.getInstance() != null) {
                                 //FileDialog.getInstance().BACKUP_FINISH(success);
                             }
                         }
                     });
-                    if(flagByte == (byte)0x01){
+                    if (flagByte == (byte) 0x01) {
                         FileDialog.getInstance().onSelect();
-                    }
-                    else if(flagByte == (byte)0x02) {
+                    } else if (flagByte == (byte) 0x02) {
                         FileDialog.getInstance().show();
                     }
                     HolderThread.newInstance(RunningDriver.getInstance()).start();
                 }
-               // FileDialog.getInstance().show();
+                // FileDialog.getInstance().show();
 
 
             }
@@ -469,15 +467,14 @@ public class RunActivity extends BaseActivity implements
      * 长度匹配与否
      * @param match
      */
-    public void LENGH_MATCH(final boolean match){
+    public void LENGH_MATCH(final boolean match) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if(!match){
-                    Toast.makeText(RunActivity.this,getString(R.string.file_DOWN_mismatch),Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if(FileDialog.getInstance() != null){
+                if (!match) {
+                    Toast.makeText(RunActivity.this, getString(R.string.file_DOWN_mismatch), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (FileDialog.getInstance() != null) {
                         FileDialog.getInstance().LENGH_MATCH();
                     }
                 }
@@ -487,14 +484,14 @@ public class RunActivity extends BaseActivity implements
 
     }
 
-    public void LOAD_BACKUP_START(final int addr, final int length){
-        ReportUntil.writeDataToReport(RunActivity.this,"BROWSE_BACKUP_ADDR:" + HexUtil.toHexString(addr));  //记录信息
-        ReportUntil.writeDataToReport(RunActivity.this,"BROWSE_BACKUP_LENGTH:" + length);  //记录信息
+    public void LOAD_BACKUP_START(final int addr, final int length) {
+        ReportUntil.writeDataToReport(RunActivity.this, "BROWSE_BACKUP_ADDR:" + HexUtil.toHexString(addr));  //记录信息
+        ReportUntil.writeDataToReport(RunActivity.this, "BROWSE_BACKUP_LENGTH:" + length);  //记录信息
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                if(FileDialog.getInstance() != null){
-                    FileDialog.getInstance().BACKUP_START(addr,length);
+                if (FileDialog.getInstance() != null) {
+                    FileDialog.getInstance().BACKUP_START(addr, length);
                 }
             }
         });
@@ -508,33 +505,33 @@ public class RunActivity extends BaseActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 int keyValue = -1;
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.dialog_No_BTN:
                         keyValue = KeyEvent.KEY_ESC;
-                        ReportUntil.writeDataToReport(RunActivity.this,"NO" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "NO" + getString(R.string.click_down));
                         break;
                     case R.id.dialog_Yes_BTN:
                         keyValue = KeyEvent.KEY_ENTER;
-                        ReportUntil.writeDataToReport(RunActivity.this,"YES" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "YES" + getString(R.string.click_down));
                         break;
                     case R.id.dialog_Left_BTN:
                         keyValue = KeyEvent.KEY_LEFT;
-                        ReportUntil.writeDataToReport(RunActivity.this,"Left" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "Left" + getString(R.string.click_down));
                         break;
                     case R.id.dialog_Down_BTN:
                         keyValue = KeyEvent.KEY_DOWN;
-                        ReportUntil.writeDataToReport(RunActivity.this,"Down" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "Down" + getString(R.string.click_down));
                         break;
                     case R.id.dialog_Up_BTN:
                         keyValue = KeyEvent.KEY_UP;
-                        ReportUntil.writeDataToReport(RunActivity.this,"Up" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "Up" + getString(R.string.click_down));
                         break;
                     case R.id.dialog_Right_BTN:
                         keyValue = KeyEvent.KEY_RIGHT;
-                        ReportUntil.writeDataToReport(RunActivity.this,"Right" + getString(R.string.click_down));
+                        ReportUntil.writeDataToReport(RunActivity.this, "Right" + getString(R.string.click_down));
                         break;
                     default:
                         break;
@@ -575,21 +572,21 @@ public class RunActivity extends BaseActivity implements
     /**
      * 强制退出
      */
-    private void forceExit(){
+    private void forceExit() {
         /**
          * 记录文件已  _1.txt  结尾，自动上传记录
          */
         String fileName = UpDriver.getInstance(RunActivity.this).getPack().getFileName();
-        if(fileName.toLowerCase().endsWith("_1.txt")) {
+        if (fileName.toLowerCase().endsWith("_1.txt")) {
             ReportUntil.postReport(RunActivity.this, fileName);
         }
         /**
          * 播放警告声音，直到点击确定按钮才停止
          */
-       // SoundUtil.programExitSound(RunActivity.this);
+        // SoundUtil.programExitSound(RunActivity.this);
         SoundUtil.deviceExitTipSound(RunActivity.this);
         new TipDialog.Builder(RunActivity.this).setTitle(getResources().getString(R.string.tip_title))
-                .setImageDrawable(getResources().getDrawable(R.mipmap.user_warning,null))
+                .setImageDrawable(getResources().getDrawable(R.mipmap.user_warning, null))
                 .setMessage(getString(R.string.pullout_device))
                 .setPositiveClickListener(getResources().getString(R.string.Sure), new TipDialog.OnClickListener() {
                     @Override
@@ -599,8 +596,8 @@ public class RunActivity extends BaseActivity implements
 
                         RunningDriver.getInstance().ExitFunc();
                         Intent intent = new Intent();
-                        intent.putExtra(kForceExit,true);
-                        setResult(RESULT_EXIT,intent);
+                        intent.putExtra(kForceExit, true);
+                        setResult(RESULT_EXIT, intent);
                         finish();
 
                     }
@@ -613,7 +610,7 @@ public class RunActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if(backDialog == null){
+        if (backDialog == null) {
             backDialog = new TipDialog.Builder(this)
                     .setTitle(getString(R.string.tip_title))
                     .setMessage(getString(R.string.Run_back_Tip))
@@ -628,33 +625,31 @@ public class RunActivity extends BaseActivity implements
                     .setNegativeClickListener(getString(R.string.back_commit_Btn), new TipDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialogInterface, int index, String label) {
-                           forceExit();
+                            forceExit();
                             dialogInterface.dismiss();
                             backDialog = null;
                         }
                     })
                     .build();
             backDialog.show();
-        }
-        else{
+        } else {
             backDialog.dismiss();
             backDialog = null;
         }
     }
 
 
-
-    private void registerReceiver(){
+    private void registerReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(UsbService.ACTION_USB_CHECK_SUCCESS);
         intentFilter.addAction(UsbService.ACTION_USB_DISCONNECTED);
         intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_CHECK_SUCCESS);
         intentFilter.addAction(BluetoothService.ACTION_BLUETOOTH_DISCONNECTED);
-        registerReceiver(mReceiver,intentFilter);
+        registerReceiver(mReceiver, intentFilter);
 
     }
 
-    private void unRegisterReceiver(){
+    private void unRegisterReceiver() {
         unregisterReceiver(mReceiver);
         mVideoController.unRegisterReceiver();
     }
@@ -666,7 +661,7 @@ public class RunActivity extends BaseActivity implements
     private ListenCallback listenCallback = new ListenCallback() {
         @Override
         public void onStart() {
-            Log.e("listener","start");
+            Log.e("listener", "start");
             if (mDisconnectDialog != null && !mDisconnectDialog.isShowing()) {
                 mDisconnectDialog.dismiss();
                 mDisconnectDialog = null;
@@ -688,8 +683,8 @@ public class RunActivity extends BaseActivity implements
 
         @Override
         public void onSuccess() {
-            Log.e("listener","success");
-            if(waitThread != null){
+            Log.e("listener", "success");
+            if (waitThread != null) {
                 waitThread.Stop();
                 waitThread = null;
             }
@@ -697,7 +692,7 @@ public class RunActivity extends BaseActivity implements
             waitThread.start();
 
 
-            if(mDisconnectDialog != null){
+            if (mDisconnectDialog != null) {
                 mDisconnectDialog.dismiss();
                 mDisconnectDialog = null;
             }
@@ -705,20 +700,19 @@ public class RunActivity extends BaseActivity implements
     };
 
 
-
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            switch (action){
+            switch (action) {
                 case UsbService.ACTION_USB_DISCONNECTED:
-                    if(UpDriver.getInstance(RunActivity.this).getPort() instanceof UsbSerialPort) {
+                    if (UpDriver.getInstance(RunActivity.this).getPort() instanceof UsbSerialPort) {
                         UpDriver.getInstance(RunActivity.this).initPort(null);
                     }
-                    if(RunningDriver.getInstance() != null) {
+                    if (RunningDriver.getInstance() != null) {
                         RunningDriver.initContext(RunActivity.this);
-                        if(RunningDriver.getInstance().getPort() instanceof UsbSerialPort){
+                        if (RunningDriver.getInstance().getPort() instanceof UsbSerialPort) {
                             RunningDriver.getInstance().initPort(null);
                             waitThread.Stop();
                             waitThread = null;
@@ -729,12 +723,12 @@ public class RunActivity extends BaseActivity implements
                     break;
 
                 case BluetoothService.ACTION_BLUETOOTH_DISCONNECTED:
-                    if(UpDriver.getInstance(RunActivity.this).getPort() instanceof BluetoothSerialPort) {
+                    if (UpDriver.getInstance(RunActivity.this).getPort() instanceof BluetoothSerialPort) {
                         UpDriver.getInstance(RunActivity.this).initPort(null);
                     }
-                    if(RunningDriver.getInstance() != null) {
+                    if (RunningDriver.getInstance() != null) {
                         RunningDriver.initContext(RunActivity.this);
-                        if(RunningDriver.getInstance().getPort() instanceof BluetoothSerialPort) {
+                        if (RunningDriver.getInstance().getPort() instanceof BluetoothSerialPort) {
                             RunningDriver.getInstance().initPort(null);
                             waitThread.Stop();
                             waitThread = null;
@@ -749,22 +743,20 @@ public class RunActivity extends BaseActivity implements
     };
 
 
-    public void redoCount(){
-        if(timeDialog != null){
+    public void redoCount() {
+        if (timeDialog != null) {
             timeDialog.dismiss();
             timeDialog = null;
         }
-        if(waitThread != null){
+        if (waitThread != null) {
             waitThread.clearCount();
         }
     }
 
 
-
-
     private WaitThread waitThread = new WaitThread();
 
-    private class WaitThread extends  Thread{
+    private class WaitThread extends Thread {
         static final int time = 3 * 60;
         int count = 0;
         boolean stop = false;
@@ -784,24 +776,23 @@ public class RunActivity extends BaseActivity implements
                         }
                     });
                 }
-            }
-            catch(InterruptedException ex){
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }
 
-        void clearCount(){
+        void clearCount() {
             count = 0;
         }
 
-        void Stop(){
+        void Stop() {
             stop = true;
         }
     }
 
-    public interface ListenCallback{
-        public void onStart();
-        public void onSuccess();
+    public interface ListenCallback {
+        void onStart();
+        void onSuccess();
     }
 
 

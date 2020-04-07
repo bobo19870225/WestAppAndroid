@@ -40,15 +40,15 @@ public class DownloadTaskActivity extends BaseActivity {
 
     @Override
     protected View getContentView() {
-        return this.getLayoutInflater().inflate(R.layout.activity_download,null);
+        return this.getLayoutInflater().inflate(R.layout.activity_download, null);
     }
 
     @Override
     protected void initView() {
-        back_tv = (TextView) findViewById(R.id.car_back);
+        back_tv = findViewById(R.id.car_back);
         back_tv.setVisibility(View.VISIBLE);
-        title = (TextView) findViewById(R.id.car_title);
-        downloadBTN = (CheckBox) findViewById(R.id.title_Download_BTN);
+        title = findViewById(R.id.car_title);
+        downloadBTN = findViewById(R.id.title_Download_BTN);
         downloadBTN.setVisibility(View.VISIBLE);
 
 
@@ -66,13 +66,13 @@ public class DownloadTaskActivity extends BaseActivity {
 
 
                 }//如果所有的下载列表都是暂停状态时，将按钮的文字改为开始下载程序
-                else if (!downloadBTN.isChecked() && !DownloadManager.getInstance(DownloadTaskActivity.this).isStarted()){
+                else if (!downloadBTN.isChecked() && !DownloadManager.getInstance(DownloadTaskActivity.this).isStarted()) {
                     downloadBTN.setText(R.string.startdownload);
 
                 }//按钮开始下载程序，文字变为全部暂停
-                else if (downloadBTN.isChecked()){
+                else if (downloadBTN.isChecked()) {
                     //当isItemStart为真时，表示点击了列表中的其中一项，只需改变按钮的状态文字
-                    if (adapter.isItemStart()){
+                    if (adapter.isItemStart()) {
                         downloadBTN.setText(R.string.stopdownload);
                         adapter.setItemStart(false);
                     }
@@ -85,7 +85,7 @@ public class DownloadTaskActivity extends BaseActivity {
             }
         });
 
-        listView = (ListView) findViewById(R.id.onekeylistview);
+        listView = findViewById(R.id.onekeylistview);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class DownloadTaskActivity extends BaseActivity {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 new TipDialog.Builder(DownloadTaskActivity.this)
                         .setTitle(getResources().getString(R.string.report_delete))
-                        .setMessage(mDownloadTheads.get(position).getFileName()+", "+getResources().getString(R.string.tip_message_delete))
+                        .setMessage(mDownloadTheads.get(position).getFileName() + ", " + getResources().getString(R.string.tip_message_delete))
                         .setPositiveClickListener(getResources().getString(R.string.tip_yes), new TipDialog.OnClickListener() {
                             @Override
                             public void onClick(Dialog dialogInterface, int index, String label) {
@@ -228,9 +228,9 @@ public class DownloadTaskActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         //如果一进来就是下载状态，就直接启动到下载模式
-        if(DownloadManager.getInstance(this).isStarted()){
+        if (DownloadManager.getInstance(this).isStarted()) {
             downloadBTN.setText(R.string.stopdownload);
-        }else {
+        } else {
             downloadBTN.setText(R.string.startdownload);
         }
 

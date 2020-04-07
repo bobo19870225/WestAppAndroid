@@ -67,49 +67,49 @@ public class DescActivity extends BaseActivity {
 
     @Override
     protected View getContentView() {
-        return this.getLayoutInflater().inflate(R.layout.activity_desc,null);
+        return this.getLayoutInflater().inflate(R.layout.activity_desc, null);
     }
 
     @Override
     protected void initView() {
-        backTv = (TextView) findViewById(R.id.car_back);
-        title = (TextView) findViewById(R.id.car_title);    //标题
-        help = (TextView) findViewById(R.id.diagnosis_help);
+        backTv = findViewById(R.id.car_back);
+        title = findViewById(R.id.car_title);    //标题
+        help = findViewById(R.id.diagnosis_help);
         help.setVisibility(View.GONE);
         title.setText(R.string.main_diagnosis);
-        helpRelativeLayout = (RelativeLayout) findViewById(R.id.help_RL);
-        helpContent = (TextView) findViewById(R.id.help_content);
-        commit_TV = (TextView) findViewById(R.id.commit_TV);
+        helpRelativeLayout = findViewById(R.id.help_RL);
+        helpContent = findViewById(R.id.help_content);
+        commit_TV = findViewById(R.id.commit_TV);
 
-        mFuncListView = (ListView)findViewById(R.id.Function_LV);
+        mFuncListView = findViewById(R.id.Function_LV);
         line = findViewById(R.id.listline);
 
     }
 
     @Override
     protected void initData() {
-        String proFile  = getIntent().getStringExtra(RunActivity.kStartFile);
+        String proFile = getIntent().getStringExtra(RunActivity.kStartFile);
 
-        mProType = getIntent().getIntExtra(RunActivity.kProgType,RunActivity.TYPE_RELEASE);
+        mProType = getIntent().getIntExtra(RunActivity.kProgType, RunActivity.TYPE_RELEASE);
 
         mProFile = new File(proFile);
 
-        if(mProType == RunActivity.TYPE_RELEASE){
+        if (mProType == RunActivity.TYPE_RELEASE) {
             String progRoot = FileUtil.getProgramRoot(this);
 
             String parent = mProFile.getParent();
             String fileName = mProFile.getName();
-            String proName = parent + "/" + fileName.substring(4,fileName.toLowerCase().lastIndexOf(".bin"));
+            String proName = parent + "/" + fileName.substring(4, fileName.toLowerCase().lastIndexOf(".bin"));
             /*if (Config.getInstance(this).getDevice() != null) {
 
             }else {
                 proName = mProFile.getParent();
             }*/
 
-            mProgName  = proName.substring(proName.indexOf(progRoot)+ progRoot.length());
+            mProgName = proName.substring(proName.indexOf(progRoot) + progRoot.length());
 
-            if(mProgName.endsWith("_1")){
-                mProgName = mProgName.substring(0,mProgName.length() - 2);
+            if (mProgName.endsWith("_1")) {
+                mProgName = mProgName.substring(0, mProgName.length() - 2);
             }
 
             File programRoot = mProFile.getParentFile();
@@ -130,10 +130,10 @@ public class DescActivity extends BaseActivity {
             helpContent.setText(str);
 
         }
-        if(mProType == RunActivity.TYPE_DEBUG){
-            mProgName  = mProFile.getName();
-            if(mProgName.toLowerCase().indexOf(".bin") > 0){
-                mProgName = mProgName.substring(0,mProgName.toLowerCase().lastIndexOf(".bin"));
+        if (mProType == RunActivity.TYPE_DEBUG) {
+            mProgName = mProFile.getName();
+            if (mProgName.toLowerCase().indexOf(".bin") > 0) {
+                mProgName = mProgName.substring(0, mProgName.toLowerCase().lastIndexOf(".bin"));
             }
         }
         //mProgName = mProgName.replace("/",">");
@@ -149,14 +149,14 @@ public class DescActivity extends BaseActivity {
          * 设备已激活，或未完成配置，或者未激活但剩余试用次数
          */
         if (Config.getInstance(this).isSigned() || !Config.getInstance(this).isConfigured() ||
-                ( Config.getInstance(this).getBondDevice() != null && Config.getInstance(this).getRegCount() < Config.TRYCOUNT)
-                ) {
+                (Config.getInstance(this).getBondDevice() != null && Config.getInstance(this).getRegCount() < Config.TRYCOUNT)
+        ) {
             if (ConnectStatus.getInstance(this).getUSBPort() != null) {
                 DiagnosisAPI.init(this);
-                DiagnosisAPI.getInstance().startWithFile(mProFile,false);
+                DiagnosisAPI.getInstance().startWithFile(mProFile, false);
             } else if (ConnectStatus.getInstance(this).getBTPort() != null) {
                 DiagnosisAPI.init(this);
-                DiagnosisAPI.getInstance().startWithFile(mProFile,false);
+                DiagnosisAPI.getInstance().startWithFile(mProFile, false);
             } else {
                 //Toast.makeText(this, getString(R.string.device_not_connect), Toast.LENGTH_SHORT).show();
                 if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
@@ -188,21 +188,21 @@ public class DescActivity extends BaseActivity {
         /**
          * 试用次数已经用完
          */
-        else{
-            if(!Config.getInstance(DescActivity.this).isConfigured()){
-                Toast.makeText(DescActivity.this,getString(R.string.notSold),Toast.LENGTH_SHORT).show();
+        else {
+            if (!Config.getInstance(DescActivity.this).isConfigured()) {
+                Toast.makeText(DescActivity.this, getString(R.string.notSold), Toast.LENGTH_SHORT).show();
                 return;
             }
             TipDialog dialog = new TipDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.tip_title))
                     .setMessage(getString(R.string.device_not_sign))
-                    .setNegativeClickListener(getString(R.string.tip_no),new TipDialog.OnClickListener() {
+                    .setNegativeClickListener(getString(R.string.tip_no), new TipDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialogInterface, int index, String label) {
                             dialogInterface.dismiss();
                         }
                     })
-                    .setPositiveClickListener(getString(R.string.tip_yes),new TipDialog.OnClickListener() {
+                    .setPositiveClickListener(getString(R.string.tip_yes), new TipDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialogInterface, int index, String label) {
                             dialogInterface.dismiss();
@@ -266,13 +266,13 @@ public class DescActivity extends BaseActivity {
     }
     LoadDialog loadDialog;
     TipDialog tipDialog;
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_DIALOG_SHOW:
-                    if(tipDialog != null){
+                    if (tipDialog != null) {
                         tipDialog.dismiss();
                         tipDialog = null;
                     }
@@ -282,7 +282,7 @@ public class DescActivity extends BaseActivity {
                                 @Override
                                 public void onClick(final Dialog dialogInterface, int index, String label) {
                                     dialogInterface.dismiss();
-                                     loadDialog = new LoadDialog.Builder(DescActivity.this)
+                                    loadDialog = new LoadDialog.Builder(DescActivity.this)
                                             .setTitle(getResources().getString(R.string.tip_blutooth_conn))
                                             .setCancel(getResources().getString(R.string.cancel), new LoadDialog.OnClickListener() {
                                                 @Override
@@ -329,12 +329,12 @@ public class DescActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RequestCodeConstant.CODE_SIGN_ACTIVITY && resultCode == RESULT_OK){
+        if (requestCode == RequestCodeConstant.CODE_SIGN_ACTIVITY && resultCode == RESULT_OK) {
             onCommit();
         }
 
-        if(requestCode == RequestCodeConstant.CODE_RUN_ACTIVITY){
-            if(resultCode == RunActivity.RESULT_EXIT) {
+        if (requestCode == RequestCodeConstant.CODE_RUN_ACTIVITY) {
+            if (resultCode == RunActivity.RESULT_EXIT) {
                 mFuncListView.setVisibility(View.GONE);
                 helpRelativeLayout.setVisibility(View.VISIBLE);
             }
@@ -371,43 +371,38 @@ public class DescActivity extends BaseActivity {
 
                 mFuncListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view,final int position, long id) {
+                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
 
-                                if(UpDriver.getInstance(DescActivity.this).getPort() != null){
-                                    if(UpDriver.getInstance(DescActivity.this).getPort() instanceof UsbSerialPort){
-                                        if(ConnectStatus.getInstance(DescActivity.this).getUSBPort() == null){
+                                if (UpDriver.getInstance(DescActivity.this).getPort() != null) {
+                                    if (UpDriver.getInstance(DescActivity.this).getPort() instanceof UsbSerialPort) {
+                                        if (ConnectStatus.getInstance(DescActivity.this).getUSBPort() == null) {
                                             UpDriver.getInstance(DescActivity.this).initPort(null);
                                             return;
-                                        }
-                                        else if(ConnectStatus.getInstance(DescActivity.this).getUSBPort() != UpDriver.getInstance(DescActivity.this).getPort()){
+                                        } else if (ConnectStatus.getInstance(DescActivity.this).getUSBPort() != UpDriver.getInstance(DescActivity.this).getPort()) {
                                             UpDriver.getInstance(DescActivity.this).initPort(ConnectStatus.getInstance(DescActivity.this).getUSBPort());
                                         }
                                     }
-                                    if(UpDriver.getInstance(DescActivity.this).getPort() instanceof BluetoothSerialPort){
-                                        if(ConnectStatus.getInstance(DescActivity.this).getBTPort() == null){
+                                    if (UpDriver.getInstance(DescActivity.this).getPort() instanceof BluetoothSerialPort) {
+                                        if (ConnectStatus.getInstance(DescActivity.this).getBTPort() == null) {
                                             UpDriver.getInstance(DescActivity.this).initPort(null);
                                             return;
-                                        }
-                                        else if(ConnectStatus.getInstance(DescActivity.this).getBTPort() != UpDriver.getInstance(DescActivity.this).getPort()){
+                                        } else if (ConnectStatus.getInstance(DescActivity.this).getBTPort() != UpDriver.getInstance(DescActivity.this).getPort()) {
                                             UpDriver.getInstance(DescActivity.this).initPort(ConnectStatus.getInstance(DescActivity.this).getBTPort());
                                         }
                                     }
-                                }
-                                else{
-                                    if(ConnectStatus.getInstance(DescActivity.this).getUSBPort() != null){
+                                } else {
+                                    if (ConnectStatus.getInstance(DescActivity.this).getUSBPort() != null) {
                                         UpDriver.getInstance(DescActivity.this).initPort(ConnectStatus.getInstance(DescActivity.this).getUSBPort());
-                                    }
-                                    else if(ConnectStatus.getInstance(DescActivity.this).getBTPort() != null){
+                                    } else if (ConnectStatus.getInstance(DescActivity.this).getBTPort() != null) {
                                         UpDriver.getInstance(DescActivity.this).initPort(ConnectStatus.getInstance(DescActivity.this).getBTPort());
-                                    }
-                                    else{
+                                    } else {
                                         mHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(DescActivity.this,getString(R.string.device_not_connect),Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(DescActivity.this, getString(R.string.device_not_connect), Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
@@ -429,7 +424,7 @@ public class DescActivity extends BaseActivity {
                                         }
                                     });
 
-                                    ReportUntil.writeDataToReport(DescActivity.this,"\n\n\n");
+                                    ReportUntil.writeDataToReport(DescActivity.this, "\n\n\n");
                                     ReportUntil.writeDataToReport(DescActivity.this, ReportUntil.REPORT_FUNCTION + mFuncs[position]);
                                 }
 
@@ -454,16 +449,16 @@ public class DescActivity extends BaseActivity {
         commit_TV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("regCount",Config.getInstance(DescActivity.this).getRegCount() + "");
-                if (!Config.getInstance(DescActivity.this).isSigned()  &&
-                        (Config.getInstance(DescActivity.this).getBondDevice()!= null &&
-                        Config.getInstance(DescActivity.this).getRegCount() < Config.TRYCOUNT) &&                         //还剩余试用次数
+                Log.e("regCount", Config.getInstance(DescActivity.this).getRegCount() + "");
+                if (!Config.getInstance(DescActivity.this).isSigned() &&
+                        (Config.getInstance(DescActivity.this).getBondDevice() != null &&
+                                Config.getInstance(DescActivity.this).getRegCount() < Config.TRYCOUNT) &&                         //还剩余试用次数
                         Config.getInstance(DescActivity.this).getRegCount() >= Config.TRYCOUNT - Config.TIP_TRYCOUNT)   //还剩 {@Config.TIP_TRYCOUNT} 次时提示
                 {
                     int tryCount = Config.getInstance(DescActivity.this).getRegCount();
                     TipDialog dialog = new TipDialog.Builder(DescActivity.this)
                             .setTitle(getResources().getString(R.string.tip_title))
-                            .setMessage(getResources().getString(R.string.tryUseTip) + " "+ tryCount + " " +
+                            .setMessage(getResources().getString(R.string.tryUseTip) + " " + tryCount + " " +
                                     getResources().getString(R.string.tryUseTip2) + " " + (Config.TRYCOUNT - tryCount) + " " +
                                     getResources().getString(R.string.tryUseTip_msg))
                             .setPositiveClickListener(getResources().getString(R.string.Sure), new TipDialog.OnClickListener() {
@@ -483,19 +478,18 @@ public class DescActivity extends BaseActivity {
                             .build();
                     dialog.show();
 
-                }
-                else {
+                } else {
                     int count = Config.getInstance(DescActivity.this).getRegCount();
                     /**
                      * 使用次数到达提示次数
                      */
-                    if(Config.getInstance(DescActivity.this).getRegCount() < Config.getInstance(DescActivity.this).getSetRegCount() &&
+                    if (Config.getInstance(DescActivity.this).getRegCount() < Config.getInstance(DescActivity.this).getSetRegCount() &&
                             Config.getInstance(DescActivity.this).getRegCount() >= Config.getInstance(DescActivity.this).getSetRegCount() - 20
-                            ){
+                    ) {
 
                         TipDialog dialog = new TipDialog.Builder(DescActivity.this)
                                 .setTitle(getResources().getString(R.string.tip_title))
-                                .setMessage(getResources().getString(R.string.regCount_1) + " "+ count + " " +
+                                .setMessage(getResources().getString(R.string.regCount_1) + " " + count + " " +
                                         getResources().getString(R.string.regCount_2) + " " +
                                         (Config.getInstance(DescActivity.this).getSetRegCount() - count) + " " +
                                         getResources().getString(R.string.regCount_msg))
@@ -515,14 +509,13 @@ public class DescActivity extends BaseActivity {
                                 .requestSystemAlert(true)
                                 .build();
                         dialog.show();
-                    }
-                    else if(Config.getInstance(DescActivity.this).getRegCount() >= Config.getInstance(DescActivity.this).getSetRegCount()){
+                    } else if (Config.getInstance(DescActivity.this).getRegCount() >= Config.getInstance(DescActivity.this).getSetRegCount()) {
                         /**
                          * 使用次数已经使用完
                          */
                         TipDialog dialog = new TipDialog.Builder(DescActivity.this)
                                 .setTitle(getResources().getString(R.string.tip_title))
-                                .setMessage(getResources().getString(R.string.regCount_1) + " "+ count + " " +
+                                .setMessage(getResources().getString(R.string.regCount_1) + " " + count + " " +
                                         getResources().getString(R.string.regCount_Over))
                                 .setPositiveClickListener(getResources().getString(R.string.Sure), new TipDialog.OnClickListener() {
                                     @Override
@@ -533,8 +526,7 @@ public class DescActivity extends BaseActivity {
                                 .requestSystemAlert(true)
                                 .build();
                         dialog.show();
-                    }
-                    else{
+                    } else {
                         onCommit();
                     }
 
@@ -551,7 +543,7 @@ public class DescActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(mFuncListView.getVisibility() == View.VISIBLE){
+        if (mFuncListView.getVisibility() == View.VISIBLE) {
             new TipDialog.Builder(this).setTitle(getResources().getString(R.string.tip_title))
                     .setMessage(getString(R.string.exit_diagnosis))
                     .setPositiveClickListener(getResources().getString(R.string.tip_yes), new TipDialog.OnClickListener() {
@@ -561,14 +553,14 @@ public class DescActivity extends BaseActivity {
                             helpRelativeLayout.setVisibility(View.VISIBLE);
                             dialogInterface.dismiss();
 
-                            if(ReportFragment.getInstance() != null){
+                            if (ReportFragment.getInstance() != null) {
                                 ReportFragment.getInstance().refresh();
                             }
                             /**
                              * 记录文件已  _1.txt 结尾，自动上传记录
                              */
                             String fileName = UpDriver.getInstance(DescActivity.this).getPack().getFileName();
-                            if(fileName.toLowerCase().endsWith("_1.txt")) {
+                            if (fileName.toLowerCase().endsWith("_1.txt")) {
                                 ReportUntil.postReport(DescActivity.this, fileName);
                             }
                             /**
@@ -578,7 +570,7 @@ public class DescActivity extends BaseActivity {
                             SoundUtil.deviceExitTipSound(DescActivity.this);
 
                             new TipDialog.Builder(DescActivity.this).setTitle(getResources().getString(R.string.tip_title))
-                                    .setImageDrawable(getResources().getDrawable(R.mipmap.user_warning,null))
+                                    .setImageDrawable(getResources().getDrawable(R.mipmap.user_warning, null))
                                     .setMessage(getString(R.string.pullout_device))
                                     .setPositiveClickListener(getResources().getString(R.string.Sure), new TipDialog.OnClickListener() {
                                         @Override
@@ -609,14 +601,14 @@ public class DescActivity extends BaseActivity {
     }
 
 
-    private void registerConnect(){
+    private void registerConnect() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbService.ACTION_USB_CHECK_SUCCESS);
         filter.addAction(BluetoothService.ACTION_BLUETOOTH_CHECK_SUCCESS);
-        registerReceiver(mReceiver,filter);
+        registerReceiver(mReceiver, filter);
     }
 
-    private void unregisterConnect(){
+    private void unregisterConnect() {
         unregisterReceiver(mReceiver);
     }
 
@@ -626,23 +618,23 @@ public class DescActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            switch (action){
+            switch (action) {
 
                 case UsbService.ACTION_USB_CHECK_SUCCESS:
-                    if(tipDialog != null) {
+                    if (tipDialog != null) {
                         tipDialog.dismiss();
                     }
-                    if (loadDialog != null && loadDialog.isShowing()){
+                    if (loadDialog != null && loadDialog.isShowing()) {
                         loadDialog.dismiss();
                         onCommit();
                     }
                     unregisterConnect();
                     break;
                 case BluetoothService.ACTION_BLUETOOTH_CHECK_SUCCESS:
-                    if(tipDialog != null) {
+                    if (tipDialog != null) {
                         tipDialog.dismiss();
                     }
-                    if (loadDialog != null && loadDialog.isShowing()){
+                    if (loadDialog != null && loadDialog.isShowing()) {
                         loadDialog.dismiss();
                         onCommit();
                     }

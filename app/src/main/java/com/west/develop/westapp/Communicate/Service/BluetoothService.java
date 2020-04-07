@@ -597,6 +597,6 @@ public class BluetoothService extends Service {
     }
 
     public interface ConnectCallback {
-        public void onFinish(boolean success);
+        void onFinish(boolean success);
     }
 }

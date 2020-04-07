@@ -57,18 +57,12 @@ public class COMFunAPI {
             if (!bluetoothPort.isOpened()) {
                 bluetoothPort.open(BluetoothService.getInstance().mConnectListener);
             }
-            if (!bluetoothPort.isOpened()) {
-                return false;
-            }
-
-            return true;
+            return bluetoothPort.isOpened();
         }
 
         return false;
 
     }
-
-
 
 
     /**
@@ -148,7 +142,7 @@ public class COMFunAPI {
      * 延时
      * @param T 时间
      */
-    public void Delayms(int T){
+    public void Delayms(int T) {
         SystemClock.sleep(T);
         /*try {
             Thread.sleep(T);
@@ -161,7 +155,7 @@ public class COMFunAPI {
     }
 
 
-    public void Delayms(long T){
+    public void Delayms(long T) {
         SystemClock.sleep(T);
         /*try {
             Thread.sleep(T);
@@ -206,11 +200,7 @@ public class COMFunAPI {
         }
 
         int len = port.write(OutStr.getBytes(), 0);
-        if (len == OutStr.length()) {
-            return true;
-        }
-
-        return false;
+        return len == OutStr.length();
     }
 
 
@@ -384,11 +374,7 @@ public class COMFunAPI {
             }
         }
 
-        if (VerifyCount % 2 == 0) {
-            Verify = true;
-        } else {
-            Verify = false;
-        }
+        Verify = VerifyCount % 2 == 0;
         port.setCommBreak();
         Delayms(TimeT);
 
@@ -458,7 +444,7 @@ public class COMFunAPI {
         }
 
         byte[] buffer = port.getReadBytes(0);
-        System.arraycopy(buffer,0,RevData,0,buffer.length);
+        System.arraycopy(buffer, 0, RevData, 0, buffer.length);
         port.purgeHwBuffers(true, true);
         result = true;
         return result;

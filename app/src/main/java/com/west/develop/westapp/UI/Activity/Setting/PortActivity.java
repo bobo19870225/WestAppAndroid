@@ -78,8 +78,7 @@ public class PortActivity extends BaseActivity {
             if(bean.getDeviceMode() == DeviceBean.MODE_RELEASE) {
                 portSignDate_TV.setText(bean.getTime());
                 portMode_TV.setText(getString(R.string.deviceType_Release));
-            }
-            else{
+            } else {
                 portSignDate_TV.setText("");
                 portMode_TV.setText(getString(R.string.deviceType_Debug));
             }
