@@ -29,12 +29,11 @@ public class ReportUntil {
     public static String REPORT_HARDTYPE = "HARDTYPE";  //硬件类型
     public static String REPORT_FUNCTION = "FUNCTION";   //诊断功能
     public static String REPORT_FAULT = "FUALT";        //故障
-    public static final String TAG = ReportUntil.class.getSimpleName();        //故障
+
     private static Handler mHandler = new Handler();
 
     /**
      * 向报告文件中写入数据
-     *
      * @param context
      * @param data
      */
@@ -60,7 +59,6 @@ public class ReportUntil {
 
     /**
      * 读取文件中的数据
-     *
      * @param context
      * @param reportName
      * @return
@@ -82,7 +80,6 @@ public class ReportUntil {
 
     /**
      * 删除报告文件
-     *
      * @param context
      * @param reportName
      */
@@ -101,7 +98,6 @@ public class ReportUntil {
 
     /**
      * 记录上传完成
-     *
      * @param context
      * @param reportName
      */
@@ -129,7 +125,6 @@ public class ReportUntil {
 
     /**
      * 获取文件夹下的诊断记录
-     *
      * @param context
      * @return
      */
@@ -146,6 +141,8 @@ public class ReportUntil {
 
     /**
      * 上传诊断记录
+     * @param context
+     * @param fileName
      */
     public static void postReport(final Context context, final String fileName) {
         if (fileName == null || fileName.isEmpty()) {
@@ -181,12 +178,12 @@ public class ReportUntil {
                             Log.e("response", responseBody);
 
                             if (code == HttpURLConnection.HTTP_OK) {
-                                /*
+                                /**
                                  * 网络连接成功
                                  */
                                 try {
                                     JSONObject json = new JSONObject(responseBody);
-                                    /*
+                                    /**
                                      * 上传成功
                                      */
                                     if (json.getInt("code") == 0) {
@@ -202,7 +199,7 @@ public class ReportUntil {
                     task.setParams(URLConstant.urlReportPost, mParams);
                     task.execute(0);
                 } catch (Exception ex) {
-                    Log.e(TAG, ex.toString());
+                    return;
                 }
             }
         }).start();
@@ -210,6 +207,7 @@ public class ReportUntil {
 
     /**
      * 启动时自动上传 需要上传的诊断记录
+     * @param context
      */
     public static void autoPostReport(final Context context) {
         new Thread(new Runnable() {
@@ -219,13 +217,13 @@ public class ReportUntil {
                 if (!reportPath.exists()) {
                     return;
                 }
+
                 File[] fileList = reportPath.listFiles();
-                if (fileList != null) {
-                    for (File file : fileList) {
-                        String fileName = file.getName();
-                        if (fileName.toLowerCase().endsWith("_1.txt")) {
-                            postReport(context, fileName);
-                        }
+
+                for (int i = 0; i < fileList.length; i++) {
+                    String fileName = fileList[i].getName();
+                    if (fileName.toLowerCase().endsWith("_1.txt")) {
+                        postReport(context, fileName);
                     }
                 }
             }

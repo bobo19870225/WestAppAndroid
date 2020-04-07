@@ -34,9 +34,6 @@ import com.west.develop.westapp.UI.base.BaseActivity;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * 诊断程序选择
- */
 public class DiagnosisActivity extends BaseActivity {
     public static final String kCarBean = "kCarBean";
     public static final String kISDebug = "kISDebug";
@@ -47,7 +44,7 @@ public class DiagnosisActivity extends BaseActivity {
 
 
     private TextView backTv;
-    //    private TextView totleTv;
+    private TextView totleTv;
     private TextView title;
 
     private ListView mListView;
@@ -74,19 +71,20 @@ public class DiagnosisActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 File file = mFiles.get(position);
-                /*
+
+                /**
                  * 选择程序
                  */
                 if (!isDebug) {
-                    /*
+                    /**
                      * 正常模式
                      */
                     File fileName = null;
                     File[] files = file.listFiles();
                     if (files != null) {
-                        for (File value : files) {
-                            if (value.getName().toLowerCase().contains(".bin")) {
-                                fileName = value;
+                        for (int i = 0; i < files.length; i++) {
+                            if (files[i].getName().toLowerCase().contains(".bin")) {
+                                fileName = files[i];
                             }
                         }
                     }
@@ -98,17 +96,19 @@ public class DiagnosisActivity extends BaseActivity {
                         return;
                     }
                     setTitlePath(file, FileUtil.PROGRAM_ROOT);//设置标题栏
+
                 } else {
-                    /*
+                    /**
                      * 本地调试模式
                      */
                     if (file.getName().toLowerCase().endsWith(".bin")) {
                         mProFile = file;
                         onCommit();
+
                         return;
                     }
 
-                    /*
+                    /**
                      * 调试模式下点击bin文件刷新的listview，点击item
                      */
                     if (isBin) {
@@ -205,7 +205,6 @@ public class DiagnosisActivity extends BaseActivity {
             }
         }
     }
-
     LoadDialog loadDialog;
     private Handler mHandler = new Handler() {
         @Override
@@ -316,7 +315,9 @@ public class DiagnosisActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         isDebug = getIntent().getBooleanExtra(kISDebug, false);
+
         //非本地调试     即运行已完成的程序
         if (!isDebug) {
             String beanJson = getIntent().getStringExtra(kCarBean);

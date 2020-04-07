@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -31,19 +30,20 @@ import com.west.develop.westapp.bluetooth.BluetoothSerialPort;
 import com.west.develop.westapp.bluetooth.Profile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- * 蓝牙服务
- * 1.创建时开始搜索蓝牙
+ * Created by Develop0 on 2017/12/25.
  */
 
 public class BluetoothService extends Service {
     private static final int MSG_START_DISCOVERY = 1;
     public static final String ACTION_BLUETOOTH_CHECK_SUCCESS = "com.west.develop.westapp.ACTION_BLUETOOTH_CHECK_SUCCESS";
     public static final String ACTION_BLUETOOTH_DISCONNECTED = "com.west.develop.westapp.ACTION_BLUETOOTH_DISCONNECTED";
-    //    private static final String mPared_PIN = "0000";
-    private static final String TAG = BluetoothService.class.getSimpleName();
+//    private static final String mPared_PIN = "0000";
+
     IBinder mBinder = new BluetoothBinder();
 
     private List<BluetoothDevice> mDevices = new ArrayList<>();
@@ -52,11 +52,11 @@ public class BluetoothService extends Service {
 
     private static BluetoothService instance;
 
-    private openThread mOpenThread;
+    private OpenThead mOpenThread;
 
     private ConnectCallback mConnectCallback;
 
-//    private Set<String> mUnsupportPortsMac = new HashSet<>();
+    private Set<String> mUnsupportPortsMac = new HashSet<>();
 
     private boolean isRestart = false;
     /**
@@ -119,7 +119,7 @@ public class BluetoothService extends Service {
                                     }
                                     //restartDiscovery();
                                 }
-                                /*
+                                /**
                                  * 检查序列号返回错误
                                  */
                                 else if (resultByte != null && resultByte == BaseCMD.CHK_BACK_SN_ERROR) {
@@ -138,11 +138,11 @@ public class BluetoothService extends Service {
                                         port.destroy();
                                     }
                                 }
-                                /*
+                                /**
                                  * 检查设备序列号没有返回或返回其它
                                  */
                                 else {
-//                                    mUnsupportPortsMac.add(port.getDevice().getAddress());
+                                    mUnsupportPortsMac.add(port.getDevice().getAddress());
                                     if (mConnectCallback != null) {
                                         mConnectCallback.onFinish(false);
                                         mConnectCallback = null;
@@ -174,7 +174,7 @@ public class BluetoothService extends Service {
         @Override
         public void onFailed(BluetoothSerialPort port) {
             Log.e("bluetooth-openDevice", "" + port.getDevice().getAddress() + "    failed");
-            /*
+            /**
              * 连接失败
              */
             if (mOpenThread != null) {
@@ -192,11 +192,13 @@ public class BluetoothService extends Service {
 
         @Override
         public void onLose(BluetoothSerialPort port) {
+
             if (ConnectStatus.getInstance(BluetoothService.this).getBTPort() != null) {
                 if (ConnectStatus.getInstance(BluetoothService.this).getBTPort() == port) {
                     ConnectStatus.getInstance(BluetoothService.this).enableBT(false, null);
                 }
             }
+
             Intent intent = new Intent(ACTION_BLUETOOTH_DISCONNECTED);
             sendBroadcast(intent);
 
@@ -209,6 +211,8 @@ public class BluetoothService extends Service {
 
     /**
      * 初始化单例
+     *
+     * @param service
      */
     public static void setInstance(BluetoothService service) {
         instance = service;
@@ -233,6 +237,7 @@ public class BluetoothService extends Service {
         Log.e("bluetooth", "startScan");
         mDevices.clear();
         mBluetoothAdapter.startDiscovery();
+
     }
 
     /**
@@ -255,6 +260,8 @@ public class BluetoothService extends Service {
 
     /**
      * 打开蓝牙串口
+     *
+     * @param port
      */
     public void openSerialPort(final BluetoothSerialPort port) {
         if (port == null) {
@@ -273,16 +280,18 @@ public class BluetoothService extends Service {
         }
 
         // mPort = port;
-        /*
+        /**
          * 开启连接线程
          */
-        mOpenThread = new openThread(port);
+        mOpenThread = new OpenThead(port);
         mOpenThread.start();
     }
 
 
     /**
      * 设置连接线程运行状态
+     *
+     * @param isOpening
      */
     public void setOpenThreadOpening(boolean isOpening) {
         if (mOpenThread != null) {
@@ -292,6 +301,8 @@ public class BluetoothService extends Service {
 
     /**
      * 设置连接回调
+     *
+     * @param callback
      */
     public void setConnectCallback(ConnectCallback callback) {
         mConnectCallback = callback;
@@ -300,13 +311,18 @@ public class BluetoothService extends Service {
 
     /**
      * 获取串口
+     *
+     * @return
      */
     public BluetoothSerialPort getBluetothPort() {
-        return port;
+        return null;
     }
 
     /**
      * 绑定Service
+     *
+     * @param intent
+     * @return
      */
     @Nullable
     @Override
@@ -317,6 +333,8 @@ public class BluetoothService extends Service {
 
     /**
      * 解绑Service
+     *
+     * @param conn
      */
     @Override
     public void unbindService(ServiceConnection conn) {
@@ -327,6 +345,7 @@ public class BluetoothService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         unregisterReceiver();
     }
 
@@ -359,38 +378,38 @@ public class BluetoothService extends Service {
         unregisterReceiver(mReceiver);
     }
 
-    /**
-     * 蓝牙设备广播接收器，监听
-     * 1.设备配对状态改变
-     * 2.蓝牙状态改变
-     */
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, Intent intent) {
             String action = intent.getAction();
-            /*
+
+            /**
              * 设备配对状态改变
              */
-            if (action != null && action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+            if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
-                if (state == BluetoothDevice.BOND_BONDED) {//有设备配对成功
-                    //device.fetchUuidsWithSdp();
-                    if (device != null) {
+                switch (state) {
+                    case BluetoothDevice.BOND_BONDED:
+                        //有设备配对成功
+                        //device.fetchUuidsWithSdp();
                         String name = device.getName();
                         ArrayList<String> btList = Config.getInstance(BluetoothService.this).getBTList();
+
                         if (btList != null && btList.contains(name)) {
                             foundNewDevice(device);
                         }
-                    }
+
+                        break;
                 }
             }
 
             /*
              * 蓝牙状态改变
              */
-            if (action != null && action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
                 switch (state) {
                     case BluetoothAdapter.STATE_ON:
                         //蓝牙开启，开始扫描
@@ -404,7 +423,7 @@ public class BluetoothService extends Service {
 
                 }
             }
-            /*
+            /**
              * 扫描到蓝牙设备
              */
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
@@ -412,27 +431,22 @@ public class BluetoothService extends Service {
 
                 if (ConnectStatus.getInstance(context).getBTPort() != null) {
 
-                    if (device != null && device.equals(ConnectStatus.getInstance(context).getBTPort().getDevice())) {
-                        Bundle intentExtras = intent.getExtras();
-                        short rssi = 0;
-                        if (intentExtras != null) {
-                            rssi = intentExtras.getShort(BluetoothDevice.EXTRA_RSSI);
-                        }
+                    if (device.equals(ConnectStatus.getInstance(context).getBTPort().getDevice())) {
+                        short rssi = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
                         Log.e("Rssi", rssi + "");
                         // restartDiscovery();
                     }
                 } else {
-                    if (device != null) {
-                        String name = device.getName();
-                        ArrayList<String> btList = Config.getInstance(BluetoothService.this).getBTList();
-                        if (btList != null && btList.contains(name)) {
-                            foundNewDevice(device);
-                        }
+                    String name = device.getName();
+                    ArrayList<String> btList = Config.getInstance(BluetoothService.this).getBTList();
+
+                    if (btList != null && btList.contains(name)) {
+                        foundNewDevice(device);
                     }
                     //foundNewDevice(device);
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                /*
+                /**
                  * 扫描结束后，启动下一轮扫描
                  */
                 if (!isRestart) {
@@ -445,19 +459,17 @@ public class BluetoothService extends Service {
                 }
             }
 
-            /*
+            /**
              * 设备断开连接
              */
             if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (ConnectStatus.getInstance(context).getBTPort() != null) {
-                    if (device != null && ConnectStatus.getInstance(context).getBTPort().getDevice().getAddress().equals(device.getAddress())) {
+                    if (ConnectStatus.getInstance(context).getBTPort().getDevice().getAddress().equals(device.getAddress())) {
                         ConnectStatus.getInstance(context).enableBT(false, null);
                     }
                 }
-                if (device != null) {
-                    Log.e("BT-Disconnected", device.getAddress());
-                }
+                Log.e("BT-Disconnected", device.getAddress());
             }
 
             if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
@@ -473,11 +485,14 @@ public class BluetoothService extends Service {
 
     /**
      * 发现新蓝牙设备
+     *
+     * @param device
      */
     private void foundNewDevice(BluetoothDevice device) {
         ParcelUuid[] uuids = device.getUuids();
         boolean isDevice = false;
-        /*
+
+        /**
          * 获取 SDP 协议UUID
          */
         if (uuids != null) {
@@ -490,7 +505,7 @@ public class BluetoothService extends Service {
                 }
             }
         } else {
-            /*
+            /**
              * 未配对
              */
             if (device.getBondState() == BluetoothDevice.BOND_NONE) {
@@ -508,14 +523,14 @@ public class BluetoothService extends Service {
 
                 if (Config.getInstance(BluetoothService.this).getBondDevice() != null) {
                     if (SignDialog.getInstance() != null) {
-                        /*
+                        /**
                          * 如果激活对话框正在显示，且等待激活设备，激活设备
                          */
                         if (SignDialog.getInstance().waitSign()) {
                             SignDialog.getInstance().signWithPort(port);
                         }
                     } else {
-                        /*
+                        /**
                          * 未连接设备，且没有设备正在连接，打开蓝牙串口{@port}
                          */
                         if (mOpenThread == null || !mOpenThread.isOpening) {
@@ -548,11 +563,11 @@ public class BluetoothService extends Service {
     };
 
 
-    class openThread extends Thread {
+    class OpenThead extends Thread {
         private BluetoothSerialPort mPort;
         private boolean isOpening = false;
 
-        openThread(BluetoothSerialPort port) {
+        OpenThead(BluetoothSerialPort port) {
             mPort = port;
         }
 
@@ -563,7 +578,7 @@ public class BluetoothService extends Service {
             }
 
             if (Config.getInstance(BluetoothService.this).getBondDevice() != null) {
-                /*
+                /**
                  * 已经激活，尝试连接
                  */
                 isOpening = true;
@@ -576,7 +591,7 @@ public class BluetoothService extends Service {
             try {
                 interrupt();
             } catch (Exception ex) {
-                Log.e(TAG, ex.toString());
+
             }
         }
     }

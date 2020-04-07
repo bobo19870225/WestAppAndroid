@@ -167,10 +167,14 @@ public class MDBHelper extends SQLiteOpenHelper {
      */
     public  ArrayList<NCarBean> getCarList(int sortBy){
         ArrayList<NCarBean> list = new ArrayList<>();
+
         refreshSortBy(sortBy);
+
         String sql = "select * from " + TB_CAR   + " order by " +  mSortBy;
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql,null);
+
         while (cursor.moveToNext()){
             NCarBean carBean = new NCarBean();
             carBean.setCarID(cursor.getString(cursor.getColumnIndex(kCarID)));
@@ -182,7 +186,9 @@ public class MDBHelper extends SQLiteOpenHelper {
             //updateBinRoot(carBean);
             list.add(carBean);
         }
+
         //String json = getListJson(list);
+
         return list;
     }
 
@@ -192,6 +198,7 @@ public class MDBHelper extends SQLiteOpenHelper {
      */
     public void insertCarBean(NCarBean carBean){
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues values = new ContentValues();
         values.put(kCarID,carBean.getCarID());
         values.put(kCarName_CN,carBean.getCarName_CN());
@@ -199,6 +206,7 @@ public class MDBHelper extends SQLiteOpenHelper {
         values.put(kBinROOT,carBean.getBinRoot());
         values.put(kCarNumber,carBean.getNumber());
         values.put(kLogoPath,carBean.getLogoPath());
+
         try {
             db.insert(TB_CAR, null, values);
         }

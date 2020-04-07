@@ -32,8 +32,9 @@ public class DownloadTaskActivity extends BaseActivity {
     private TextView title;
     private ListView listView;
     private CheckBox downloadBTN;
-    private List<ProgramDownLoadThread> mDownloadThreads;
+    private List<ProgramDownLoadThread> mDownloadTheads;
     private DownloadTaskAdapter adapter;
+
     private Handler mHandler = new Handler();
 
 
@@ -51,7 +52,7 @@ public class DownloadTaskActivity extends BaseActivity {
         downloadBTN.setVisibility(View.VISIBLE);
 
 
-        /*
+        /**
          * 下载按钮的监听
          */
         downloadBTN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -89,8 +90,8 @@ public class DownloadTaskActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        if (mDownloadThreads == null) {
-            mDownloadThreads = new ArrayList<>();
+        if (mDownloadTheads == null) {
+            mDownloadTheads = new ArrayList<>();
         }
 
 
@@ -103,11 +104,11 @@ public class DownloadTaskActivity extends BaseActivity {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (mDownloadThreads == null) {
-                                    mDownloadThreads = new ArrayList<>();
+                                if (mDownloadTheads == null) {
+                                    mDownloadTheads = new ArrayList<>();
                                 }
-                                mDownloadThreads.clear();
-                                mDownloadThreads.addAll(list);
+                                mDownloadTheads.clear();
+                                mDownloadTheads.addAll(list);
                                 int count = 0;
                                 if (list.size() > 0) {
                                     for (int i = 0; i < list.size(); i++) {
@@ -130,7 +131,7 @@ public class DownloadTaskActivity extends BaseActivity {
             }
         });
 
-        adapter = new DownloadTaskAdapter(mDownloadThreads, DownloadTaskActivity.this, downloadBTN);
+        adapter = new DownloadTaskAdapter(mDownloadTheads, DownloadTaskActivity.this, downloadBTN);
         listView.setAdapter(adapter);
 
         DownloadManager.getInstance(this).requestThreads();
@@ -164,7 +165,11 @@ public class DownloadTaskActivity extends BaseActivity {
         } else {
             downloadBTN.setText(R.string.startdownload);
         }
+
+
         title.setText(R.string.upgrade_update);
+
+
     }
 
     public void notifyDataSetChanged() {
@@ -186,11 +191,11 @@ public class DownloadTaskActivity extends BaseActivity {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 new TipDialog.Builder(DownloadTaskActivity.this)
                         .setTitle(getResources().getString(R.string.report_delete))
-                        .setMessage(mDownloadThreads.get(position).getFileName() + ", " + getResources().getString(R.string.tip_message_delete))
+                        .setMessage(mDownloadTheads.get(position).getFileName() + ", " + getResources().getString(R.string.tip_message_delete))
                         .setPositiveClickListener(getResources().getString(R.string.tip_yes), new TipDialog.OnClickListener() {
                             @Override
                             public void onClick(Dialog dialogInterface, int index, String label) {
-                                DownloadManager.getInstance(DownloadTaskActivity.this).deleteUrl(mDownloadThreads.get(position).getUrl());
+                                DownloadManager.getInstance(DownloadTaskActivity.this).deleteUrl(mDownloadTheads.get(position).getUrl());
                                 DownloadManager.getInstance(DownloadTaskActivity.this).requestThreads();
                                 dialogInterface.dismiss();
                             }

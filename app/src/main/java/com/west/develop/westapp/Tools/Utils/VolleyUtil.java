@@ -110,7 +110,6 @@ public class VolleyUtil {
 
     public interface IVolleyCallback {
         void getResponse(JSONObject jsonObject);
-
         void onErrorResponse(VolleyError error);
     }
 

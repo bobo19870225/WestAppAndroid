@@ -16,9 +16,6 @@ import com.west.develop.westapp.Bean.AppBean.DocumentVersion;
 import com.west.develop.westapp.R;
 import com.west.develop.westapp.UI.base.BaseActivity;
 
-/**
- * 我的设备页面
- */
 public class PortActivity extends BaseActivity {
 
     private TextView back_tv;
@@ -81,7 +78,7 @@ public class PortActivity extends BaseActivity {
             if(bean.getDeviceMode() == DeviceBean.MODE_RELEASE) {
                 portSignDate_TV.setText(bean.getTime());
                 portMode_TV.setText(getString(R.string.deviceType_Release));
-            } else{
+            } else {
                 portSignDate_TV.setText("");
                 portMode_TV.setText(getString(R.string.deviceType_Debug));
             }

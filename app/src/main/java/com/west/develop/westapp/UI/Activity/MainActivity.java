@@ -51,6 +51,7 @@ import java.util.List;
 import static com.west.develop.westapp.Application.AppReceiver.ACTION_CONNECTIVITY_CHANGE;
 
 public class MainActivity extends BaseActivity {
+    private FragmentManager supportFragmentManager;
     private HomeFragment homeFragment;
     private DiagnosisFragment diagnosisFragment;
     private UpgradeFragment upgradeFragment;
@@ -92,7 +93,7 @@ public class MainActivity extends BaseActivity {
         //计算时差
         int timeDistance = (int) ((laterCalendar.getTimeInMillis() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24));
 
-        /*
+        /**
          * 当前时间和设置的最大时间间隔，两个时间段进行比较
          * n == 1说明 nowCalendar比laterCalendar早
          * n == 0说明 nowCalendar与laterCalendar相等
@@ -103,11 +104,10 @@ public class MainActivity extends BaseActivity {
         if (WifiUtil.isSupportNetwork(MainActivity.this)) {
             queryBTList();
             checkDeviceMode();
-            //上传诊断数据
             ReportUntil.autoPostReport(MainActivity.this);
         } else {
             //如果没有网络的时候，那么就开始记录次数
-            if (timeDistance <= 0 || n < 0 || checkCount >= Config.getInstance(MainActivity.this).getSetRegCount()) {
+            if (timeDistance <= 0 || n == -1 || checkCount >= Config.getInstance(MainActivity.this).getSetRegCount()) {
                 mDialog = new TipDialog.Builder(MainActivity.this)
                         .setTitle(getResources().getString(R.string.tip_title))
                         .setMessage(getResources().getString(R.string.check_device))
@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void onClick(Dialog dialogInterface, int index, String label) {
                                 dialogInterface.dismiss();
-//                                finish();
+                                finish();
                                 System.exit(0);
                             }
                         })
@@ -207,9 +207,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 检测设备是否可用回调
-     */
+
     VolleyUtil.IVolleyCallback callback = new VolleyUtil.IVolleyCallback() {
         @Override
         public void getResponse(JSONObject jsonObject) {
@@ -217,7 +215,7 @@ public class MainActivity extends BaseActivity {
                 mDialog.dismiss();
             }
             Log.e("Volley checkDeviceMode", jsonObject.toString());
-            if (jsonObject == null || "".equals(jsonObject)) {
+            if ("".equals(jsonObject) || jsonObject == null) {
                 return;
             }
             try {
@@ -318,7 +316,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         if (homeFragment == null) {
             homeFragment = HomeFragment.newInstance("", "");

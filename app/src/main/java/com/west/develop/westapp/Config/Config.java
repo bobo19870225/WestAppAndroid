@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * 1.保存系统设置参数，如图标排列方式，语言等
- * 2.保存设备状态，如是否绑定，是否配置完成，是否免责条款，试用次数等
+ * Created by Develop0 on 2017/8/30.
  */
 
 public class Config {
@@ -222,7 +221,7 @@ public class Config {
         isSigned = signed;
         save();
 
-        /*
+        /**
          * 发送刷新设备广播
          */
         Intent intent = new Intent(MyApplication.ACTION_DEVICE_REFRESH);
@@ -231,6 +230,9 @@ public class Config {
 
     /**
      * 获取设备IMEI码
+     *
+     * @param context
+     * @return
      */
     public static String getAndroidID(Context context) {
         String androidID;
@@ -295,6 +297,8 @@ public class Config {
 
     /**
      * 设置时间为一个月之后
+     *
+     * @return
      */
     public void setLastDate(Calendar mLastDate) {
         this.mLastDate = mLastDate;

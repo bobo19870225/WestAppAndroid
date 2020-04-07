@@ -90,7 +90,6 @@ public class MyApplication extends Application {
     public void onTerminate() {
         MDBHelper.getInstance(this).close();
         if (ConnectStatus.getInstance(this).getBTPort() != null) {
-            //释放蓝牙
             ConnectStatus.getInstance(this).getBTPort().destroy();
         }
         super.onTerminate();

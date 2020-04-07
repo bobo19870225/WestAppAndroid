@@ -35,17 +35,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 设备激活对话框
+ * Created by Develop0 on 2018/1/9.
  */
 
 public class BondDialog extends Dialog implements View.OnClickListener {
-    private static int STEP_NOTICE = 0;
-    private static int STEP_READ = 1;
-    private static int STEP_COMMIT = 2;
-    private static int STEP_BOND = 3;
-    private static int STEP_BOND_SUCCESS = 4;
-    private static int STEP_BOND_FAILED = 5;
-    private Context mContext;
+    public static int STEP_NOTICE = 0;
+    public static int STEP_READ = 1;
+    public static int STEP_COMMIT = 2;
+    public static int STEP_BOND = 3;
+    public static int STEP_BOND_SUCCESS = 4;
+    public static int STEP_BOND_FAILED = 5;
+    Context mContext;
 
     private static BondDialog instance;
 
@@ -73,6 +73,8 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     private Button mNegativeBTN;
     private Button mPositiveBTN;
+
+    private TextView mTitleTV;
 
     private TextView mMessageTV;
 
@@ -112,7 +114,14 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     private int readSNCount = 0; // 记录一个接口有几次读序列号的次数，设置最高为三次
 
-    private String errMessage = null; //获取服务器返回的错误信息
+    String errMessage = null; //获取服务器返回的错误信息
+
+    OnDismissListener onDismissListener = new OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            clear();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,12 +139,6 @@ public class BondDialog extends Dialog implements View.OnClickListener {
         super(context);
         mContext = context;
 
-        OnDismissListener onDismissListener = new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                clear();
-            }
-        };
         setOnDismissListener(onDismissListener);
     }
 
@@ -150,7 +153,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
         mPositiveBTN = findViewById(R.id.dialog_Positive_BTN);
         mNegativeBTN = findViewById(R.id.dialog_Negative_BTN);
         mMessageTV = findViewById(R.id.dialog_Message_TV);
-        TextView mTitleTV = findViewById(R.id.dialog_title);
+        mTitleTV = findViewById(R.id.dialog_title);
         mTitleTV.setText(mContext.getResources().getString(R.string.device_bond_title));
 
         mPositiveBTN.setVisibility(View.VISIBLE);
@@ -168,7 +171,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private BondDialog setStep(int step, String s) {
+    public BondDialog setStep(int step, String s) {
         if (step == STEP_NOTICE) {
             BluetoothService.getInstance().restartDiscovery();
             mStep_Index = STEP_NOTICE;
@@ -288,7 +291,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    private void startSign() {
+    public void startSign() {
         startSign = true;
     }
 
@@ -298,6 +301,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 设置 确定按钮 点击事件
+     * @param listener
      */
     public BondDialog setNegativeClickListener(String text, OnClickListener listener) {
         mNegativeText = text;
@@ -310,6 +314,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 设置 取消按钮 点击事件
+     * @param listener
      */
     public BondDialog setNegativeClickListener(OnClickListener listener) {
         mNegativeClickListener = listener;
@@ -325,7 +330,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private BaseSerialPort getReadPort() {
+    public BaseSerialPort getReadPort() {
         return mReadPort;
     }
 
@@ -392,6 +397,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 启动绑定
+     * @param port
      */
     public void bondWithPort(BaseSerialPort port) {
 
@@ -422,8 +428,9 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 绑定第 {@index} 个串口
+     * @param index
      */
-    private void signIndex(int index) {
+    public void signIndex(int index) {
         isSigning = true;
         // setStep(STEP_READ);
         if (index >= mPorts.size()) {
@@ -446,10 +453,10 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 读取设备SN
-     * {@deviceInfos[0]}   DeviceSN
-     * {@deviceInfos[1]}   COMCHK
+     *          {@deviceInfos[0]}   DeviceSN
+     *          {@deviceInfos[1]}   COMCHK
      */
-    private void onDeviceRead(BaseSerialPort readPort) {
+    public void onDeviceRead(BaseSerialPort readPort) {
         stopRead();
         if (deviceInfos == null) {
             if (mReadPort instanceof UsbSerialPort) {
@@ -474,8 +481,8 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 确认设备SN
-     * {@deviceInfos[0]}   DeviceSN
-     * {@deviceInfos[1]}   COMCHK
+     *          {@deviceInfos[0]}   DeviceSN
+     *          {@deviceInfos[1]}   COMCHK
      */
     private void commitDevice() {
         setStep(STEP_COMMIT, "");
@@ -484,12 +491,12 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     /**
      * 确认设备SN 后在服务器绑定
-     * {@deviceInfos[0]}   DeviceSN
-     * {@deviceInfos[1]}   COMCHK
+     *          {@deviceInfos[0]}   DeviceSN
+     *          {@deviceInfos[1]}   COMCHK
      */
     private void bondDevice() {
         setStep(STEP_BOND, "");
-//        String authCode = deviceInfos[1].replace(" ","");
+        String authCode = deviceInfos[1].replace(" ", "");
 
         String url = URLConstant.urlDeviceBond + "?" +
                 "deviceSN=" + deviceInfos[0] + "&" +
@@ -558,11 +565,12 @@ public class BondDialog extends Dialog implements View.OnClickListener {
 
     private void bondFinish(boolean success, String message) {
         if (success) {
-            /*
+            /**
              * 激活成功
              */
             BaseSerialPort readPort = getReadPort();
-            /*
+
+            /**
              * 更新状态栏
              */
             if (readPort != null) {
@@ -575,6 +583,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
                 if (readPort instanceof BluetoothSerialPort) {
                     // BluetoothService.getInstance().openSerialPort((BluetoothSerialPort)readPort);
                     ConnectStatus.getInstance(mContext).enableBT(true, (BluetoothSerialPort) readPort);
+
                     //如果存在 USB 设备连接，尝试检查设备序列号
                     List<UsbSerialPort> mUsbPorts = UsbService.getInstance().getSerialPorts();
                     if (mUsbPorts != null && mUsbPorts.size() > 0) {
@@ -585,7 +594,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
                 }
             }
         } else {
-            /*
+            /**
              * 激活失败
              */
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
@@ -610,7 +619,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
     private class ReadThread extends Thread {
         BaseSerialPort mPort;
 
-        ReadThread(BaseSerialPort port) {
+        public ReadThread(BaseSerialPort port) {
             mPort = port;
         }
 
@@ -636,7 +645,7 @@ public class BondDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private void stopRead() {
+    public void stopRead() {
         if (mReadThread != null) {
             mReadThread.interrupt();
             mReadThread = null;

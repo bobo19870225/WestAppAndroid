@@ -132,7 +132,6 @@ public class DownloadManager {
 
     /**
      * 添加多条下载 URL
-     *
      * @param urls
      */
     public void addUrls(ArrayList<String> urls) {
@@ -146,7 +145,6 @@ public class DownloadManager {
 
     /**
      * 添加单条 下载 URL
-     *
      * @param url
      */
     public void addUrl(String url) {
@@ -179,7 +177,6 @@ public class DownloadManager {
         MDBHelper.getInstance(mContext).insertDownloadUrl(bean);
 
     }
-
     /**
      * 初始化所有的下载
      * 从数据库读取
@@ -338,7 +335,6 @@ public class DownloadManager {
 
     /**
      * 任务 @url 下载完成
-     *
      * @param url
      */
     public void onDownloadFinish(final String url, String fileName) {
@@ -362,7 +358,6 @@ public class DownloadManager {
     }
 
     private ArrayList<NCarBean> carBeanList;
-
     private void getIcon(String url) {
 
         if (carBeanList == null) {
@@ -392,7 +387,6 @@ public class DownloadManager {
 
     /**
      * 替换程序文件
-     *
      * @param fileName
      */
     public void replaceProgram(String fileName) {
@@ -428,6 +422,7 @@ public class DownloadManager {
                 }
             }
         }
+
 
 
         try {
@@ -574,7 +569,6 @@ public class DownloadManager {
 
     /**
      * 删除任务
-     *
      * @param url
      */
     public void deleteUrl(String url) {
@@ -752,7 +746,6 @@ public class DownloadManager {
 
     /**
      * 设置 @url 状态变为下载
-     *
      * @param url
      */
 
@@ -812,7 +805,6 @@ public class DownloadManager {
 
     /**
      * 设置 @url 状态变为等待
-     *
      * @param url
      */
     public void waitUrl(String url) {
@@ -830,7 +822,6 @@ public class DownloadManager {
 
     /**
      * 暂停 @url 任务
-     *
      * @param url
      */
     public void pauseUrl(String url) {
@@ -862,7 +853,6 @@ public class DownloadManager {
 
     /**
      * 获取下载状态
-     *
      * @return
      */
     public boolean isStarted() {
@@ -880,7 +870,6 @@ public class DownloadManager {
 
     /**
      * 获取所有下载任务
-     *
      * @return
      */
     public CopyOnWriteArrayList<ProgramDownLoadThread> getUpgradeThreads() {
@@ -889,7 +878,6 @@ public class DownloadManager {
 
     /**
      * 获取正在下载的任务
-     *
      * @return
      */
     public ArrayList<ProgramDownLoadThread> getmDownloadThreads() {

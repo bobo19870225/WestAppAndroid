@@ -9,6 +9,8 @@ import com.west.develop.westapp.Common.BaseSerialPort;
 import com.west.develop.westapp.bluetooth.Threads.ConnectedThread;
 import com.west.develop.westapp.usb.HexDump;
 
+import java.util.UUID;
+
 /**
  * Created by Develop0 on 2017/12/25.
  */
@@ -16,19 +18,19 @@ import com.west.develop.westapp.usb.HexDump;
 public class BluetoothSerialPort extends BaseSerialPort {
     private static final String TAG = BluetoothSerialPort.class.getSimpleName();
 
-    //    public static final int DEFAULT_READ_BUFFER_SIZE = 4 * 1024;
-    private static final int DEFAULT_WRITE_BUFFER_SIZE = 4 * 1024;
+    public static final int DEFAULT_READ_BUFFER_SIZE = 4 * 1024;
+    public static final int DEFAULT_WRITE_BUFFER_SIZE = 4 * 1024;
 
-    private static final int STATE_NONE = 0;       // we're doing nothing
-    private static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    private static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+    public static final int STATE_NONE = 0;       // we're doing nothing
+    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
+    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
     // Unique UUID for this application
-//    public static final UUID MY_UUID_SECURE =
-//            UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-//    public static final UUID MY_UUID_INSECURE =
-//            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+    public static final UUID MY_UUID_SECURE =
+            UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+    public static final UUID MY_UUID_INSECURE =
+            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
     private BluetoothDevice mDevice;
 
@@ -85,7 +87,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
     /**
      * 连接失败
      */
-    private void connectionFailed() {
+    public void connectionFailed() {
         Log.i(TAG, "connectFailed");
         setState(STATE_NONE);
         if (mConnectListener != null) {
@@ -105,6 +107,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
     public void connectionLost() {
         Log.i(TAG, "connectLost");
         setState(STATE_NONE);
+
         close();
         if (mConnectListener != null) {
             mHandler.post(new Runnable() {
@@ -122,6 +125,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
      */
     public void open(ConnectListener listener) {
         mConnectListener = listener;
+
         if (isOpened()) {
             return;
         }
@@ -131,11 +135,14 @@ public class BluetoothSerialPort extends BaseSerialPort {
         }
         setState(STATE_CONNECTING);
         try {
-            BluetoothSocket socket;
+            BluetoothSocket socket = null;
             boolean isSuccess = false;
+
+
             socket = mDevice.createRfcommSocketToServiceRecord(BluetoothAllUuid.SerialPort.getUuid());
             //socket = mDevice.createRfcommSocketToServiceRecord(MY_UUID_SECURE);
-//            boolean isOpened = socket.isConnected();
+
+            boolean isOpened = socket.isConnected();
             try {
                 socket.connect();
                 mmSocket = socket;
@@ -151,7 +158,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
             }
             connectionFailed();
         } catch (Exception ex) {
-            Log.e(TAG, ex.toString());
+            ex.printStackTrace();
         }
     }
 
@@ -180,8 +187,9 @@ public class BluetoothSerialPort extends BaseSerialPort {
 
     /**
      * 连接成功后建立通信
+     * @param socket
      */
-    private synchronized void connected(BluetoothSocket socket) {
+    public synchronized void connected(BluetoothSocket socket) {
         Log.i(TAG, "connectSuccess");
 
         if (mConnectedThread != null) {
@@ -288,9 +296,7 @@ public class BluetoothSerialPort extends BaseSerialPort {
 
     public interface ConnectListener {
         void onSuccess(BluetoothSerialPort port);
-
         void onFailed(BluetoothSerialPort port);
-
         void onLose(BluetoothSerialPort port);
     }
 
